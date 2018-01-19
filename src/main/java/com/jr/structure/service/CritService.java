@@ -15,6 +15,8 @@ public class CritService {
     public static final int DEFAULT_MAX = 10;
     public static final boolean DEFAULT_INCLUDE_UNDEFINED = false;
     private static final int[] breakpoints = new int[]{0, 1, 5, 10, 20, 50, 100, 200, 500, 1000, 10000};
+    public static final Crit rating = save("rating", true);
+    public static final Crit novelty = save("novelty", true);
 
     public static List<Crit> findAll() {
         return critRepo.findAll();
@@ -32,24 +34,25 @@ public class CritService {
         critRepo.delete(crit);
     }
 
-    public static boolean save(String name) {
-        return save(name, DEFAULT_MIN, DEFAULT_MAX);
+    public static Crit save(String name) {
+        return save(name, DEFAULT_MIN, DEFAULT_MAX, DEFAULT_INCLUDE_UNDEFINED);
     }
 
-    public static boolean save(String name, int min, int max) {
+    public static Crit save(String name, int min, int max) {
         return save(name, min, max, DEFAULT_INCLUDE_UNDEFINED);
     }
 
-    public static boolean save(String name, int min, int max, boolean includeUndefined) {
-        if (getByName(name) != null)
-            return false;
+    public static Crit save(String name, boolean includeUndefined) {
+        return save(name, DEFAULT_MIN, DEFAULT_MAX, includeUndefined);
+    }
 
-        int minValue = valueToBreakpoint(min);
-        int maxValue = valueToBreakpoint(max);
+    public static Crit save(String name, int min, int max, boolean includeUndefined) {
+        min = valueToBreakpoint(min);
+        max = valueToBreakpoint(max);
+        name = name.toLowerCase();
 
-        Crit crit = new Crit(name, minValue, maxValue, includeUndefined);
-        critRepo.save(crit);
-        return true;
+        Crit crit = new Crit(name, min, max, includeUndefined);
+        return critRepo.save(crit);
     }
 
     private static int valueToBreakpoint(int value) {

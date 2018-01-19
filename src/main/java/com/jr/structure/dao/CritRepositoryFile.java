@@ -28,14 +28,15 @@ public class CritRepositoryFile implements CritRepository { //todo
         return null;
     }
 
+    //если есть такой уже - модифицировать
     @Override
-    public boolean save(Crit item) {
-        return false;
+    public Crit save(Crit item) {
+        return null;
     }
 
     @Override
-    public boolean save(Iterable<Crit> items) {
-        return false;
+    public List<Crit> save(Iterable<Crit> items) {
+        return null;
     }
 
     @Override

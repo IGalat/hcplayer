@@ -14,9 +14,9 @@ public interface CommonRepository<T, ID extends Serializable> {
 
     List<T> findAll(Iterable<ID> id);
 
-    boolean save(T item);
+    T save(T item);
 
-    boolean save(Iterable<T> items);
+    List<T> save(Iterable<T> items);
 
     void delete(ID id);
 
