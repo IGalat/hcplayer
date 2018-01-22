@@ -1,14 +1,16 @@
 package com.jr.structure.model.sub;
 
+import lombok.Data;
+import lombok.NonNull;
+
 /**
  * @author Galatyuk Ilya
  */
-public enum Comparison {
-    More,
-    Less,
-    MoreOrEquals,
-    LessOrEquals,
-    Equals,
-    True,
-    False
+
+@Data
+public class Comparison {
+    @NonNull
+    private final int value;
+    @NonNull
+    private final ComparisonOption comparisonOption;
 }
