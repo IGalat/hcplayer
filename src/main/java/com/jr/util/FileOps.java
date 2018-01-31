@@ -14,6 +14,4 @@ public class FileOps {
     public static synchronized long getId() {
         return ++maxId;
     }
-
-
 }
