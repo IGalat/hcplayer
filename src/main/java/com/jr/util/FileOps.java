@@ -8,7 +8,7 @@ public class FileOps {
 
     static {
         //todo extract values from file
-        maxId = 0;
+        maxId = 1;
     }
 
     public static synchronized long getId() {
