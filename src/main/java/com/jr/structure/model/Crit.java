@@ -1,6 +1,6 @@
 package com.jr.structure.model;
 
-import com.jr.structure.dao.CritRepositoryFile;
+import com.jr.util.FileOps;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -10,7 +10,7 @@ import lombok.NonNull;
 
 @Data
 public class Crit {
-    private long id = CritRepositoryFile.getIdForNewCrit();
+    private long id = FileOps.getId();
     @NonNull
     private String name;
     @NonNull

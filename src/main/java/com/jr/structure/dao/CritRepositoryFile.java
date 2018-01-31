@@ -73,9 +73,4 @@ public class CritRepositoryFile implements CritRepository { //todo
     public long count() {
         return 0;
     }
-
-    //костыль просто стремнейший. должен генерить айди на основе самого большого айди
-    public static long getIdForNewCrit() {
-        return 0;
-    }
 }
