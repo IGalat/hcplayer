@@ -1,7 +1,7 @@
 package com.jr.structure.model;
 
-import com.jr.util.FileOps;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.util.Map;
 
@@ -11,7 +11,9 @@ import java.util.Map;
 
 @Data
 public class Song {
-    private long id = FileOps.getId();
+    private long id;
+    @NonNull
     private String name;
+    @NonNull
     private Map<Crit, Integer> crits;
 }

@@ -1,6 +1,6 @@
 package com.jr.structure.model;
 
-import com.jr.util.FileOps;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -10,13 +10,18 @@ import lombok.NonNull;
 
 @Data
 public class Crit {
-    private long id = FileOps.getId();
+    private long id;
     @NonNull
     private String name;
-    @NonNull
     private int min;
-    @NonNull
     private int max;
-    @NonNull
     private boolean includeUndefined;
+
+    public Crit(long id, String name, int min, int max, boolean includeUndefined) {
+        this.id = id;
+        this.name = name;
+        this.min = min;
+        this.max = max;
+        this.includeUndefined = includeUndefined;
+    }
 }

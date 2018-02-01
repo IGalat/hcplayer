@@ -3,6 +3,7 @@ package com.jr.structure.service;
 import com.jr.structure.dao.CritRepository;
 import com.jr.structure.dao.CritRepositoryFile;
 import com.jr.structure.model.Crit;
+import com.jr.util.FileOps;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class CritService {
         max = valueToBreakpoint(max);
         name = name.toLowerCase();
 
-        Crit crit = new Crit(name, min, max, includeUndefined);
+        Crit crit = new Crit(FileOps.getNextId(), name, min, max, includeUndefined);
         return critRepo.save(crit);
     }
 
