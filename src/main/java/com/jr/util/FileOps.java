@@ -11,16 +11,17 @@ import java.util.Map;
  */
 public class FileOps {
     private static volatile long maxId;
-    public static final String CONFIG_FOLDER = "config\\";
-    public static final String SETTINGS_FILENAME = CONFIG_FOLDER + "settings.txt";
-    public static final String CRITS_FILENAME = CONFIG_FOLDER + "crits.txt";
-    public static final String SONGS_FILENAME = CONFIG_FOLDER + "songs.txt";
-    public static final String PLAYLISTS_FILENAME = CONFIG_FOLDER + "playlists.txt";
+    public static final String CONFIG_FOLDER = "src/main/resources/user/";
+    public static final String SETTINGS = CONFIG_FOLDER + "settings.txt";
+    public static final String CRITS = CONFIG_FOLDER + "crits.txt";
+    public static final String SONGS = CONFIG_FOLDER + "songs.txt";
+    public static final String PLAYLISTS = CONFIG_FOLDER + "playlists.txt";
 
     static {
-        List<Map<String, String>> settings = getAll(SETTINGS_FILENAME);
+        List<Map<String, String>> settings = getAll(SETTINGS);
         for (Map<String, String> settingsLine : settings)
             for (Map.Entry<String, String> setting : settingsLine.entrySet()) {
+
                 if (setting.getKey().equals("maxId"))
                     maxId = Long.parseLong(setting.getValue());
                 //other values here
@@ -67,14 +68,18 @@ public class FileOps {
     }
 
     private static File mkFile(String filename) {
-        File dir = new File(filename.substring(0, filename.lastIndexOf('\\')));
+        int slashIndex = Math.max(filename.lastIndexOf('\\'), filename.lastIndexOf('/'));
+        File dir = null;
+        if (slashIndex > -1)
+            dir = new File(filename.substring(0, slashIndex));
         File file = new File(filename);
         if (file.exists() && !file.isDirectory()) {
             return file;
         }
 
         try {
-            dir.mkdirs();
+            if (slashIndex > -1)
+                dir.mkdirs();
             file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,7 +103,9 @@ public class FileOps {
             e.printStackTrace();
         }
 
-        for (String line : content)
+        for (String line : content) {
+            line = removeComments(line);
+            if (line.isEmpty()) continue;
             if (line.contains(search)) {
                 Map<String, String> lineMap = new HashMap<>();
                 String[] entries = line.split(";");
@@ -108,7 +115,19 @@ public class FileOps {
                 }
                 filtered.add(lineMap);
             }
+        }
 
         return filtered;
     }
+
+    private static String removeComments(String line) {
+        String[] commentOpts = new String[]{"#", "//"};
+
+        for (String comment : commentOpts)
+            if (line.contains(comment))
+                line = line.substring(0, line.indexOf(comment));
+
+        return line.trim();
+    }
+
 }

@@ -1,0 +1,5 @@
+#This is manually filled
+//some other comment
+id=234326743;type=song;metal=5;classic=0;
+id=645;type=playlist;metal=MoreOrEqual,3;classic=LessOrEqual,6;
+lala=fafa;

@@ -1,26 +1,44 @@
 package com.jr.util;
 
 import org.junit.Assert;
-import org.junit.Rule;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Galatyuk Ilya
  */
 public class FileOpsTest {
-    private static final String TEST_PREFIX = "test\\";
+    private static final String TEST_PREFIX = "src/test/resources/file/";
+    private static final List<Map<String, String>> expectedGet = new ArrayList<>();
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @BeforeClass
+    public static void init() {
+        Map<String, String> line = new HashMap<>();
+        line.put("id", "234326743");
+        line.put("type", "song");
+        line.put("metal", "5");
+        line.put("classic", "0");
+        expectedGet.add(line);
+
+        line = new HashMap<>();
+        line.put("id", "645");
+        line.put("type", "playlist");
+        line.put("metal", "MoreOrEqual,3");
+        line.put("classic", "LessOrEqual,6");
+        expectedGet.add(line);
+
+        line = new HashMap<>();
+        line.put("lala", "fafa");
+        expectedGet.add(line);
+    }
 
     @Test
-    public void getNextIdTest() {
+    public void getNextId() {
         long initId = FileOps.getNextId();
         for (int i = 0; i < 5; i++) {
             FileOps.getNextId();
@@ -29,19 +47,52 @@ public class FileOpsTest {
     }
 
     @Test
-    public void putTest() throws IOException {
-        String filename = TEST_PREFIX + FileOps.SETTINGS_FILENAME;
+    public void put() {
+        String filename = TEST_PREFIX + "putTest.txt";
+        List<Map<String, String>> all = new ArrayList<>();
+        Map<String, String> comment = new HashMap<>();
         Map<String, String> settings = new HashMap<>();
+
+        comment.put("#This is teh comment", null);
+        all.add(comment);
 
         settings.put("a", "b");
         settings.put("c", "d");
         settings.put("e", "f");
         settings.put("maxId", "123");
+        all.add(settings);
 
-        File dir = temporaryFolder.newFolder(TEST_PREFIX);
-        dir = temporaryFolder.newFolder(TEST_PREFIX, FileOps.CONFIG_FOLDER);
-        File file = temporaryFolder.newFile(filename);
+        FileOps.put(filename, all, false);
+    }
 
-        FileOps.put(file.getAbsolutePath(), settings, false);
+    @Test
+    public void get() {
+        String filename = TEST_PREFIX + "getTest.txt";
+
+        List<Map<String, String>> fromFile = FileOps.getAll(filename, "playlist");
+
+        Assert.assertTrue(mapsEqual(expectedGet.get(1), fromFile.get(0)));
+    }
+
+    @Test
+    public void getAll() {
+        String filename = TEST_PREFIX + "getTest.txt";
+
+        List<Map<String, String>> fromFile = FileOps.getAll(filename);
+
+        Assert.assertEquals(expectedGet.size(), fromFile.size());
+
+        for (int i = 0; i < expectedGet.size(); i++) {
+            Map<String, String> expectedLine = expectedGet.get(i);
+            Assert.assertTrue("Fail on line " + i, mapsEqual(expectedLine, fromFile.get(i)));
+        }
+    }
+
+    private boolean mapsEqual(Map<String, String> expected, Map<String, String> actual) {
+        for (Map.Entry<String, String> entry : expected.entrySet()) {
+            String actualValue = actual.get(entry.getKey());
+            if (!entry.getValue().equals(actualValue)) return false;
+        }
+        return true;
     }
 }

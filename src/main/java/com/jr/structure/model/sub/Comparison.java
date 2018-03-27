@@ -13,4 +13,9 @@ public class Comparison {
     private final int value;
     @NonNull
     private final ComparisonOption comparisonOption;
+
+    public Comparison(int value, ComparisonOption comparisonOption) {
+        this.value = value;
+        this.comparisonOption = comparisonOption;
+    }
 }

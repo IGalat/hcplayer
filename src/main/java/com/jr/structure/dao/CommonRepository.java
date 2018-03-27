@@ -1,6 +1,7 @@
 package com.jr.structure.dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,9 +13,14 @@ public interface CommonRepository<T, ID extends Serializable> {
 
     List<T> findAll();
 
-    List<T> findAll(Iterable<ID> id);
+    List<T> findAll(Iterable<ID> ids);
 
-    T save(T item);
+    default T save(T item) {
+        ArrayList<T> items = new ArrayList<>();
+        items.add(item);
+        save(items);
+        return item;
+    }
 
     List<T> save(Iterable<T> items);
 
@@ -24,11 +30,17 @@ public interface CommonRepository<T, ID extends Serializable> {
 
     void delete(Iterable<T> items);
 
-    void delete(T item);
+    default void delete(T item) {
+        ArrayList<T> items = new ArrayList<>();
+        items.add(item);
+        delete(items);
+    }
 
     void deleteAll();
 
     boolean exists(ID id);
 
-    long count();
+    default long count() {
+        return findAll().size();
+    }
 }

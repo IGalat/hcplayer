@@ -1,76 +1,56 @@
 package com.jr.structure.dao;
 
 import com.jr.structure.model.Crit;
+import com.jr.util.FileOps;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Galatyuk Ilya
  */
-public class CritRepositoryFile implements CritRepository { //todo
+public class CritRepositoryFile implements CritRepository {
+    private static List<Crit> crits;
+    private static final String ID_NAME = "id";
+    private static final String NAME_NAME = "name";
+    private static final String MIN_NAME = "min";
+    private static final String MAX_NAME = "max";
+    private static final String INCLUDE_UNDEFINED_NAME = "include_undefined";
 
-    @Override
-    public Crit getOne(Long aLong) {
-        return null;
+
+    static {
+        List<Map<String, String>> allCritsMap = FileOps.getAll(FileOps.CRITS);
+        crits = new ArrayList<>();
+
+        for (Map<String, String> critMap : allCritsMap) {
+            long id = Long.parseLong(critMap.get(ID_NAME));
+            int min = Integer.parseInt(critMap.get(MIN_NAME));
+            int max = Integer.parseInt(critMap.get(MAX_NAME));
+            boolean include_undefined = Boolean.parseBoolean(critMap.get(INCLUDE_UNDEFINED_NAME));
+
+            crits.add(new Crit(id, critMap.get(NAME_NAME), min, max, include_undefined));
+        }
     }
 
     @Override
     public List<Crit> findAll() {
-        return null;
+        return null;//todo
     }
 
-    @Override
-    public List<Crit> findAll(Iterable<Long> id) {
-        return null;
+    private void rewrite(List<Crit> crits) {
+        //todo
     }
 
-    public Crit getByName(String name) {
-        return null;
-    }
-
-    //если есть такой уже - модифицировать
-    @Override
-    public Crit save(Crit item) {
-        return null;
-    }
-
+    //если есть уже - модифицировать
     @Override
     public List<Crit> save(Iterable<Crit> items) {
-        return null;
-    }
-
-    @Override
-    public void delete(Long aLong) {
-
-    }
-
-    @Override
-    public void delete(String name) {
-
+        return null;//todo
     }
 
     @Override
     public void delete(Iterable<Crit> items) {
-
+        //todo
     }
 
-    @Override
-    public void delete(Crit item) {
-
-    }
-
-    @Override
-    public void deleteAll() {
-
-    }
-
-    @Override
-    public boolean exists(Long aLong) {
-        return false;
-    }
-
-    @Override
-    public long count() {
-        return 0;
-    }
 }
