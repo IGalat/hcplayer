@@ -13,8 +13,6 @@ import java.util.Map;
 @Data
 public class Playlist {
     private long id;
-    @NonNull
     private String name;
-    @NonNull
     private Map<Crit, Comparison> constraints;
 }

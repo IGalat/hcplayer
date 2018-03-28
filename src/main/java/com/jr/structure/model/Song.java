@@ -1,7 +1,6 @@
 package com.jr.structure.model;
 
 import lombok.Data;
-import lombok.NonNull;
 
 import java.util.Map;
 
@@ -12,8 +11,6 @@ import java.util.Map;
 @Data
 public class Song {
     private long id;
-    @NonNull
-    private String name;
-    @NonNull
+    private String name; //absolute path and name.mp3
     private Map<Crit, Integer> crits;
 }
