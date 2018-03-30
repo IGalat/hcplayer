@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Galatyuk Ilya
  */
 public class FileOpsTest {
-    private static final String TEST_PREFIX = "src/test/resources/file/";
+    public static final String TEST_FOLDER = "src/test/resources/user/";
     private static final List<Map<String, String>> expectedGet = new ArrayList<>();
 
     @BeforeClass
@@ -48,7 +48,7 @@ public class FileOpsTest {
 
     @Test
     public void put() {
-        String filename = TEST_PREFIX + "putTest.txt";
+        String filename = TEST_FOLDER + "putTest.txt";
         List<Map<String, String>> all = new ArrayList<>();
         Map<String, String> comment = new HashMap<>();
         Map<String, String> settings = new HashMap<>();
@@ -67,7 +67,7 @@ public class FileOpsTest {
 
     @Test
     public void get() {
-        String filename = TEST_PREFIX + "getTest.txt";
+        String filename = TEST_FOLDER + "getTest.txt";
 
         List<Map<String, String>> fromFile = FileOps.getAll(filename, "playlist");
 
@@ -76,7 +76,7 @@ public class FileOpsTest {
 
     @Test
     public void getAll() {
-        String filename = TEST_PREFIX + "getTest.txt";
+        String filename = TEST_FOLDER + "getTest.txt";
 
         List<Map<String, String>> fromFile = FileOps.getAll(filename);
 

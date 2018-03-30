@@ -11,6 +11,6 @@ import java.util.Map;
 @Data
 public class Song {
     private long id;
-    private String name; //absolute path and name.mp3
+    private String name; // absolute_path/name.mp3
     private Map<Crit, Integer> crits;
 }

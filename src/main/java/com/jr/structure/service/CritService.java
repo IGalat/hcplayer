@@ -19,7 +19,7 @@ public class CritService {
     public static final Crit rating = save("rating", true);
     public static final Crit novelty = save("novelty", true);
 
-    public static List<Crit> findAll() {
+    public static List<Crit> getAll() {
         return critRepo.findAll();
     }
 

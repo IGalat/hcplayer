@@ -10,31 +10,63 @@ import java.util.Map;
  * @author Galatyuk Ilya
  */
 public class FileOps {
+    public static final String DEFAULT_CONFIG_FOLDER = "src/main/resources/user/";
+    private static String configFolder = DEFAULT_CONFIG_FOLDER;
+    private static String critsName = "crits.txt";
+    private static String songsName = "songs.txt";
+    private static String playlistsName = "playlists.txt";
+    private static String settingsName = "settings.txt";
     private static volatile long maxId;
-    public static final String CONFIG_FOLDER = "src/main/resources/user/";
-    public static final String SETTINGS = CONFIG_FOLDER + "settings.txt";
-    public static final String CRITS = CONFIG_FOLDER + "crits.txt";
-    public static final String SONGS = CONFIG_FOLDER + "songs.txt";
-    public static final String PLAYLISTS = CONFIG_FOLDER + "playlists.txt";
 
     static {
-        List<Map<String, String>> settings = getAll(SETTINGS);
-        for (Map<String, String> settingsLine : settings)
+        List<Map<String, String>> settings = getAll(getSettingsName());
+        for (Map<String, String> settingsLine : settings) {
             for (Map.Entry<String, String> setting : settingsLine.entrySet()) {
 
                 if (setting.getKey().equals("maxId"))
                     maxId = Long.parseLong(setting.getValue());
                 //other values here
             }
-        try {
-            new File("sample2").createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
+    public static synchronized String getConfigFolder() {
+        return configFolder;
+    }
+
+    public static synchronized void setConfigFolder(String configFolder) {
+        FileOps.configFolder = configFolder;
+    }
+
+    public static String getCritsName() {
+        return configFolder + critsName;
+    }
+
+    public static String getSongsName() {
+        return configFolder + songsName;
+    }
+
+    public static String getPlaylistsName() {
+        return configFolder + playlistsName;
+    }
+
+    public static String getSettingsName() {
+        return configFolder + settingsName;
+    }
+
     public static synchronized long getNextId() {
-        return ++maxId;
+        maxId++;
+
+        List<Map<String, String>> settings = getAll(getSettingsName());
+        for (Map<String, String> settingsLine : settings)
+            for (Map.Entry<String, String> setting : settingsLine.entrySet())
+                if (setting.getKey().equals("maxId")) {
+                    settingsLine.remove("maxId");
+                    settingsLine.put("maxId", Long.toString(maxId));
+                }
+                put(getSettingsName(), settings, false);
+
+        return maxId;
     }
 
     public static synchronized void put(String filename, Map<String, String> content, boolean append) {
