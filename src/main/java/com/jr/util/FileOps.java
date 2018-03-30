@@ -16,19 +16,7 @@ public class FileOps {
     private static String songsName = "songs.txt";
     private static String playlistsName = "playlists.txt";
     private static String settingsName = "settings.txt";
-    private static volatile long maxId;
 
-    static {
-        List<Map<String, String>> settings = getAll(getSettingsName());
-        for (Map<String, String> settingsLine : settings) {
-            for (Map.Entry<String, String> setting : settingsLine.entrySet()) {
-
-                if (setting.getKey().equals("maxId"))
-                    maxId = Long.parseLong(setting.getValue());
-                //other values here
-            }
-        }
-    }
 
     public static synchronized String getConfigFolder() {
         return configFolder;
@@ -52,21 +40,6 @@ public class FileOps {
 
     public static String getSettingsName() {
         return configFolder + settingsName;
-    }
-
-    public static synchronized long getNextId() {
-        maxId++;
-
-        List<Map<String, String>> settings = getAll(getSettingsName());
-        for (Map<String, String> settingsLine : settings)
-            for (Map.Entry<String, String> setting : settingsLine.entrySet())
-                if (setting.getKey().equals("maxId")) {
-                    settingsLine.remove("maxId");
-                    settingsLine.put("maxId", Long.toString(maxId));
-                }
-                put(getSettingsName(), settings, false);
-
-        return maxId;
     }
 
     public static synchronized void put(String filename, Map<String, String> content, boolean append) {

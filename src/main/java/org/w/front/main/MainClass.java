@@ -10,14 +10,11 @@ package org.w.front.main;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
 import java.util.Random;
 
@@ -36,8 +33,8 @@ public class MainClass extends Application {
 
         Button btn = new Button();
         btn.setText("Say 'Hello World'");
-        btn.setLayoutX(width/2);
-        btn.setLayoutY(height/2);
+        btn.setLayoutX(width / 2);
+        btn.setLayoutY(height / 2);
         btn.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override

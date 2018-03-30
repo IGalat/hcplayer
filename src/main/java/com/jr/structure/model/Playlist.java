@@ -2,7 +2,6 @@ package com.jr.structure.model;
 
 import com.jr.structure.model.sub.Comparison;
 import lombok.Data;
-import lombok.NonNull;
 
 import java.util.Map;
 

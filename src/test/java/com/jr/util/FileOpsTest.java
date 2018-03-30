@@ -38,15 +38,6 @@ public class FileOpsTest {
     }
 
     @Test
-    public void getNextId() {
-        long initId = FileOps.getNextId();
-        for (int i = 0; i < 5; i++) {
-            FileOps.getNextId();
-        }
-        Assert.assertTrue(initId + 6 == FileOps.getNextId());
-    }
-
-    @Test
     public void put() {
         String filename = TEST_FOLDER + "putTest.txt";
         List<Map<String, String>> all = new ArrayList<>();
