@@ -1,5 +1,6 @@
 package com.jr.structure.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
  */
 
 @Data
+@AllArgsConstructor
 public class Song {
     private long id;
     private String name; // absolute_path/name.mp3

@@ -36,7 +36,6 @@ public class CritRepositoryFile implements CritRepository {
         return crits;
     }
 
-    //если есть уже - модифицировать
     @Override
     public List<Crit> save(Iterable<Crit> items) {
         for (Crit critToSave : items) {
