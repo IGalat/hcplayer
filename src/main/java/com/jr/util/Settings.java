@@ -11,7 +11,7 @@ import java.util.Map;
 public class Settings {
     private static final String MAX_ID_NAME = "maxId";
 
-    private static Map<String, String> getSettingsFromFile() {
+    private static synchronized Map<String, String> getSettingsFromFile() {
         List<Map<String, String>> allSettingsList = FileOps.getAll(FileOps.getSettingsName());
         Map<String, String> result = new HashMap<>();
 
@@ -23,7 +23,7 @@ public class Settings {
         return result;
     }
 
-    private static void save(String key, String value) {
+    private static synchronized void save(String key, String value) {
         Map<String, String> settings = getSettingsFromFile();
         settings.put(key, value);
 
@@ -37,12 +37,12 @@ public class Settings {
         FileOps.put(FileOps.getSettingsName(), settingsListToSave, false);
     }
 
-    private static String get(String key) {
+    private static synchronized String get(String key) {
         return getSettingsFromFile().get(key);
     }
 
 
-    public static long getNextId() {
+    public static synchronized long getNextId() {
         Long maxId = Long.parseLong(get(MAX_ID_NAME));
         maxId++;
         save(MAX_ID_NAME, maxId.toString());
