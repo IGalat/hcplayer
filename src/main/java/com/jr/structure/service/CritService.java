@@ -17,7 +17,7 @@ public class CritService {
     public static final boolean DEFAULT_INCLUDE_UNDEFINED = false;
     private static final int[] breakpoints = new int[]{0, 1, 5, 10, 20, 50, 100, 200, 500, 1000, 10000};
     public static final Crit rating = save("rating", true);
-    public static final Crit novelty = save("novelty", true);
+    public static final Crit novelty = save("novelty", -1000, 1000, true);
 
     public static List<Crit> getAll() {
         return critRepo.findAll();

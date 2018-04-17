@@ -40,14 +40,15 @@ public class CritRepositoryFile implements CritRepository {
     public List<Crit> save(Iterable<Crit> items) {
         for (Crit critToSave : items) {
             for (Crit crit : crits) {
-                if (critToSave.getId() == crit.getId()) {
+                if (critToSave.getId() == crit.getId()
+                        || critToSave.getName().equals(crit.getName())) {
                     crits.remove(crit);
                 }
             }
             crits.add(critToSave);
         }
         rewriteFile();
-        return crits;
+        return (List<Crit>) items;
     }
 
     @Override
