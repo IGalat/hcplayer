@@ -32,7 +32,7 @@ public class SongRepositoryFile implements SongRepository {
 
             String pathString = songMap.get(PATH_NAME);
             songMap.remove(PATH_NAME);
-            Path path = FileSystems.getDefault().getPath(songMap.get(PATH_NAME));
+            Path path = FileSystems.getDefault().getPath(pathString);
 
             Map<Crit, Integer> crits = new HashMap<>();
             for (Map.Entry<String, String> critEntry : songMap.entrySet()) {
@@ -71,11 +71,12 @@ public class SongRepositoryFile implements SongRepository {
         rewriteFile();
     }
 
-    private void rewriteFile() {
+    private synchronized void rewriteFile() {
         List<Map<String, String>> listToSave = new ArrayList<>();
         for (Song song : songs) {
             Map<String, String> mapOfSong = new HashMap<>();
 
+            mapOfSong.put(ID_NAME, Long.toString(song.getId()));
             mapOfSong.put(PATH_NAME, song.getPath().toString());
 
             for (Map.Entry<Crit, Integer> crit : song.getCrits().entrySet()) {

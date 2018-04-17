@@ -9,7 +9,6 @@ import lombok.NonNull;
 
 @Data
 public class Comparison {
-    @NonNull
     private final int value;
     @NonNull
     private final ComparisonOption comparisonOption;

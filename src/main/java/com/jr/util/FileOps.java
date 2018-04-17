@@ -100,6 +100,8 @@ public class FileOps {
         List<String> content = new ArrayList<>();
         List<Map<String, String>> filtered = new ArrayList<>();
 
+        mkFile(filename);
+
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null)

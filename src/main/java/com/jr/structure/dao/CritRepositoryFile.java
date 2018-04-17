@@ -59,7 +59,7 @@ public class CritRepositoryFile implements CritRepository {
         rewriteFile();
     }
 
-    private void rewriteFile() {
+    private synchronized void rewriteFile() {
         List<Map<String, String>> listToSave = new ArrayList<>();
         for (Crit crit : crits) {
             Map<String, String> mapOfCrit = new HashMap<>();
