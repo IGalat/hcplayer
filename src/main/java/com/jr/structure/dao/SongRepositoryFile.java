@@ -79,8 +79,10 @@ public class SongRepositoryFile implements SongRepository {
             mapOfSong.put(ID_NAME, Long.toString(song.getId()));
             mapOfSong.put(PATH_NAME, song.getPath().toString());
 
-            for (Map.Entry<Crit, Integer> crit : song.getCrits().entrySet()) {
-                mapOfSong.put(crit.getKey().getName(), crit.getValue().toString());
+            if (song.getCrits() != null) {
+                for (Map.Entry<Crit, Integer> crit : song.getCrits().entrySet()) {
+                    mapOfSong.put(crit.getKey().getName(), crit.getValue().toString());
+                }
             }
 
             listToSave.add(mapOfSong);
