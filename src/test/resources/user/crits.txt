@@ -1,3 +1,0 @@
-min=0;max=10;name=testcrit 1;id=169;include_undefined=false;
-min=0;max=10;name=testcrit 2;id=170;include_undefined=true;
-min=0;max=1;name=testcrit 3;id=171;include_undefined=false;

@@ -5,11 +5,11 @@
 
     <groupId>com.jr.hc.player</groupId>
     <artifactId>hcplayer</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-CUMSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Hierarchical Criteria Player</name>
-    <description>Hierarchical Criteria Player 0.0.1</description>
+    <name>Hierarchical Criteria Player lib</name>
+    <description>mis_player 1.0.0</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -78,6 +78,18 @@
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <mainClass>front.main.Main_HCPlayer</mainClass>
+                            </manifest>
+                        </archive>
                     </configuration>
                 </plugin>
             </plugins>
