@@ -1,5 +1,5 @@
 min=0;max=10;name=testcrit 1;id=114;include_undefined=false;
 min=0;max=10;name=somecrit 2;id=115;include_undefined=true;
 min=0;max=1;name=mahcrit 3;id=116;include_undefined=false;
-min=0;max=10;name=rating;id=257;include_undefined=true;
-min=-1000;max=1000;name=novelty;id=258;include_undefined=true;
+min=0;max=10;name=rating;id=293;include_undefined=true;
+min=-1000;max=1000;name=novelty;id=294;include_undefined=true;
