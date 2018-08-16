@@ -1,17 +1,16 @@
 package com.jr.structure.model;
 
-import com.jr.structure.model.sub.Comparison;
-import lombok.Data;
+import com.jr.structure.model.sub.Flavor;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author Galatyuk Ilya
  */
+interface Playlist {
 
-@Data
-public class Playlist {
-    private long id;
-    private String name;
-    private Map<Crit, Comparison> constraints;
+    Flavor getFlavor();
+
+    List<Long> getSongIds();
+
 }

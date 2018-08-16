@@ -4,10 +4,10 @@
 <TableView prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.121"
            xmlns:fx="http://javafx.com/fxml/1" fx:controller="front.CritTableViewController" fx:id="CritsTable">
     <columns>
-        <TableColumn prefWidth="75.0" text="id" fx:id="idCol" />
-        <TableColumn prefWidth="75.0" text="name" fx:id="nameCol" />
-        <TableColumn prefWidth="75.0" text="min" fx:id="minCol" />
-        <TableColumn prefWidth="75.0" text="max" fx:id="maxCol" />
-        <TableColumn prefWidth="75.0" text="undefined" fx:id="undefinedCol" />
+        <TableColumn prefWidth="75.0" text="id" fx:id="idCol"/>
+        <TableColumn prefWidth="75.0" text="name" fx:id="nameCol"/>
+        <TableColumn prefWidth="75.0" text="min" fx:id="minCol"/>
+        <TableColumn prefWidth="75.0" text="max" fx:id="maxCol"/>
+        <TableColumn prefWidth="75.0" text="whitelist" fx:id="whitelistCol"/>
     </columns>
 </TableView>

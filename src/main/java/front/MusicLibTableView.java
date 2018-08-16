@@ -1,7 +1,7 @@
 package front;
 
 import com.jr.structure.model.Song;
-import com.jr.structure.service.SongService;
+import com.jr.service.SongService;
 import com.mpatric.mp3agic.ID3v2;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;

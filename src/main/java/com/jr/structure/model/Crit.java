@@ -14,5 +14,5 @@ public class Crit {
     private String name;
     private int min;
     private int max;
-    private boolean includeUndefined;
+    private boolean whitelist;
 }

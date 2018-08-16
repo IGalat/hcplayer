@@ -1,3 +1,3 @@
-path=aaa;testcrit 1=22;id=157;
-path=bbb;testcrit 1=22;id=158;
-path=ccc;testcrit 2=33;id=159;
+path=aaa;novelty=1000;rating=10;weight=100;id=613;
+path=bbb;novelty=1000;rating=2;weight=100;id=614;
+path=ccc;novelty=33;rating=null;weight=100;id=615;

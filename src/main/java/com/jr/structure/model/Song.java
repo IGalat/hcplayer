@@ -4,9 +4,9 @@ import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @author Galatyuk Ilya
  */
 
-@Data
+@ToString
 public class Song {
 
     @Getter
@@ -64,6 +64,4 @@ public class Song {
     public ID3v2 getTags() {
         return getMp3File().getId3v2Tag();
     }
-
-
 }

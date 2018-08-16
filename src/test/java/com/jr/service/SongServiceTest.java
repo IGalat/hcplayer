@@ -1,5 +1,6 @@
-package com.jr.structure.service;
+package com.jr.service;
 
+import com.jr.logic.CritHardcode;
 import com.jr.structure.model.Crit;
 import com.jr.structure.model.Song;
 import com.jr.util.FileOps;
@@ -17,7 +18,8 @@ import java.util.Map;
 /**
  * @author Galatyuk Ilya
  */
-public class SongServiceTest extends Assert {
+public class SongServiceTest {
+
     @BeforeClass
     public static void init() {
         FileOps.setConfigFolder(FileOpsTest.TEST_FOLDER);
@@ -35,7 +37,7 @@ public class SongServiceTest extends Assert {
             SongService.remove(songs.get(0));
         }
 
-        assertEquals(0, SongService.getAll().size());
+        Assert.assertEquals(0, SongService.getAll().size());
     }
 
     @Test
@@ -45,21 +47,28 @@ public class SongServiceTest extends Assert {
         List<Song> expectedSongList = new ArrayList<>();
         Map<Crit, Integer> crits = new HashMap<>();
 
-        crits.put(CritService.getAll().get(0), 15);
+        crits.put(CritHardcode.ratingCrit, 10);
         expectedSongList.add(SongService.save("aaa", crits));
 
         crits = new HashMap<>();
-        crits.put(CritService.getAll().get(0), 22);
+        crits.put(CritHardcode.ratingCrit, 2);
         expectedSongList.add(SongService.save("bbb", crits));
 
         crits = new HashMap<>();
-        crits.put(CritService.getAll().get(1), 33);
+        crits.put(CritHardcode.noveltyCrit, 33);
         expectedSongList.add(SongService.save("ccc", crits));
 
-        assertEquals(expectedSongList.size(), SongService.getAll().size());
+        Assert.assertEquals(expectedSongList.size(), SongService.getAll().size());
 
         for (Song expectedSong : expectedSongList) {
-            assertEquals(expectedSong, SongService.getOne(expectedSong.getId()));
+            Assert.assertEquals(expectedSong, SongService.getOne(expectedSong.getId()));
         }
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void outOfBoundsCrit() {
+        Map<Crit, Integer> crits = new HashMap<>();
+        crits.put(CritService.getAll().get(0), 999999999);
+        SongService.save("Must fail to save - rating not in bounds", crits);
     }
 }

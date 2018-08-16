@@ -5,7 +5,7 @@
 
     <groupId>com.jr.hc.player</groupId>
     <artifactId>hcplayer</artifactId>
-    <version>0.0.2-CUMSHOT</version>
+    <version>0.0.3-CUMSHOT</version>
     <packaging>jar</packaging>
 
     <name>Hierarchical Criteria Player lib</name>

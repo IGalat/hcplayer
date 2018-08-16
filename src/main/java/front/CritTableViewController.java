@@ -1,7 +1,7 @@
 package front;
 
 import com.jr.structure.model.Crit;
-import com.jr.structure.service.CritService;
+import com.jr.service.CritService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,7 +26,7 @@ public class CritTableViewController implements Initializable {
     @FXML
     TableColumn<Crit, Integer> maxCol = new TableColumn<>();
     @FXML
-    TableColumn<Crit, Boolean> undefinedCol = new TableColumn<>();
+    TableColumn<Crit, Boolean> whitelistCol = new TableColumn<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -34,7 +34,7 @@ public class CritTableViewController implements Initializable {
         nameCol.setCellValueFactory(new PropertyValueFactory<Crit, String>("name"));
         minCol.setCellValueFactory(new PropertyValueFactory<Crit, Integer>("min"));
         maxCol.setCellValueFactory(new PropertyValueFactory<Crit, Integer>("max"));
-        undefinedCol.setCellValueFactory(new PropertyValueFactory<Crit, Boolean>("includeUndefined"));
+        whitelistCol.setCellValueFactory(new PropertyValueFactory<Crit, Boolean>("whitelist"));
 
         CritsTable.setItems(FXCollections.observableArrayList(CritService.getAll()));
     }

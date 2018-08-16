@@ -2,7 +2,7 @@ package com.jr.structure.dao;
 
 import com.jr.structure.model.Crit;
 import com.jr.structure.model.Song;
-import com.jr.structure.service.CritService;
+import com.jr.service.CritService;
 import com.jr.util.FileOps;
 
 import java.nio.file.FileSystems;
@@ -18,10 +18,9 @@ import java.util.Map;
 public class SongRepositoryFile implements SongRepository {
     private static final String ID_NAME = "id";
     private static final String PATH_NAME = "path";
-    private List<Song> songs = findAll();
+    private static List<Song> songs;
 
-    @Override
-    public List<Song> findAll() {
+    static {
         List<Map<String, String>> allSongsMap = FileOps.getAll(FileOps.getSongsName());
 
         songs = new ArrayList<>();
@@ -37,23 +36,33 @@ public class SongRepositoryFile implements SongRepository {
             Map<Crit, Integer> crits = new HashMap<>();
             for (Map.Entry<String, String> critEntry : songMap.entrySet()) {
                 Crit crit = CritService.getByName(critEntry.getKey());
-                Integer value = Integer.parseInt(critEntry.getValue());
+                Integer value;
+                if (critEntry.getValue().equals("null")) {
+                    value = null;
+                } else {
+                    value = Integer.parseInt(critEntry.getValue());
+                }
 
                 crits.put(crit, value);
             }
 
             songs.add(new Song(id, path, crits));
         }
+    }
 
+    @Override
+    public List<Song> findAll() {
         return songs;
     }
 
     @Override
-    public List<Song> save(Iterable<Song> items) {
+    public synchronized List<Song> save(Iterable<Song> items) {
         for (Song songToSave : items) {
-            for (Song song : songs) {
+            for (int i = songs.size(); i > 0; i--) {
+                Song song = songs.get(i - 1);
                 if (songToSave.getId() == song.getId()
                         || songToSave.getPath().equals(song.getPath())) {
+                    songToSave.setId(song.getId());
                     songs.remove(song);
                 }
             }
@@ -64,8 +73,8 @@ public class SongRepositoryFile implements SongRepository {
     }
 
     @Override
-    public void delete(Iterable<Song> items) {
-        for (Song songToDelete : songs) {
+    public synchronized void delete(Iterable<Song> items) {
+        for (Song songToDelete : items) {
             songs.remove(songToDelete);
         }
         rewriteFile();
@@ -80,8 +89,13 @@ public class SongRepositoryFile implements SongRepository {
             mapOfSong.put(PATH_NAME, song.getPath().toString());
 
             if (song.getCrits() != null) {
-                for (Map.Entry<Crit, Integer> crit : song.getCrits().entrySet()) {
-                    mapOfSong.put(crit.getKey().getName(), crit.getValue().toString());
+                for (Map.Entry<Crit, Integer> critEntry : song.getCrits().entrySet()) {
+                    if (critEntry.getKey() == null) continue;
+                    String value;
+                    if (critEntry.getValue() == null) value = "null";
+                    else value = critEntry.getValue().toString();
+
+                    mapOfSong.put(critEntry.getKey().getName(), value);
                 }
             }
 

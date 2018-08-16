@@ -17,7 +17,6 @@ public class FileOps {
     private static String playlistsName = "playlists.txt";
     private static String settingsName = "settings.txt";
 
-
     public static synchronized String getConfigFolder() {
         return configFolder;
     }

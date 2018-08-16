@@ -1,5 +1,6 @@
 package com.jr.structure.dao;
 
+import com.jr.logic.CritHardcode;
 import com.jr.structure.model.Crit;
 import com.jr.util.FileOps;
 
@@ -16,11 +17,10 @@ public class CritRepositoryFile implements CritRepository {
     private static final String NAME_NAME = "name";
     private static final String MIN_NAME = "min";
     private static final String MAX_NAME = "max";
-    private static final String INCLUDE_UNDEFINED_NAME = "include_undefined";
-    private List<Crit> crits = findAll();
+    private static final String WHITELIST_NAME = "whitelist";
+    private static List<Crit> crits;
 
-    @Override
-    public List<Crit> findAll() {
+    static {
         List<Map<String, String>> allCritsMap = FileOps.getAll(FileOps.getCritsName());
         crits = new ArrayList<>();
 
@@ -28,20 +28,26 @@ public class CritRepositoryFile implements CritRepository {
             long id = Long.parseLong(critMap.get(ID_NAME));
             int min = Integer.parseInt(critMap.get(MIN_NAME));
             int max = Integer.parseInt(critMap.get(MAX_NAME));
-            boolean include_undefined = Boolean.parseBoolean(critMap.get(INCLUDE_UNDEFINED_NAME));
+            boolean include_undefined = Boolean.parseBoolean(critMap.get(WHITELIST_NAME));
 
             crits.add(new Crit(id, critMap.get(NAME_NAME), min, max, include_undefined));
         }
+    }
 
+    @Override
+    public List<Crit> findAll() {
+        CritHardcode.saveStandardCrits();
         return crits;
     }
 
     @Override
-    public List<Crit> save(Iterable<Crit> items) {
+    public synchronized List<Crit> save(Iterable<Crit> items) {
         for (Crit critToSave : items) {
-            for (Crit crit : crits) {
+            for (int i = crits.size(); i > 0; i--) {
+                Crit crit = crits.get(i - 1);
                 if (critToSave.getId() == crit.getId()
                         || critToSave.getName().equals(crit.getName())) {
+                    critToSave.setId(crit.getId());
                     crits.remove(crit);
                 }
             }
@@ -52,7 +58,7 @@ public class CritRepositoryFile implements CritRepository {
     }
 
     @Override
-    public void delete(Iterable<Crit> items) {
+    public synchronized void delete(Iterable<Crit> items) {
         for (Crit critToDelete : items) {
             crits.remove(critToDelete);
         }
@@ -68,7 +74,7 @@ public class CritRepositoryFile implements CritRepository {
             mapOfCrit.put(NAME_NAME, crit.getName());
             mapOfCrit.put(MIN_NAME, Integer.toString(crit.getMin()));
             mapOfCrit.put(MAX_NAME, Integer.toString(crit.getMax()));
-            mapOfCrit.put(INCLUDE_UNDEFINED_NAME, Boolean.toString(crit.isIncludeUndefined()));
+            mapOfCrit.put(WHITELIST_NAME, Boolean.toString(crit.isWhitelist()));
 
             listToSave.add(mapOfCrit);
         }

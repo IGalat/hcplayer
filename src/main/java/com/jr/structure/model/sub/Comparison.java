@@ -1,5 +1,6 @@
 package com.jr.structure.model.sub;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -8,13 +9,9 @@ import lombok.NonNull;
  */
 
 @Data
+@AllArgsConstructor
 public class Comparison {
-    private final int value;
     @NonNull
     private final ComparisonOption comparisonOption;
-
-    public Comparison(int value, ComparisonOption comparisonOption) {
-        this.value = value;
-        this.comparisonOption = comparisonOption;
-    }
+    private final int value;
 }
