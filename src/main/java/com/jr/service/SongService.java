@@ -1,8 +1,8 @@
 package com.jr.service;
 
+import com.jr.logic.CritHardcode;
 import com.jr.structure.dao.SongRepository;
 import com.jr.structure.dao.SongRepositoryFile;
-import com.jr.logic.CritHardcode;
 import com.jr.structure.model.Crit;
 import com.jr.structure.model.Song;
 import com.jr.util.Settings;
@@ -47,7 +47,10 @@ public class SongService {
         crits = CritHardcode.addStandardCritsToSongIfAbsent(crits);
         checkCritRanges(path, crits);
 
-        Song song = new Song(Settings.getNextId(), path, crits);
+        Song existingSong = getByPath(path);
+        Long id = existingSong == null ? Settings.getNextId() : existingSong.getId();
+
+        Song song = new Song(id, path, crits);
         songRepo.save(song);
         return song;
     }

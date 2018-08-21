@@ -15,7 +15,7 @@ public class CritHardcode {
     public static final String RATING_CRIT_NAME = "rating";
     public static final String NOVELTY_CRIT_NAME = "novelty";
     public static final String WEIGHT_CRIT_NAME = "weight";
-    public static final String[] STANDARD_CRITS_NAMES = {RATING_CRIT_NAME, NOVELTY_CRIT_NAME, WEIGHT_CRIT_NAME};
+    public static final String[] PROTECTED_CRITS_NAMES = {RATING_CRIT_NAME, NOVELTY_CRIT_NAME, WEIGHT_CRIT_NAME, "child"};
     public static final Integer DEFAULT_WEIGHT_CRIT = 100;
     public static final Crit ratingCrit = CritService.getByName(RATING_CRIT_NAME);
     public static final Crit noveltyCrit = CritService.getByName(NOVELTY_CRIT_NAME);
@@ -62,7 +62,7 @@ public class CritHardcode {
 
     public static boolean isStandardCrit(String name) {
         if (!standardCritsSaved) return false;
-        for (String standardCritName : STANDARD_CRITS_NAMES) {
+        for (String standardCritName : PROTECTED_CRITS_NAMES) {
             if (name.equals(standardCritName)) return true;
         }
         return false;

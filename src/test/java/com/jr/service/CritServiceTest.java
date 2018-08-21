@@ -34,7 +34,7 @@ public class CritServiceTest {
             CritService.remove(crits.get(i - 1));
         }
 
-        Assert.assertEquals(CritHardcode.STANDARD_CRITS_NAMES.length, crits.size());
+        Assert.assertEquals(3, crits.size());
     }
 
     @Test
@@ -48,6 +48,16 @@ public class CritServiceTest {
         expectedCritList.add(CritService.save("testCrit 1"));
         expectedCritList.add(CritService.save("testCrit 2", false));
         expectedCritList.add(CritService.save("testCrit 3", 0, 1));
+
+        List<Crit> testcritList = new ArrayList<>();
+        testcritList.add(CritService.getByName("testcrit 1"));
+        testcritList.add(CritService.getByName("testcrit 2"));
+        Crit crit4 = CritService.save("testCrit 4", 0, 20, CritService.DEFAULT_IS_WHITELIST, testcritList);
+        CritService.addChild(crit4, CritService.getByName("testcrit 2")); //2 times on purpose - won't it duplicate?
+        CritService.addChild(crit4, CritService.getByName("testcrit 3"));
+        CritService.removeChild(crit4, CritService.getByName("testcrit 1"));
+
+        expectedCritList.add(crit4);
 
         List<Crit> critList = CritService.getAll();
 

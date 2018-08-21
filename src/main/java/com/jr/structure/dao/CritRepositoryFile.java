@@ -1,6 +1,5 @@
 package com.jr.structure.dao;
 
-import com.jr.logic.CritHardcode;
 import com.jr.structure.model.Crit;
 import com.jr.util.FileOps;
 
@@ -18,25 +17,39 @@ public class CritRepositoryFile implements CritRepository {
     private static final String MIN_NAME = "min";
     private static final String MAX_NAME = "max";
     private static final String WHITELIST_NAME = "whitelist";
-    private static List<Crit> crits;
+    private static final String CHILDREN_NAME = "children";
+    private List<Crit> crits;
 
-    static {
+    {
         List<Map<String, String>> allCritsMap = FileOps.getAll(FileOps.getCritsName());
         crits = new ArrayList<>();
+        Map<Long, String> allChildren = new HashMap<>();
 
         for (Map<String, String> critMap : allCritsMap) {
             long id = Long.parseLong(critMap.get(ID_NAME));
             int min = Integer.parseInt(critMap.get(MIN_NAME));
             int max = Integer.parseInt(critMap.get(MAX_NAME));
-            boolean include_undefined = Boolean.parseBoolean(critMap.get(WHITELIST_NAME));
+            boolean whitelist = Boolean.parseBoolean(critMap.get(WHITELIST_NAME));
+            String children = critMap.get(CHILDREN_NAME);
 
-            crits.add(new Crit(id, critMap.get(NAME_NAME), min, max, include_undefined));
+            crits.add(new Crit(id, critMap.get(NAME_NAME), min, max, whitelist, null));
+            if (children != null) allChildren.put(id, children);
+        }
+
+        for (Map.Entry<Long, String> childrenOfCrit : allChildren.entrySet()) {
+            Crit crit = this.getOne(childrenOfCrit.getKey());
+            List<Crit> children = new ArrayList<>();
+            String[] childrenNames = childrenOfCrit.getValue().split(",");
+
+            for (String childName : childrenNames) {
+                children.add(getByName(childName));
+            }
+            crit.setChildren(children);
         }
     }
 
     @Override
     public List<Crit> findAll() {
-        CritHardcode.saveStandardCrits();
         return crits;
     }
 
@@ -75,6 +88,15 @@ public class CritRepositoryFile implements CritRepository {
             mapOfCrit.put(MIN_NAME, Integer.toString(crit.getMin()));
             mapOfCrit.put(MAX_NAME, Integer.toString(crit.getMax()));
             mapOfCrit.put(WHITELIST_NAME, Boolean.toString(crit.isWhitelist()));
+
+            if (crit.getChildren() != null && crit.getChildren().size() > 0) {
+                StringBuilder children = new StringBuilder();
+                for (Crit child : crit.getChildren()) {
+                    children.append(child.getName()).append(",");
+                }
+                children.deleteCharAt(children.length() - 1);
+                mapOfCrit.put(CHILDREN_NAME, children.toString());
+            }
 
             listToSave.add(mapOfCrit);
         }
