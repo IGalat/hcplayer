@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class CritService {
     private static final CritRepository critRepo = new CritRepositoryFile();
-    private static final int DEFAULT_MIN = 0;
+    private static final int DEFAULT_MIN = 1;
     private static final int DEFAULT_MAX = 10;
     private static final boolean DEFAULT_IS_WHITELIST = true;
 

@@ -16,7 +16,10 @@ public class FilteredPlaylist implements Playlist {
     private String name;
     private Flavor flavor;
     private Filters filters;
-    private static final String TYPE = "Filtered";
+
+    public static Integer getType() {
+        return 1;
+    }
 
     @Override
     public List<Long> getSongIds() {

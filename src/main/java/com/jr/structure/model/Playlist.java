@@ -8,6 +8,8 @@ import java.util.List;
  * @author Galatyuk Ilya
  */
 interface Playlist {
+    Integer FILTERED = 1;
+    Integer NORMAL = 2;
 
     Flavor getFlavor();
 

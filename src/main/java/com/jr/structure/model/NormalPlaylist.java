@@ -15,5 +15,8 @@ public class NormalPlaylist implements Playlist {
     private String name;
     private Flavor flavor;
     private List<Long> songIds;
-    private static final String TYPE = "Normal";
+
+    public static Integer getType() {
+        return 2;
+    }
 }

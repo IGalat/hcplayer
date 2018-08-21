@@ -8,5 +8,6 @@ public enum ComparisonOption {
     Less,
     MoreOrEquals,
     LessOrEquals,
-    Equals
+    Equals,
+    NotEquals
 }

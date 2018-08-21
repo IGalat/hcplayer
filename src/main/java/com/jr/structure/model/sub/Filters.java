@@ -32,10 +32,18 @@ public class Filters {
     private static ComparisonOption checkOrFixComparisonRange(Crit crit, ComparisonOption option, Integer value) {
         int min = crit.getMin();
         int max = crit.getMax();
-        String errorText = "Cannot add/change filter '" +
-                crit.getName() + " " + option + " than " + value + "'. ";
 
-        if (value < min || value > max)
+        String thanOptional = (option == ComparisonOption.More || option == ComparisonOption.Less) ? " than" : "";
+        String errorText = "Cannot add/change filter '" +
+                crit.getName() + " " + option + thanOptional + " " + value + "'. ";
+
+        if (value == null) {
+            if (option == ComparisonOption.MoreOrEquals
+                    || option == ComparisonOption.LessOrEquals
+                    || option == ComparisonOption.Equals)
+                option = ComparisonOption.Equals;
+            else option = ComparisonOption.NotEquals;
+        } else if (value < min || value > max)
             throw new InputMismatchException(errorText + "Value not in range (" + min + " to " + max + ")");
         else if ((value == min && option == ComparisonOption.Less)
                 || (value == max && option == ComparisonOption.More))

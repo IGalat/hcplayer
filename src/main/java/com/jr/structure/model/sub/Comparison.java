@@ -13,5 +13,5 @@ import lombok.NonNull;
 public class Comparison {
     @NonNull
     private final ComparisonOption comparisonOption;
-    private final int value;
+    private final Integer value;
 }

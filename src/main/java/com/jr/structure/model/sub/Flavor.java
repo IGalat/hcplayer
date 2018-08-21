@@ -13,6 +13,7 @@ import java.util.Map;
 @Data
 public class Flavor {
     private static final int DEFAULT_WEIGHT = 1;
+    //todo сделать класс Flavor(?), в котором будет crit, weight, isReverse(, parentWeight? нет, надо по-другому)
     private Map<Crit, ValueWeightMap> flavorMap; //todo to remake or not to remake for simpler dependency, 2x power=2x weight?
 
     //this->logic
