@@ -1,6 +1,8 @@
 package com.jr.util;
 
 import com.jr.logic.CritHardcode;
+import com.jr.structure.dao.CritRepositoryFile;
+import com.jr.structure.dao.SongRepositoryFile;
 
 import java.util.regex.Pattern;
 
@@ -25,5 +27,14 @@ public class Util {
         CritHardcode.saveStandardCrits();
 
         isInitialized = true;
+    }
+
+    public static void shutdown() {
+        saveData();
+    }
+
+    public static void saveData() {
+        CritRepositoryFile.rewriteFile();
+        SongRepositoryFile.rewriteFile();
     }
 }

@@ -69,9 +69,8 @@ public class CritHardcode {
         return crits;
     }
 
-    public static boolean isStandardCrit(String name) {
+    public static boolean isProtectedCrit(String name) {
         if (!standardCritsSaved) return false;
-        if (PROTECTED_CRITS_NAMES.contains(name)) return true;
-        return false;
+        return PROTECTED_CRITS_NAMES.contains(name);
     }
 }

@@ -1,8 +1,8 @@
 package com.jr.structure.dao;
 
+import com.jr.service.CritService;
 import com.jr.structure.model.Crit;
 import com.jr.structure.model.Song;
-import com.jr.service.CritService;
 import com.jr.util.FileOps;
 
 import java.nio.file.FileSystems;
@@ -80,7 +80,7 @@ public class SongRepositoryFile implements SongRepository {
         rewriteFile();
     }
 
-    private synchronized void rewriteFile() {
+    public static synchronized void rewriteFile() {
         List<Map<String, String>> listToSave = new ArrayList<>();
         for (Song song : songs) {
             Map<String, String> mapOfSong = new HashMap<>();

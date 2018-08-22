@@ -32,7 +32,7 @@ public class CritService {
     }
 
     public static void remove(Crit crit) {
-        if (CritHardcode.isStandardCrit(crit.getName())) return;
+        if (CritHardcode.isProtectedCrit(crit.getName())) return;
 
         List<Crit> allCrits = getAll();
         for (Crit iterCrit : allCrits)
@@ -57,8 +57,8 @@ public class CritService {
         return save(name, min, max, whitelist, null);
     }
 
-    public static Crit save(String name, int min, int max, boolean whitelist, List<Crit> children) {
-        if (CritHardcode.isStandardCrit(name)) return getByName(name);
+    public static Crit save(String name, int min, int max, boolean whitelist, List<Crit> children) { //todo make it impossible to change min/max without song/filter/flavor overhaul; also, force change of all children's stat
+        if (CritHardcode.isProtectedCrit(name)) return getByName(name);
 
         min = CritHardcode.critValueToBreakpoint(min);
         max = CritHardcode.critValueToBreakpoint(max);
@@ -80,17 +80,31 @@ public class CritService {
         return critRepo.save(crit);
     }
 
+    public static Crit rename(Crit crit, String newName) {
+        newName = newName.toLowerCase();
+        if (Util.isNameBad(newName))
+            throw new InputMismatchException("Cannot rename crit '" + crit.getName() + "' to '" + newName +
+                    "'. Correct pattern: " + Util.GOOD_NAME_PATTERN);
+
+        return critRepo.save(new Crit(crit.getId(), newName, crit.getMin(), crit.getMax(), crit.isWhitelist(), crit.getChildren()));
+    }
+
     public static Crit addChild(Crit child, Crit parent) {
         for (Crit existingChild : parent.getChildren())
             if (existingChild.equals(child))
                 return parent;
+        String errorText = "Can't make '" + child.getName() + "' child of '" + parent.getName() + "'. ";
         if (CritHardcode.PROTECTED_CRITS_NAMES.contains(parent.getName())
                 || CritHardcode.PROTECTED_CRITS_NAMES.contains(parent.getName()))
-            throw new InputMismatchException("Can't make '" + child.getName() + "' child of '" + parent.getName() +
-                    ": protected crit name detected.");
+            throw new InputMismatchException(errorText + "Protected crit name detected.");
         if (getAllHierarchyDown(child).contains(parent))
-            throw new InputMismatchException("Can't make '" + child.getName() + "' child of '" + parent.getName() +
-                    "': it's already a (possibly distant) child of " + child.getName());
+            throw new InputMismatchException(errorText + "It's already a (possibly distant) child of " + child.getName());
+        if (child.getMin() != parent.getMin())
+            throw new InputMismatchException(errorText + "Child's min = " + child.getMin() + ", parent's = " + parent.getMin());
+        if (child.getMax() != parent.getMax())
+            throw new InputMismatchException(errorText + "Child's max = " + child.getMax() + ", parent's = " + parent.getMax());
+        if (child.isWhitelist() != parent.isWhitelist())
+            throw new InputMismatchException(errorText + "Child's whitelist = " + child.isWhitelist() + ", parent's = " + parent.isWhitelist());
 
         parent.getChildren().add(child);
         return save(parent.getName(), parent.getMin(), parent.getMax(), parent.isWhitelist(), parent.getChildren());
@@ -113,13 +127,13 @@ public class CritService {
 
         while (generation.size() > 0) {
             hierarchy.addAll(generation);
-            generation = getGeneration(generation);
+            generation = getNextGenerationOf(generation);
         }
 
         return hierarchy;
     }
 
-    private static List<Crit> getGeneration(List<Crit> crits) {
+    private static List<Crit> getNextGenerationOf(List<Crit> crits) {
         List<Crit> generation = new ArrayList<>();
         for (Crit crit : crits) {
             generation.addAll(crit.getChildren());

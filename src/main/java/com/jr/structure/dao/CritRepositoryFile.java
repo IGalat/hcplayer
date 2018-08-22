@@ -18,7 +18,7 @@ public class CritRepositoryFile implements CritRepository {
     private static final String MAX_NAME = "max";
     private static final String WHITELIST_NAME = "whitelist";
     private static final String CHILDREN_NAME = "children";
-    private List<Crit> crits;
+    private static List<Crit> crits;
 
     {
         List<Map<String, String>> allCritsMap = FileOps.getAll(FileOps.getCritsName());
@@ -78,7 +78,7 @@ public class CritRepositoryFile implements CritRepository {
         rewriteFile();
     }
 
-    private synchronized void rewriteFile() {
+    public static synchronized void rewriteFile() {
         List<Map<String, String>> listToSave = new ArrayList<>();
         for (Crit crit : crits) {
             Map<String, String> mapOfCrit = new HashMap<>();

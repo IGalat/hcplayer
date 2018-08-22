@@ -1,6 +1,9 @@
-min=1;max=10;name=rating;id=674;whitelist=false;
-min=-1000;max=1000;name=novelty;id=675;whitelist=false;
-min=1;max=10000;name=weight;id=676;whitelist=false;
-min=1;max=10;name=testcrit1;id=777;whitelist=true;
-min=1;max=10;children=testcrit1;name=testcrit2;id=778;whitelist=true;
-min=1;max=10;children=testcrit2;name=testcrit3;id=779;whitelist=true;
+min=1;max=10;name=rating;id=780;whitelist=false;
+min=-1000;max=1000;name=novelty;id=781;whitelist=false;
+min=1;max=10000;name=weight;id=782;whitelist=false;
+min=1;max=10;name=testcrit1;id=795;whitelist=true;
+min=1;max=10;name=testcrit5;id=799;whitelist=true;
+min=1;max=10;children=testcrit1;name=testcrit2;id=796;whitelist=true;
+min=1;max=10;children=testcrit2;name=testcrit3;id=797;whitelist=true;
+min=1;max=10;children=testcrit1,testcrit3;name=testcrit4;id=798;whitelist=true;
+min=1;max=10;children=testcrit2,testcrit3,testcrit4;name=testcrit007;id=800;whitelist=true;

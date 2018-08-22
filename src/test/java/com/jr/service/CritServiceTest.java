@@ -85,7 +85,7 @@ public class CritServiceTest {
         List<Crit> testcritList = new ArrayList<>();
         testcritList.add(getByName("testcrit1"));
         testcritList.add(getByName("testcrit2"));
-        Crit crit007 = save("testCrit007", 0, 20, DEFAULT_IS_WHITELIST, testcritList);
+        Crit crit007 = save("testCrit007", 1, 10, DEFAULT_IS_WHITELIST, testcritList);
         addChild(getByName("testcrit2"), crit007); //2 times on purpose - it shouldn't duplicate
         addChild(getByName("testcrit3"), crit007);
         addChild(getByName("testcrit4"), crit007);

@@ -1,18 +1,26 @@
 package com.jr.structure.model;
 
-import com.jr.structure.model.sub.Flavor;
-
 import java.util.List;
 
 /**
  * @author Galatyuk Ilya
  */
 interface Playlist {
-    Integer FILTERED = 1;
-    Integer NORMAL = 2;
+
+    long getId();
+
+    String getName();
 
     Flavor getFlavor();
 
-    List<Long> getSongIds();
+    List<Song> getSongs();
+
+    default boolean isNormal() {
+        return false;
+    }
+
+    default boolean isFiltered() {
+        return false;
+    }
 
 }

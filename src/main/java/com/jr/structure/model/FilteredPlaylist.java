@@ -1,7 +1,5 @@
 package com.jr.structure.model;
 
-import com.jr.structure.model.sub.Filters;
-import com.jr.structure.model.sub.Flavor;
 import lombok.Data;
 
 import java.util.List;
@@ -17,12 +15,14 @@ public class FilteredPlaylist implements Playlist {
     private Flavor flavor;
     private Filters filters;
 
-    public static Integer getType() {
-        return 1;
+    @Override
+    public List<Song> getSongs() {
+        return filters.getFilteredSongs();
     }
 
     @Override
-    public List<Long> getSongIds() {
-        return filters.getFilteredSongIds();
+    public boolean isFiltered(){
+        return true;
     }
+
 }
