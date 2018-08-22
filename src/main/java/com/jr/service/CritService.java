@@ -7,9 +7,7 @@ import com.jr.structure.model.Crit;
 import com.jr.util.Settings;
 import com.jr.util.Util;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Galatyuk Ilya
@@ -35,6 +33,11 @@ public class CritService {
 
     public static void remove(Crit crit) {
         if (CritHardcode.isStandardCrit(crit.getName())) return;
+
+        List<Crit> allCrits = getAll();
+        for (Crit iterCrit : allCrits)
+            removeChild(crit, iterCrit);
+
         critRepo.delete(crit);
     }
 
@@ -70,25 +73,57 @@ public class CritService {
         Crit existingCrit = getByName(name);
         Long id = existingCrit == null ? Settings.getNextId() : existingCrit.getId();
 
+        if (children == null)
+            children = new ArrayList<>();
+
         Crit crit = new Crit(id, name, min, max, whitelist, children);
         return critRepo.save(crit);
     }
 
-    public static Crit addChild(Crit parent, Crit child) {
-        if (parent.getChildren() == null)
-            parent.setChildren(new ArrayList<>());
+    public static Crit addChild(Crit child, Crit parent) {
         for (Crit existingChild : parent.getChildren())
             if (existingChild.equals(child))
                 return parent;
+        if (CritHardcode.PROTECTED_CRITS_NAMES.contains(parent.getName())
+                || CritHardcode.PROTECTED_CRITS_NAMES.contains(parent.getName()))
+            throw new InputMismatchException("Can't make '" + child.getName() + "' child of '" + parent.getName() +
+                    ": protected crit name detected.");
+        if (getAllHierarchyDown(child).contains(parent))
+            throw new InputMismatchException("Can't make '" + child.getName() + "' child of '" + parent.getName() +
+                    "': it's already a (possibly distant) child of " + child.getName());
 
         parent.getChildren().add(child);
         return save(parent.getName(), parent.getMin(), parent.getMax(), parent.isWhitelist(), parent.getChildren());
     }
 
-    public static Crit removeChild(Crit parent, Crit child) {
-        if (parent.getChildren() == null || parent.getChildren().size() == 0)
+    public static Crit removeChild(Crit child, Crit parent) {
+        if (parent.getChildren().size() == 0)
             return parent;
+        if (!parent.getChildren().contains(child))
+            return parent;
+
         parent.getChildren().remove(child);
         return save(parent.getName(), parent.getMin(), parent.getMax(), parent.isWhitelist(), parent.getChildren());
+    }
+
+    public static Set<Crit> getAllHierarchyDown(Crit crit) {
+        Set<Crit> hierarchy = new HashSet<>();
+        List<Crit> generation = new ArrayList<>();
+        generation.add(crit);
+
+        while (generation.size() > 0) {
+            hierarchy.addAll(generation);
+            generation = getGeneration(generation);
+        }
+
+        return hierarchy;
+    }
+
+    private static List<Crit> getGeneration(List<Crit> crits) {
+        List<Crit> generation = new ArrayList<>();
+        for (Crit crit : crits) {
+            generation.addAll(crit.getChildren());
+        }
+        return generation;
     }
 }

@@ -32,7 +32,7 @@ public class CritRepositoryFile implements CritRepository {
             boolean whitelist = Boolean.parseBoolean(critMap.get(WHITELIST_NAME));
             String children = critMap.get(CHILDREN_NAME);
 
-            crits.add(new Crit(id, critMap.get(NAME_NAME), min, max, whitelist, null));
+            crits.add(new Crit(id, critMap.get(NAME_NAME), min, max, whitelist, new ArrayList<>()));
             if (children != null) allChildren.put(id, children);
         }
 

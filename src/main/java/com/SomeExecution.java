@@ -1,11 +1,14 @@
 package com;
 
-import com.jr.structure.model.Song;
 import com.jr.service.SongService;
+import com.jr.structure.model.Song;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Galatyuk Ilya

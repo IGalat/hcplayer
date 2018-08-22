@@ -1,7 +1,6 @@
 min=1;max=10;name=rating;id=674;whitelist=false;
 min=-1000;max=1000;name=novelty;id=675;whitelist=false;
 min=1;max=10000;name=weight;id=676;whitelist=false;
-min=1;max=10;name=testcrit 1;id=699;whitelist=true;
-min=1;max=10;name=testcrit 2;id=700;whitelist=false;
-min=0;max=1;name=testcrit 3;id=701;whitelist=true;
-min=0;max=20;children=testcrit 2,testcrit 3;name=testcrit 4;id=702;whitelist=true;
+min=1;max=10;name=testcrit1;id=777;whitelist=true;
+min=1;max=10;children=testcrit1;name=testcrit2;id=778;whitelist=true;
+min=1;max=10;children=testcrit2;name=testcrit3;id=779;whitelist=true;
