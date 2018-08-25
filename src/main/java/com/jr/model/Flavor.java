@@ -14,17 +14,17 @@ import java.util.Map;
 
 @EqualsAndHashCode
 public class Flavor {
-
     @Getter
     private Map<Crit, Integer> flavorMap = new HashMap<>(); // from 1 to influence; if influence is negative - inverse
     @Getter
-    private static final Flavor DEFAULT_FLAVOR = new Flavor(); //todo another variable - defaultFlavor; user can change it; saving it separately(in settings?)
+    private static final Flavor DEFAULT_DEFAULT_FLAVOR = new Flavor();
+    private static final Flavor defaultFlavor = (Flavor) DEFAULT_DEFAULT_FLAVOR.clone(); //todo make so user can change it; save it in settings
     public static final double DETAULT_UNDEFINED_CRIT_NORMALIZED_VALUE_PERCENT = 0.6;
 
     static {
-        DEFAULT_FLAVOR.flavorMap.put(CritHardcode.weightCrit, 10000);
-        DEFAULT_FLAVOR.flavorMap.put(CritHardcode.ratingCrit, 10);
-        DEFAULT_FLAVOR.flavorMap.put(CritHardcode.noveltyCrit, 10);
+        DEFAULT_DEFAULT_FLAVOR.flavorMap.put(CritHardcode.weightCrit, 10000);
+        DEFAULT_DEFAULT_FLAVOR.flavorMap.put(CritHardcode.ratingCrit, 10);
+        DEFAULT_DEFAULT_FLAVOR.flavorMap.put(CritHardcode.noveltyCrit, 10);
     }
 
     public int calcFlavorWeight(List<Song> songs) {
@@ -45,6 +45,13 @@ public class Flavor {
         int range = entry.getKey().getMax() - entry.getKey().getMin() + 1;
         int infuence = entry.getValue();
         return Math.log(infuence) / Math.log(range); // =log of influence with base of range
+    }
+
+    @Override
+    protected Object clone() {
+        Flavor flavor = new Flavor();
+        flavor.getFlavorMap().putAll(flavorMap);
+        return flavor;
     }
 
     @Override

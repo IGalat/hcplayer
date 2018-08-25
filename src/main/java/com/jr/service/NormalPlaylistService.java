@@ -45,20 +45,31 @@ public class NormalPlaylistService {
     }
 
     public static NormalPlaylist save(String name, Flavor flavor, Song... songs) {
+        boolean isDefaultFlavorUsed = false;
+        if (flavor == null) {
+            isDefaultFlavorUsed = true;
+        }
+        return save(name, flavor, isDefaultFlavorUsed, songs);
+    }
+
+    public static NormalPlaylist save(String name, Flavor flavor, boolean isDefaultFlavorUsed, Song... songs) {
         NormalPlaylist existingPlaylist = playlistRepo.getByName(name);
         Long id = existingPlaylist == null ? Settings.getNextId() : existingPlaylist.getId();
 
         if (Util.isNameBad(name))
             throw new InputMismatchException("Bad name for playlist : '" + name + "'. Correct pattern: " + Util.GOOD_NAME_PATTERN);
 
-        if (flavor == null)
+        if (flavor == null) {
             flavor = new Flavor();
+        }
 
         List<Song> songList = new ArrayList<>();
         if (songs != null)
             songList = new ArrayList<>(Arrays.asList(songs));
+        if (songs == null && existingPlaylist != null && existingPlaylist.getSongs().size() > 0)
+            songList = existingPlaylist.getSongs();
 
-        NormalPlaylist playlist = new NormalPlaylist(id, name, flavor, songList);
+        NormalPlaylist playlist = new NormalPlaylist(id, name, flavor, isDefaultFlavorUsed, songList);
         return playlistRepo.save(playlist);
     }
 
@@ -67,7 +78,12 @@ public class NormalPlaylistService {
             throw new InputMismatchException("Cannot rename playlist '" + playlist.getName() + "' to '" + newName +
                     "'. Correct pattern: " + Util.GOOD_NAME_PATTERN);
 
-        return playlistRepo.save(new NormalPlaylist(playlist.getId(), newName, playlist.getFlavor(), playlist.getSongs()));
+        return playlistRepo.save(new NormalPlaylist(
+                playlist.getId()
+                , newName
+                , playlist.getFlavor()
+                , playlist.isDefaultFlavorUsed()
+                , playlist.getSongs()));
     }
 
 }

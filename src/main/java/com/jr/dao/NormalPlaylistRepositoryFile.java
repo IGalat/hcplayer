@@ -1,12 +1,11 @@
 package com.jr.dao;
 
-import com.jr.service.CritService;
-import com.jr.service.SongService;
-import com.jr.model.Crit;
 import com.jr.model.Flavor;
 import com.jr.model.NormalPlaylist;
 import com.jr.model.Song;
+import com.jr.service.SongService;
 import com.jr.util.FileOps;
+import com.jr.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +19,7 @@ public class NormalPlaylistRepositoryFile implements NormalPlaylistRepository {
     private static final String ID_NAME = "id";
     private static final String NAME_NAME = "name";
     private static final String FLAVOR_NAME = "flavor";
+    private static final String IS_DEFAULT_FLAVOR_USED_NAME = "is default flavor";
     private static final String SONG_LIST_NAME = "songs";
     private static final List<NormalPlaylist> playlists;
 
@@ -31,26 +31,12 @@ public class NormalPlaylistRepositoryFile implements NormalPlaylistRepository {
             long id = Long.parseLong(playlistMap.get(ID_NAME));
             String name = playlistMap.get(NAME_NAME);
             String flavorMap = playlistMap.get(FLAVOR_NAME);
-            Flavor flavor = parseFlavorMap(flavorMap);
+            boolean isDefaultFlavorUsed = Boolean.parseBoolean(playlistMap.get(IS_DEFAULT_FLAVOR_USED_NAME));
+            Flavor flavor = Util.parseFlavorMap(flavorMap);
             List<Song> songs = parseSongsFromIds(playlistMap.get(SONG_LIST_NAME));
 
-            playlists.add(new NormalPlaylist(id, name, flavor, songs));
+            playlists.add(new NormalPlaylist(id, name, flavor, isDefaultFlavorUsed, songs));
         }
-    }
-
-    public static Flavor parseFlavorMap(String flavorMap) {
-        Flavor result = new Flavor();
-        if (flavorMap == null) return result;
-
-        String[] flavors = flavorMap.split("[,]");
-        for (String flavorString : flavors) {
-            String[] elements = flavorString.split("[']");
-            Crit crit = CritService.getByName(elements[0]);
-            Integer influence = Integer.parseInt(elements[1]);
-
-            result.getFlavorMap().put(crit, influence);
-        }
-        return result;
     }
 
     private static List<Song> parseSongsFromIds(String songIds) {
@@ -104,6 +90,7 @@ public class NormalPlaylistRepositoryFile implements NormalPlaylistRepository {
             mapOfPlaylist.put(NAME_NAME, playlist.getName());
             if (playlist.getFlavor().getFlavorMap() != null)
                 mapOfPlaylist.put(FLAVOR_NAME, playlist.getFlavor().toString());
+            mapOfPlaylist.put(IS_DEFAULT_FLAVOR_USED_NAME, Boolean.toString(playlist.isDefaultFlavorUsed()));
 
             if (playlist.getSongs().size() > 0) {
                 StringBuilder songIds = new StringBuilder();

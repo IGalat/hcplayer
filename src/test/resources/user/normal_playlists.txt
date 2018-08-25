@@ -1,2 +1,2 @@
-flavor=;songs=1658,1662,1666,1669;name=Epic;id=1671;
-flavor=;songs=1659,1660,1661,1662,1663,1665,1668,1669;name=Metal;id=1672;
+flavor=;is default flavor=true;songs=1691,1695,1699,1702;name=Epic;id=1704;
+flavor=;is default flavor=true;songs=1692,1693,1694,1695,1696,1698,1701,1702;name=Metal;id=1705;

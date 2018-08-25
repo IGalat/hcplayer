@@ -15,6 +15,7 @@ public class NormalPlaylist implements Playlist {
     private long id;
     private String name;
     private Flavor flavor;
+    private boolean defaultFlavorUsed;
     private List<Song> songs;
 
     @Override

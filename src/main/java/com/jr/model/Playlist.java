@@ -13,6 +13,8 @@ interface Playlist {
 
     Flavor getFlavor();
 
+    boolean isDefaultFlavorUsed();
+
     List<Song> getSongs();
 
     default boolean isNormal() {

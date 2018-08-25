@@ -3,6 +3,9 @@ package com.jr.util;
 import com.jr.logic.CritHardcode;
 import com.jr.dao.CritRepositoryFile;
 import com.jr.dao.SongRepositoryFile;
+import com.jr.model.Crit;
+import com.jr.model.Flavor;
+import com.jr.service.CritService;
 
 import java.util.regex.Pattern;
 
@@ -36,5 +39,20 @@ public class Util {
     public static void saveData() {
         CritRepositoryFile.rewriteFile();
         SongRepositoryFile.rewriteFile();
+    }
+
+    public static Flavor parseFlavorMap(String flavorMap) {
+        Flavor result = new Flavor();
+        if (flavorMap == null) return result;
+
+        String[] flavors = flavorMap.split("[,]");
+        for (String flavorString : flavors) {
+            String[] elements = flavorString.split("[']");
+            Crit crit = CritService.getByName(elements[0]);
+            Integer influence = Integer.parseInt(elements[1]);
+
+            result.getFlavorMap().put(crit, influence);
+        }
+        return result;
     }
 }

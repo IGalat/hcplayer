@@ -13,6 +13,7 @@ public class FilteredPlaylist implements Playlist {
     private long id;
     private String name;
     private Flavor flavor;
+    private boolean defaultFlavorUsed;
     private Filters filters;
 
     @Override
