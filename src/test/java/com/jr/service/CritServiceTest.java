@@ -1,10 +1,13 @@
 package com.jr.service;
 
 import com.jr.logic.CritHardcode;
-import com.jr.structure.model.Crit;
+import com.jr.model.Crit;
 import com.jr.util.FileOps;
 import com.jr.util.FileOpsTest;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +29,6 @@ public class CritServiceTest {
         FileOps.setConfigFolder(FileOps.DEFAULT_CONFIG_FOLDER);
     }
 
-    @Ignore
-    @Test
     public void deleteAll() {
         List<Crit> crits = getAll();
         for (int i = crits.size(); i > 0; i--) {

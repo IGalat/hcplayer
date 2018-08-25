@@ -1,11 +1,9 @@
-package com.jr.structure.model;
+package com.jr.model;
 
 import com.jr.service.SongService;
-import com.jr.structure.model.Crit;
-import com.jr.structure.model.Song;
-import com.jr.structure.model.sub.Comparison;
-import com.jr.structure.model.sub.ComparisonOption;
-import com.jr.structure.model.sub.Filter;
+import com.jr.model.sub.Comparison;
+import com.jr.model.sub.ComparisonOption;
+import com.jr.model.sub.Filter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 

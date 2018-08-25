@@ -1,6 +1,6 @@
-package com.jr.structure.dao;
+package com.jr.dao;
 
-import com.jr.structure.model.FilteredPlaylist;
+import com.jr.model.FilteredPlaylist;
 
 import java.util.ArrayList;
 import java.util.List;

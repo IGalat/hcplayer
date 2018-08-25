@@ -1,6 +1,6 @@
-package com.jr.structure.model.sub;
+package com.jr.model.sub;
 
-import com.jr.structure.model.Crit;
+import com.jr.model.Crit;
 import lombok.Data;
 
 import java.util.HashMap;

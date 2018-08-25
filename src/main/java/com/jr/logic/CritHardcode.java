@@ -1,7 +1,7 @@
 package com.jr.logic;
 
 import com.jr.service.CritService;
-import com.jr.structure.model.Crit;
+import com.jr.model.Crit;
 
 import java.util.ArrayList;
 import java.util.HashMap;

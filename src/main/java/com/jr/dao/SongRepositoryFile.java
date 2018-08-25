@@ -1,8 +1,8 @@
-package com.jr.structure.dao;
+package com.jr.dao;
 
 import com.jr.service.CritService;
-import com.jr.structure.model.Crit;
-import com.jr.structure.model.Song;
+import com.jr.model.Crit;
+import com.jr.model.Song;
 import com.jr.util.FileOps;
 
 import java.nio.file.FileSystems;

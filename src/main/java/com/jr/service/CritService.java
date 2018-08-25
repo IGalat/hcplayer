@@ -1,9 +1,9 @@
 package com.jr.service;
 
 import com.jr.logic.CritHardcode;
-import com.jr.structure.dao.CritRepository;
-import com.jr.structure.dao.CritRepositoryFile;
-import com.jr.structure.model.Crit;
+import com.jr.dao.CritRepository;
+import com.jr.dao.CritRepositoryFile;
+import com.jr.model.Crit;
 import com.jr.util.Settings;
 import com.jr.util.Util;
 

@@ -1,6 +1,6 @@
-package com.jr.structure.dao;
+package com.jr.dao;
 
-import com.jr.structure.model.Song;
+import com.jr.model.Song;
 
 import java.util.ArrayList;
 import java.util.List;

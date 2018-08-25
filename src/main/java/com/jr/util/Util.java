@@ -1,8 +1,8 @@
 package com.jr.util;
 
 import com.jr.logic.CritHardcode;
-import com.jr.structure.dao.CritRepositoryFile;
-import com.jr.structure.dao.SongRepositoryFile;
+import com.jr.dao.CritRepositoryFile;
+import com.jr.dao.SongRepositoryFile;
 
 import java.util.regex.Pattern;
 

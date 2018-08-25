@@ -1,6 +1,6 @@
-package com.jr.structure.dao;
+package com.jr.dao;
 
-import com.jr.structure.model.Crit;
+import com.jr.model.Crit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public interface CritRepository extends CommonRepository<Crit, Long> {
     default Crit getByName(String name) {
         List<Crit> crits = findAll();
         for (Crit crit : crits) {
-            if (crit.getName().equals(name)) {
+            if (crit.getName().equals(name.toLowerCase())) {
                 return crit;
             }
         }

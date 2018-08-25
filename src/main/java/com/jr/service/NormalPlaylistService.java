@@ -1,10 +1,10 @@
 package com.jr.service;
 
-import com.jr.structure.dao.NormalPlaylistRepository;
-import com.jr.structure.dao.NormalPlaylistRepositoryFile;
-import com.jr.structure.model.Flavor;
-import com.jr.structure.model.NormalPlaylist;
-import com.jr.structure.model.Song;
+import com.jr.dao.NormalPlaylistRepository;
+import com.jr.dao.NormalPlaylistRepositoryFile;
+import com.jr.model.Flavor;
+import com.jr.model.NormalPlaylist;
+import com.jr.model.Song;
 import com.jr.util.Settings;
 import com.jr.util.Util;
 
@@ -41,7 +41,7 @@ public class NormalPlaylistService {
     }
 
     public static NormalPlaylist save(String name) {
-        return save(name, null, null);
+        return save(name, null, (Song[]) null);
     }
 
     public static NormalPlaylist save(String name, Flavor flavor, Song... songs) {

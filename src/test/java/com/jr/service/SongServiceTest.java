@@ -1,8 +1,8 @@
 package com.jr.service;
 
 import com.jr.logic.CritHardcode;
-import com.jr.structure.model.Crit;
-import com.jr.structure.model.Song;
+import com.jr.model.Crit;
+import com.jr.model.Song;
 import com.jr.util.FileOps;
 import com.jr.util.FileOpsTest;
 import javafx.util.Pair;
@@ -47,7 +47,9 @@ public class SongServiceTest {
         Map<Crit, Integer> crits = new HashMap<>();
 
         crits.put(CritHardcode.ratingCrit, 10);
-        expectedSongList.add(SongService.save(crits, "aaa"));
+        SongService.save(crits, "aaa");
+
+        expectedSongList.add(SongService.changePath(SongService.getByPath("aaa"), "asdasd"));
 
         expectedSongList.add(SongService.save("bbb", new Pair<>(CritHardcode.ratingCrit, 2)));
 

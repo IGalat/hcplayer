@@ -1,6 +1,6 @@
 package front;
 
-import com.jr.structure.model.Crit;
+import com.jr.model.Crit;
 import com.jr.service.CritService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;

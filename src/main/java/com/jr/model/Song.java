@@ -1,4 +1,4 @@
-package com.jr.structure.model;
+package com.jr.model;
 
 import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;

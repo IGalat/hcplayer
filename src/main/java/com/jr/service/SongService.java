@@ -1,10 +1,10 @@
 package com.jr.service;
 
 import com.jr.logic.CritHardcode;
-import com.jr.structure.dao.SongRepository;
-import com.jr.structure.dao.SongRepositoryFile;
-import com.jr.structure.model.Crit;
-import com.jr.structure.model.Song;
+import com.jr.dao.SongRepository;
+import com.jr.dao.SongRepositoryFile;
+import com.jr.model.Crit;
+import com.jr.model.Song;
 import com.jr.util.Settings;
 import javafx.util.Pair;
 

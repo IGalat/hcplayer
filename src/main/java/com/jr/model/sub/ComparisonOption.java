@@ -1,4 +1,4 @@
-package com.jr.structure.model.sub;
+package com.jr.model.sub;
 
 /**
  * @author Galatyuk Ilya

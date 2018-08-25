@@ -1,4 +1,4 @@
-package com.jr.structure.model;
+package com.jr.model;
 
 import com.jr.logic.CritHardcode;
 import lombok.EqualsAndHashCode;

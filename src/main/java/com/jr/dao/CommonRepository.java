@@ -1,4 +1,4 @@
-package com.jr.structure.dao;
+package com.jr.dao;
 
 import java.io.Serializable;
 import java.util.ArrayList;

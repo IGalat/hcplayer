@@ -1,9 +1,9 @@
 package com.jr.service;
 
 import com.jr.TestHelper;
-import com.jr.structure.model.Crit;
-import com.jr.structure.model.NormalPlaylist;
-import com.jr.structure.model.Song;
+import com.jr.model.Crit;
+import com.jr.model.NormalPlaylist;
+import com.jr.model.Song;
 import com.jr.util.FileOps;
 import com.jr.util.FileOpsTest;
 import org.junit.AfterClass;
@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -65,6 +66,8 @@ public class NormalPlaylistServiceTest { //todo
                 , testHelper.powerwolf_DieDieCrucified);
 
         NormalPlaylistService.rename(metal, "Metal");
+
+        NormalPlaylistService.getByIds(Arrays.asList(epic.getId(), metal.getId()));
 
         NormalPlaylistService.remove(empty);
 

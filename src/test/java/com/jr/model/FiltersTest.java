@@ -1,10 +1,9 @@
-package com.jr.structure.model;
+package com.jr.model;
 
 import com.jr.logic.CritHardcode;
-import com.jr.structure.model.Filters;
-import com.jr.structure.model.sub.Comparison;
-import com.jr.structure.model.sub.ComparisonOption;
-import com.jr.structure.model.sub.Filter;
+import com.jr.model.sub.Comparison;
+import com.jr.model.sub.ComparisonOption;
+import com.jr.model.sub.Filter;
 import org.junit.Assert;
 import org.junit.Test;
 
