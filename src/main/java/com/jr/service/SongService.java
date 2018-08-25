@@ -6,9 +6,11 @@ import com.jr.structure.dao.SongRepositoryFile;
 import com.jr.structure.model.Crit;
 import com.jr.structure.model.Song;
 import com.jr.util.Settings;
+import javafx.util.Pair;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,10 @@ public class SongService {
 
     public static List<Song> getAll() {
         return songRepo.findAll();
+    }
+
+    public static List<Song> getByIds(List<Long> ids) {
+        return songRepo.findAll(ids);
     }
 
     public static Song getByPath(Path path) {
@@ -39,20 +45,41 @@ public class SongService {
         songRepo.delete(song);
     }
 
-    public static Song save(String path, Map<Crit, Integer> crits) {
+    public static Song save(String path, Pair<Crit, Integer>... crits) {
         return save(FileSystems.getDefault().getPath(path), crits);
     }
 
-    public static Song save(Path path, Map<Crit, Integer> crits) {
-        crits = CritHardcode.addStandardCritsToSongIfAbsent(crits);
-        checkCritRanges(path, crits);
+    public static Song save(Path path, Pair<Crit, Integer>... crits) {
+        Map<Crit, Integer> critsMap = new HashMap<>();
+        for (Pair<Crit, Integer> critPair : crits) {
+            critsMap.put(critPair.getKey(), critPair.getValue());
+        }
 
+        return save(critsMap, path);
+    }
+
+    public static Song save(Map<Crit, Integer> crits, String path) {
+        return save(crits, FileSystems.getDefault().getPath(path));
+    }
+
+    public static Song save(Map<Crit, Integer> crits, Path path) {
         Song existingSong = getByPath(path);
         Long id = existingSong == null ? Settings.getNextId() : existingSong.getId();
+
+        crits = CritHardcode.addStandardCritsToSongIfAbsent(crits);
+        checkCritRanges(path, crits);
 
         Song song = new Song(id, path, crits);
         songRepo.save(song);
         return song;
+    }
+
+    public static Song changePath(Song song, String newPath) {
+        return changePath(song, FileSystems.getDefault().getPath(newPath));
+    }
+
+    public static Song changePath(Song song, Path newPath) {
+        return songRepo.save(new Song(song.getId(), newPath, song.getCrits()));
     }
 
     private static void checkCritRanges(Path path, Map<Crit, Integer> crits) {

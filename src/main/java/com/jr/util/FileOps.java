@@ -14,7 +14,8 @@ public class FileOps {
     private static String configFolder = DEFAULT_CONFIG_FOLDER;
     private static String critsName = "crits.txt";
     private static String songsName = "songs.txt";
-    private static String playlistsName = "playlists.txt";
+    private static String normalPlaylistsName = "normal_playlists.txt";
+    private static String filteredPlaylistsName = "filtered_playlists.txt";
     private static String settingsName = "settings.txt";
 
     public static synchronized String getConfigFolder() {
@@ -33,8 +34,12 @@ public class FileOps {
         return configFolder + songsName;
     }
 
-    public static String getPlaylistsName() {
-        return configFolder + playlistsName;
+    public static String getNormalPlaylistsName() {
+        return configFolder + normalPlaylistsName;
+    }
+
+    public static String getFilteredPlaylistsName() {
+        return configFolder + filteredPlaylistsName;
     }
 
     public static String getSettingsName() {
@@ -117,7 +122,8 @@ public class FileOps {
                 String[] entries = line.split(";");
                 for (String entry : entries) {
                     String[] pair = entry.split("=");
-                    lineMap.put(pair[0], pair[1]);
+                    if (pair.length > 1)
+                        lineMap.put(pair[0], pair[1]);
                 }
                 filtered.add(lineMap);
             }

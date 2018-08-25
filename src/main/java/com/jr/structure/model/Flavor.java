@@ -46,4 +46,14 @@ public class Flavor {
         int infuence = entry.getValue();
         return Math.log(infuence) / Math.log(range); // =log of influence with base of range
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Map.Entry<Crit, Integer> entry : flavorMap.entrySet()) {
+            stringBuilder.append(entry.getKey().getName()).append("'").append(entry.getValue()).append(",");
+        }
+        if (flavorMap.size() > 0) stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        return stringBuilder.toString();
+    }
 }

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * @author Galatyuk Ilya
  */
 public class Util {
-    public static final String GOOD_NAME_PATTERN = "[a-zA-Z0-9 _]*";
+    public static final String GOOD_NAME_PATTERN = "[a-zA-Z0-9 _-]*";
     private static boolean isInitialized = false;
 
     public static int roll(int max) {

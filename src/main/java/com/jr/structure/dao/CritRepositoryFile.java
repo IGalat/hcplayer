@@ -18,31 +18,34 @@ public class CritRepositoryFile implements CritRepository {
     private static final String MAX_NAME = "max";
     private static final String WHITELIST_NAME = "whitelist";
     private static final String CHILDREN_NAME = "children";
-    private static List<Crit> crits;
+    private static final List<Crit> crits;
 
-    {
+    static {
         List<Map<String, String>> allCritsMap = FileOps.getAll(FileOps.getCritsName());
         crits = new ArrayList<>();
         Map<Long, String> allChildren = new HashMap<>();
 
         for (Map<String, String> critMap : allCritsMap) {
             long id = Long.parseLong(critMap.get(ID_NAME));
+            String name = critMap.get(NAME_NAME);
             int min = Integer.parseInt(critMap.get(MIN_NAME));
             int max = Integer.parseInt(critMap.get(MAX_NAME));
             boolean whitelist = Boolean.parseBoolean(critMap.get(WHITELIST_NAME));
-            String children = critMap.get(CHILDREN_NAME);
 
-            crits.add(new Crit(id, critMap.get(NAME_NAME), min, max, whitelist, new ArrayList<>()));
+            crits.add(new Crit(id, name, min, max, whitelist, new ArrayList<>()));
+
+            String children = critMap.get(CHILDREN_NAME);
             if (children != null) allChildren.put(id, children);
         }
 
+        CritRepositoryFile critRepositoryFile = new CritRepositoryFile();
         for (Map.Entry<Long, String> childrenOfCrit : allChildren.entrySet()) {
-            Crit crit = this.getOne(childrenOfCrit.getKey());
+            Crit crit = critRepositoryFile.getOne(childrenOfCrit.getKey());
             List<Crit> children = new ArrayList<>();
             String[] childrenNames = childrenOfCrit.getValue().split(",");
 
             for (String childName : childrenNames) {
-                children.add(getByName(childName));
+                children.add(critRepositoryFile.getByName(childName));
             }
             crit.setChildren(children);
         }
@@ -89,7 +92,7 @@ public class CritRepositoryFile implements CritRepository {
             mapOfCrit.put(MAX_NAME, Integer.toString(crit.getMax()));
             mapOfCrit.put(WHITELIST_NAME, Boolean.toString(crit.isWhitelist()));
 
-            if (crit.getChildren() != null && crit.getChildren().size() > 0) {
+            if (crit.getChildren().size() > 0) {
                 StringBuilder children = new StringBuilder();
                 for (Crit child : crit.getChildren()) {
                     children.append(child.getName()).append(",");

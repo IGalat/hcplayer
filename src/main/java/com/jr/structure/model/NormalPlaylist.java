@@ -1,5 +1,6 @@
 package com.jr.structure.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
  */
 
 @Data
+@AllArgsConstructor
 public class NormalPlaylist implements Playlist {
     private long id;
     private String name;

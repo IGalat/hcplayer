@@ -23,6 +23,10 @@ public class CritService {
         return critRepo.findAll();
     }
 
+    public static List<Crit> getByIds(List<Long> ids) {
+        return critRepo.findAll(ids);
+    }
+
     public static Crit getByName(String name) {
         return critRepo.getByName(name);
     }
@@ -31,12 +35,14 @@ public class CritService {
         return critRepo.getOne(id);
     }
 
-    public static void remove(Crit crit) {
+    public static synchronized void remove(Crit crit) {
         if (CritHardcode.isProtectedCrit(crit.getName())) return;
 
         List<Crit> allCrits = getAll();
-        for (Crit iterCrit : allCrits)
+        for (int i = allCrits.size(); i > 0; i--) {
+            Crit iterCrit = allCrits.get(i - 1);
             removeChild(crit, iterCrit);
+        }
 
         critRepo.delete(crit);
     }
@@ -57,21 +63,32 @@ public class CritService {
         return save(name, min, max, whitelist, null);
     }
 
-    public static Crit save(String name, int min, int max, boolean whitelist, List<Crit> children) { //todo make it impossible to change min/max without song/filter/flavor overhaul; also, force change of all children's stat
+    public static Crit save(String name, Crit... parents) {
+        Crit crit = save(name);
+        for (Crit parent : parents)
+            addChild(crit, parent);
+        return crit;
+    }
+
+    public static synchronized Crit save(String name, int min, int max, boolean whitelist, List<Crit> children) { //todo make it impossible to change min/max without song/filter/flavor overhaul; also, force change of all children's stat
         if (CritHardcode.isProtectedCrit(name)) return getByName(name);
 
-        min = CritHardcode.critValueToBreakpoint(min);
-        max = CritHardcode.critValueToBreakpoint(max);
-        if (min >= max)
-            throw new InputMismatchException("Cannot create crit: after cropping min=" + min + ", max=" + max +
-                    ". min must be less than max!");
+        Crit existingCrit = getByName(name);
+        Long id = existingCrit == null ? Settings.getNextId() : existingCrit.getId();
 
         name = name.toLowerCase();
         if (Util.isNameBad(name))
             throw new InputMismatchException("Bad name for crit : '" + name + "'. Correct pattern: " + Util.GOOD_NAME_PATTERN);
 
-        Crit existingCrit = getByName(name);
-        Long id = existingCrit == null ? Settings.getNextId() : existingCrit.getId();
+        min = CritHardcode.critValueToBreakpoint(min);
+        max = CritHardcode.critValueToBreakpoint(max);
+        if (min > max)
+            throw new InputMismatchException("Cannot create crit: after cropping min=" + min + ", max=" + max +
+                    ". min must be less than max!");
+        if (min == max) {
+            min = 1;
+            max = 1;
+        }
 
         if (children == null)
             children = new ArrayList<>();
@@ -80,7 +97,7 @@ public class CritService {
         return critRepo.save(crit);
     }
 
-    public static Crit rename(Crit crit, String newName) {
+    public static synchronized Crit rename(Crit crit, String newName) { //todo find everything that uses the crit and overwrite(files at least)?
         newName = newName.toLowerCase();
         if (Util.isNameBad(newName))
             throw new InputMismatchException("Cannot rename crit '" + crit.getName() + "' to '" + newName +

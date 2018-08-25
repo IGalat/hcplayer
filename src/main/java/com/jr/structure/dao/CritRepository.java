@@ -39,7 +39,7 @@ public interface CritRepository extends CommonRepository<Crit, Long> {
     default Crit getByName(String name) {
         List<Crit> crits = findAll();
         for (Crit crit : crits) {
-            if (crit.getName().equals(name.toLowerCase())) {
+            if (crit.getName().equals(name)) {
                 return crit;
             }
         }

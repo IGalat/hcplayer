@@ -1,8 +1,0 @@
-path=src\main\resources\songs\Avicii - wake me up.mp3;novelty=1000;rating=null;weight=100;id=427;
-path=src\main\resources\songs\BrunuhVille - Spirit of the Wild.mp3;novelty=1000;rating=null;weight=100;id=428;
-path=src\main\resources\songs\Misc - Leprechauns Dance.mp3;novelty=1000;rating=null;weight=100;id=429;
-path=src\main\resources\songs\Pakito - Living On Video.mp3;novelty=1000;rating=null;weight=100;id=430;
-path=src\main\resources\songs\Pyramid - Wolf.mp3;novelty=1000;rating=null;weight=100;id=431;
-path=src\main\resources\songs\Shad Manning - Crusade of Crannhyr.mp3;novelty=1000;rating=null;weight=100;id=432;
-path=C:\_my\Музыка\Scorpions\Scorpions und die Berliner Phi - Hurricane 2000.mp3;novelty=1000;rating=null;weight=100;id=433;
-path=C:\Users\admin\Desktop\Halo 2 - This Glittering Band.mp3;novelty=1000;rating=null;weight=100;id=434;

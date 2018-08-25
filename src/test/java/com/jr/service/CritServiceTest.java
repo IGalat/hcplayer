@@ -4,10 +4,7 @@ import com.jr.logic.CritHardcode;
 import com.jr.structure.model.Crit;
 import com.jr.util.FileOps;
 import com.jr.util.FileOpsTest;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +26,7 @@ public class CritServiceTest {
         FileOps.setConfigFolder(FileOps.DEFAULT_CONFIG_FOLDER);
     }
 
+    @Ignore
     @Test
     public void deleteAll() {
         List<Crit> crits = getAll();
@@ -36,7 +34,7 @@ public class CritServiceTest {
             remove(crits.get(i - 1));
         }
 
-        Assert.assertEquals(3, crits.size());
+        //Assert.assertEquals(3, crits.size());
     }
 
     @Test
@@ -44,23 +42,11 @@ public class CritServiceTest {
         deleteAll();
 
         List<Crit> expectedCritList = new ArrayList<>();
-        expectedCritList.add(CritHardcode.ratingCrit);
-        expectedCritList.add(CritHardcode.noveltyCrit);
-        expectedCritList.add(CritHardcode.weightCrit);
         expectedCritList.add(save("testCrit1"));
         expectedCritList.add(save("testCrit2", false));
         expectedCritList.add(save("testCrit3", 0, 1));
 
-        List<Crit> critList = getAll();
-
-        Assert.assertEquals(expectedCritList.size(), critList.size());
-        for (Crit expectedCrit : expectedCritList) {
-            Crit crit = getOne(expectedCrit.getId());
-            Assert.assertEquals(expectedCrit, crit);
-
-            crit = getByName(expectedCrit.getName());
-            Assert.assertEquals(expectedCrit, crit);
-        }
+        critsAreMatchingFile(expectedCritList);
     }
 
     @Test
@@ -68,9 +54,6 @@ public class CritServiceTest {
         deleteAll();
 
         List<Crit> expectedCritList = new ArrayList<>();
-        expectedCritList.add(CritHardcode.ratingCrit);
-        expectedCritList.add(CritHardcode.noveltyCrit);
-        expectedCritList.add(CritHardcode.weightCrit);
         expectedCritList.add(save("testCrit1"));
         expectedCritList.add(save("testCrit2"));
         expectedCritList.add(save("testCrit3"));
@@ -93,6 +76,14 @@ public class CritServiceTest {
 
         expectedCritList.add(crit007);
 
+        critsAreMatchingFile(expectedCritList);
+    }
+
+    private void critsAreMatchingFile(List<Crit> expectedCritList) {
+        expectedCritList.add(CritHardcode.ratingCrit);
+        expectedCritList.add(CritHardcode.noveltyCrit);
+        expectedCritList.add(CritHardcode.weightCrit);
+
         List<Crit> critList = getAll();
 
         Assert.assertEquals(expectedCritList.size(), critList.size());
@@ -109,10 +100,9 @@ public class CritServiceTest {
     public void cyclicDependency() {
         deleteAll();
 
-        List<Crit> expectedCritList = new ArrayList<>();
-        expectedCritList.add(save("testCrit1"));
-        expectedCritList.add(save("testCrit2"));
-        expectedCritList.add(save("testCrit3"));
+        save("testCrit1");
+        save("testCrit2");
+        save("testCrit3");
 
         addChild(getByName("testCrit1"), getByName("testCrit2"));
         addChild(getByName("testCrit2"), getByName("testCrit3"));
@@ -120,7 +110,7 @@ public class CritServiceTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void minNotLessThanMax() {
-        save("must fail - min equals max", 10, 10);
+    public void minMoreThanMax() {
+        save("must fail - min more than max", 20, 10);
     }
 }
