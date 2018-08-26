@@ -1,8 +1,9 @@
 package com.jr.util;
 
-import com.jr.logic.CritHardcode;
 import com.jr.dao.CritRepositoryFile;
+import com.jr.dao.NormalPlaylistRepositoryFile;
 import com.jr.dao.SongRepositoryFile;
+import com.jr.logic.CritHardcode;
 import com.jr.model.Crit;
 import com.jr.model.Flavor;
 import com.jr.service.CritService;
@@ -39,6 +40,7 @@ public class Util {
     public static void saveData() {
         CritRepositoryFile.rewriteFile();
         SongRepositoryFile.rewriteFile();
+        NormalPlaylistRepositoryFile.rewriteFile();
     }
 
     public static Flavor parseFlavorMap(String flavorMap) {

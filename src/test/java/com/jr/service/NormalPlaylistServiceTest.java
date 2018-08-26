@@ -45,6 +45,8 @@ public class NormalPlaylistServiceTest { //todo
 
     @Test
     public void fillSome() {
+        deleteAll();
+
         NormalPlaylist empty = NormalPlaylistService.save("Empty");
 
         NormalPlaylistService.save("Epic", null
