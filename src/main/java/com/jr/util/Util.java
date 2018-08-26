@@ -7,6 +7,8 @@ import com.jr.logic.CritHardcode;
 import com.jr.model.Crit;
 import com.jr.model.Flavor;
 import com.jr.service.CritService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.regex.Pattern;
 
@@ -16,6 +18,7 @@ import java.util.regex.Pattern;
 public class Util {
     public static final String GOOD_NAME_PATTERN = "[a-zA-Z0-9 _-]*";
     private static boolean isInitialized = false;
+    private static final Logger log = LogManager.getLogger(Util.class);
 
     public static int roll(int max) {
         return (int) (Math.random() * max + 1);
@@ -28,6 +31,7 @@ public class Util {
     public static void init() {
         if (isInitialized) return;
 
+        log.info("Util.init() called");
         CritHardcode.saveStandardCrits();
 
         isInitialized = true;
