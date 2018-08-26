@@ -1,8 +1,8 @@
 package com.jr.service;
 
-import com.jr.logic.CritHardcode;
 import com.jr.dao.CritRepository;
 import com.jr.dao.CritRepositoryFile;
+import com.jr.logic.CritHardcode;
 import com.jr.model.Crit;
 import com.jr.util.Settings;
 import com.jr.util.Util;
@@ -85,7 +85,7 @@ public class CritService {
         if (min > max)
             throw new InputMismatchException("Cannot create crit: after cropping min=" + min + ", max=" + max +
                     ". min must be less than max!");
-        if (min == max) {
+        if (min == max || (min == 0 && max == 1)) {
             min = 1;
             max = 1;
         }
@@ -150,7 +150,7 @@ public class CritService {
         return hierarchy;
     }
 
-    private static List<Crit> getNextGenerationOf(List<Crit> crits) {
+    public static List<Crit> getNextGenerationOf(List<Crit> crits) {
         List<Crit> generation = new ArrayList<>();
         for (Crit crit : crits) {
             generation.addAll(crit.getChildren());

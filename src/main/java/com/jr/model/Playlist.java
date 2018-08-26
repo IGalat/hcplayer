@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Galatyuk Ilya
  */
-interface Playlist {
+public interface Playlist {
 
     long getId();
 
