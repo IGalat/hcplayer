@@ -11,7 +11,7 @@ import java.util.Map;
  */
 
 @EqualsAndHashCode
-public class Flavor {
+public class Flavor implements Cloneable {
     @Getter
     private Map<Crit, Integer> flavorMap = new HashMap<>(); // from 1 to influence; if influence is negative - inverse
 
@@ -23,5 +23,12 @@ public class Flavor {
         }
         if (flavorMap.size() > 0) stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         return stringBuilder.toString();
+    }
+
+    @Override
+    public Object clone() {
+        Flavor clone = new Flavor();
+        clone.flavorMap = new HashMap<>(this.flavorMap);
+        return clone;
     }
 }

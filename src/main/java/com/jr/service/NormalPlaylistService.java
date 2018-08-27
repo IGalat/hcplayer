@@ -27,7 +27,6 @@ public class NormalPlaylistService {
         return playlistRepo.findAll(ids);
     }
 
-
     public static NormalPlaylist getByName(String name) {
         return playlistRepo.getByName(name);
     }
@@ -41,7 +40,14 @@ public class NormalPlaylistService {
     }
 
     public static NormalPlaylist save(String name) {
-        return save(name, null, (Song[]) null);
+        NormalPlaylist existingPlaylist = getByName(name);
+        if (existingPlaylist != null) {
+            return save(name,
+                    existingPlaylist.getFlavor(),
+                    existingPlaylist.isDefaultFlavorUsed(),
+                    existingPlaylist.getSongs().toArray(new Song[existingPlaylist.getSongs().size()]));
+        } else
+            return save(name, null, (Song[]) null);
     }
 
     public static NormalPlaylist save(String name, Flavor flavor, Song... songs) {
@@ -86,4 +92,15 @@ public class NormalPlaylistService {
                 , playlist.getSongs()));
     }
 
+    public static NormalPlaylist addSongs(NormalPlaylist normalPlaylist, Song... songs) {
+        normalPlaylist.getSongs().addAll(Arrays.asList(songs));
+        return playlistRepo.save(normalPlaylist);
+    }
+
+    public static NormalPlaylist removeSongs(NormalPlaylist normalPlaylist, Song... songs) {
+        for (Song song : songs) {
+            normalPlaylist.getSongs().remove(song);
+        }
+        return playlistRepo.save(normalPlaylist);
+    }
 }

@@ -19,8 +19,11 @@ import java.util.Set;
 /**
  * @author Galatyuk Ilya
  */
-public class NormalPlaylistServiceTest { //todo
+public class NormalPlaylistServiceTest {
     private final static TestHelper testHelper = new TestHelper();
+
+    private static NormalPlaylist epic;
+    private static NormalPlaylist metal;
 
     @BeforeClass
     public static void init() {
@@ -55,9 +58,10 @@ public class NormalPlaylistServiceTest { //todo
                 , testHelper.therion_SummernightCity
                 , testHelper.powerwolf_DieDieCrucified);
 
-        NormalPlaylist epic = NormalPlaylistService.getByName("Epic");
+        epic = NormalPlaylistService.getByName("Epic");
 
-        NormalPlaylist metal = NormalPlaylistService.save("Metal heaven", null
+        metal = NormalPlaylistService.save("Metal heaven");
+        NormalPlaylistService.addSongs(metal
                 , testHelper.dragonforce_StrikeOfTheNinja
                 , testHelper.eluveitie_Lvgvs
                 , testHelper.nightwish_FeelForYou

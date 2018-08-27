@@ -5,6 +5,7 @@ import com.jr.model.Flavor;
 import com.jr.model.Playlist;
 import com.jr.model.Song;
 import com.jr.service.CritService;
+import com.jr.util.Settings;
 import javafx.util.Pair;
 import lombok.Getter;
 
@@ -19,13 +20,23 @@ import java.util.*;
 public class FlavorLogic {
     private static final Flavor DEFAULT_DEFAULT_FLAVOR = new Flavor();
     @Getter
-    private static final Flavor defaultFlavor = (Flavor) DEFAULT_DEFAULT_FLAVOR; //todo make so user can change it; save it in settings
+    private static final Flavor defaultFlavor;
     public static final double DEFAULT_UNDEFINED_CRIT_NORMALIZED_VALUE_PERCENT = 0.4;
 
     static {
         DEFAULT_DEFAULT_FLAVOR.getFlavorMap().put(CritHardcode.weightCrit, 10000);
         DEFAULT_DEFAULT_FLAVOR.getFlavorMap().put(CritHardcode.ratingCrit, 10);
         DEFAULT_DEFAULT_FLAVOR.getFlavorMap().put(CritHardcode.noveltyCrit, 10);
+
+        Flavor defFlavor = Settings.getDefaultFlavor();
+        if (defFlavor == null)
+            defaultFlavor = (Flavor) DEFAULT_DEFAULT_FLAVOR.clone();
+        else
+            defaultFlavor = defFlavor;
+    }
+
+    public static void saveDefaultFlavor(Flavor newDefaultFlavor) {
+        Settings.saveDefaultFlavor(defaultFlavor);
     }
 
     public static Map<Song, Integer> getWeightMap(Playlist playlist) {

@@ -1,12 +1,10 @@
 package com.jr;
 
 import com.jr.logic.CritHardcode;
-import com.jr.service.CritService;
-import com.jr.service.CritServiceTest;
-import com.jr.service.SongService;
-import com.jr.service.SongServiceTest;
 import com.jr.model.Crit;
+import com.jr.model.NormalPlaylist;
 import com.jr.model.Song;
+import com.jr.service.*;
 import com.jr.util.FileOps;
 import com.jr.util.FileOpsTest;
 import javafx.util.Pair;
@@ -54,6 +52,9 @@ public class TestHelper {
     public Song pain_SameOldSong;
     public Song powerwolf_DieDieCrucified;
 
+    public NormalPlaylist epicNormalPlaylist;
+    public NormalPlaylist metalNormalPlaylist;
+
     @BeforeClass
     public static void init() {
         FileOps.setConfigFolder(FileOpsTest.TEST_FOLDER);
@@ -66,6 +67,12 @@ public class TestHelper {
 
     @Test
     public void setStandardTestData() {
+        setStandardCrits();
+        setStandardSongs();
+        setStandardNormalPlaylists();
+    }
+
+    private void setStandardCrits() {
         new CritServiceTest().deleteAll();
 
         wordless = CritService.save("wordless", 1, 1);
@@ -89,8 +96,9 @@ public class TestHelper {
         epic = CritService.save("epic", mood);
         singsong = CritService.save("singsong", mood);
         club = CritService.save("club", mood);
+    }
 
-
+    private void setStandardSongs() {
         new SongServiceTest().deleteAll();
 
         vivaldi_TangoOfDeath = SongService.save("Antonio Vivaldi - Tango of Death.mp3"
@@ -123,4 +131,23 @@ public class TestHelper {
                 , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(powerMetal, 10), new Pair<>(epic, 8), new Pair<>(energetic, 8));
     }
 
+    private void setStandardNormalPlaylists() {
+        new NormalPlaylistServiceTest().deleteAll();
+        
+        epicNormalPlaylist = NormalPlaylistService.save("Epic", null
+                , wow_AntechmberOfUlduar
+                , nightwish_Stargazers
+                , therion_SummernightCity
+                , powerwolf_DieDieCrucified);
+
+        metalNormalPlaylist = NormalPlaylistService.save("Metal", null
+                , dragonforce_StrikeOfTheNinja
+                , eluveitie_Lvgvs
+                , nightwish_FeelForYou
+                , nightwish_Stargazers
+                , rhapsodyOfFire_ReignOfTerror
+                , soil_BreakingMeDown
+                , pain_SameOldSong
+                , powerwolf_DieDieCrucified);
+    }
 }

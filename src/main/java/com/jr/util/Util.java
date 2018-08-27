@@ -31,7 +31,7 @@ public class Util {
     public static void init() {
         if (isInitialized) return;
 
-        log.info("Util.init() called");
+        log.info("init() called");
         CritHardcode.saveStandardCrits();
 
         isInitialized = true;

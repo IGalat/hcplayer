@@ -1,5 +1,7 @@
 package com.jr.util;
 
+import com.jr.model.Flavor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.Map;
  */
 public class Settings {
     private static final String MAX_ID_NAME = "maxId";
+    private static final String DEFAULT_FLAVOR_NAME = "default flavor";
 
     private static synchronized Map<String, String> getSettingsFromFile() {
         List<Map<String, String>> allSettingsList = FileOps.getAll(FileOps.getSettingsName());
@@ -47,6 +50,16 @@ public class Settings {
         maxId++;
         save(MAX_ID_NAME, maxId.toString());
         return maxId;
+    }
+
+    public static synchronized Flavor getDefaultFlavor(){
+        String defaultFlavorString = get(DEFAULT_FLAVOR_NAME);
+        if(defaultFlavorString== null || defaultFlavorString.isEmpty()) return null;
+        return Util.parseFlavorMap(defaultFlavorString);
+    }
+
+    public static synchronized void saveDefaultFlavor(Flavor defaultFlavor){
+        save(DEFAULT_FLAVOR_NAME, defaultFlavor.toString());
     }
 
 }
