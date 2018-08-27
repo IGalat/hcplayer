@@ -25,6 +25,13 @@ public class Flavor implements Cloneable {
         return stringBuilder.toString();
     }
 
+    public Flavor putCritFlavor(Crit crit, Integer influence) {
+        if (influence == 0 || influence == 1 || influence == -1)
+            return this;
+        getFlavorMap().put(crit, influence);
+        return this;
+    }
+
     @Override
     public Object clone() {
         Flavor clone = new Flavor();

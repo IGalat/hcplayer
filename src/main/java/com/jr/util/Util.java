@@ -20,8 +20,8 @@ public class Util {
     private static boolean isInitialized = false;
     private static final Logger log = LogManager.getLogger(Util.class);
 
-    public static int roll(int max) {
-        return (int) (Math.random() * max + 1);
+    public static long roll(long max) {
+        return (long) (Math.random() * max + 1);
     }
 
     public static boolean isNameBad(String name) {

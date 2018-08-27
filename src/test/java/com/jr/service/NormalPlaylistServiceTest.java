@@ -6,10 +6,7 @@ import com.jr.model.NormalPlaylist;
 import com.jr.model.Song;
 import com.jr.util.FileOps;
 import com.jr.util.FileOpsTest;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,12 +19,13 @@ import java.util.Set;
 public class NormalPlaylistServiceTest {
     private final static TestHelper testHelper = new TestHelper();
 
-    private static NormalPlaylist epic;
-    private static NormalPlaylist metal;
-
     @BeforeClass
     public static void init() {
         FileOps.setConfigFolder(FileOpsTest.TEST_FOLDER);
+    }
+
+    @Before
+    public void initMethod(){
         testHelper.setStandardTestData();
     }
 
@@ -58,9 +56,9 @@ public class NormalPlaylistServiceTest {
                 , testHelper.therion_SummernightCity
                 , testHelper.powerwolf_DieDieCrucified);
 
-        epic = NormalPlaylistService.getByName("Epic");
+        NormalPlaylist epic = NormalPlaylistService.getByName("Epic");
 
-        metal = NormalPlaylistService.save("Metal heaven");
+        NormalPlaylist metal = NormalPlaylistService.save("Metal heaven");
         NormalPlaylistService.addSongs(metal
                 , testHelper.dragonforce_StrikeOfTheNinja
                 , testHelper.eluveitie_Lvgvs

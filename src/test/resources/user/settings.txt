@@ -1,1 +1,2 @@
-maxId=1936;
+maxId=3571;
+default flavor=cheerful'10,weight'10000,singsong'50,rating'100,energetic'3;

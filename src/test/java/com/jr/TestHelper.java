@@ -1,7 +1,9 @@
 package com.jr;
 
 import com.jr.logic.CritHardcode;
+import com.jr.logic.FlavorLogic;
 import com.jr.model.Crit;
+import com.jr.model.Flavor;
 import com.jr.model.NormalPlaylist;
 import com.jr.model.Song;
 import com.jr.service.*;
@@ -133,14 +135,29 @@ public class TestHelper {
 
     private void setStandardNormalPlaylists() {
         new NormalPlaylistServiceTest().deleteAll();
-        
-        epicNormalPlaylist = NormalPlaylistService.save("Epic", null
+
+        Flavor epicFlavor = (Flavor) FlavorLogic.getDefaultFlavor().clone();
+        epicFlavor.getFlavorMap().remove(CritHardcode.noveltyCrit);
+        epicFlavor
+                .putCritFlavor(wordless, 100)
+                .putCritFlavor(energetic, 10)
+                .putCritFlavor(powerMetal, 80)
+                .putCritFlavor(symphonicPowerMetal, 1000);
+
+        epicNormalPlaylist = NormalPlaylistService.save("Epic", epicFlavor
                 , wow_AntechmberOfUlduar
                 , nightwish_Stargazers
                 , therion_SummernightCity
                 , powerwolf_DieDieCrucified);
 
-        metalNormalPlaylist = NormalPlaylistService.save("Metal", null
+        Flavor metalFlavor = new Flavor();
+        metalFlavor
+                .putCritFlavor(sad, 1000)
+                .putCritFlavor(epic, -100)
+                .putCritFlavor(symphonicPowerMetal, 10)
+                .putCritFlavor(singsong, 10000);
+
+        metalNormalPlaylist = NormalPlaylistService.save("Metal", metalFlavor
                 , dragonforce_StrikeOfTheNinja
                 , eluveitie_Lvgvs
                 , nightwish_FeelForYou

@@ -1,2 +1,2 @@
-flavor=;is default flavor=true;songs=1922,1926,1930,1933;name=Epic;id=1935;
-flavor=;is default flavor=true;songs=1923,1924,1925,1926,1927,1929,1932,1933;name=Metal;id=1936;
+flavor=cheerful'10,power metal'80,weight'10000,singsong'50,energetic'10,rating'100,symphonic power metal'1000,wordless'100;is default flavor=false;songs=3558,3562,3566,3569;name=Epic;id=3570;
+flavor=singsong'10000,symphonic power metal'10,sad'1000,epic'-100;is default flavor=false;songs=3559,3560,3561,3562,3563,3565,3568,3569;name=Metal;id=3571;

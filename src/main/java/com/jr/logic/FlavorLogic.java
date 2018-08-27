@@ -20,8 +20,8 @@ import java.util.*;
 public class FlavorLogic {
     private static final Flavor DEFAULT_DEFAULT_FLAVOR = new Flavor();
     @Getter
-    private static final Flavor defaultFlavor;
-    public static final double DEFAULT_UNDEFINED_CRIT_NORMALIZED_VALUE_PERCENT = 0.4;
+    private static Flavor defaultFlavor;
+    public static final double DEFAULT_UNDEFINED_CRIT_NORMALIZED_VALUE_PERCENT = 0.1;
 
     static {
         DEFAULT_DEFAULT_FLAVOR.getFlavorMap().put(CritHardcode.weightCrit, 10000);
@@ -36,6 +36,7 @@ public class FlavorLogic {
     }
 
     public static void saveDefaultFlavor(Flavor newDefaultFlavor) {
+        defaultFlavor = newDefaultFlavor;
         Settings.saveDefaultFlavor(defaultFlavor);
     }
 
@@ -47,16 +48,26 @@ public class FlavorLogic {
     public static Map<Song, Integer> getWeightMap(List<Song> songs, Flavor flavor) {
         Pair<List<Crit>, Double>[] critPowerMap = getCritPowerMap(flavor);
         Map<Song, Integer> weightMap = new HashMap<>();
+        double initialWeight = calcInitialWeight(flavor);
 
         for (Song song : songs) {
-            Integer weight = getSongWeight(song.getCrits(), critPowerMap);
+            Integer weight = getSongWeight(initialWeight, song.getCrits(), critPowerMap);
             weightMap.put(song, weight);
         }
 
         return weightMap;
     }
 
-    private static Pair<List<Crit>, Double>[] getCritPowerMap(Flavor flavor) {
+    //so that songs don't have billions of weight in case of flavors with a ton of crits/big influence
+    private static double calcInitialWeight(Flavor flavor) {
+        double initialWeight = 100000;
+        for (Map.Entry<Crit, Integer> flavorEntry : flavor.getFlavorMap().entrySet()) {
+            initialWeight /= Math.sqrt(flavorEntry.getValue());
+        }
+        return initialWeight;
+    }
+
+    static Pair<List<Crit>, Double>[] getCritPowerMap(Flavor flavor) {
         List<List<List<Crit>>> critsByFlavorByGeneration = new ArrayList<>(flavor.getFlavorMap().size());
         List<Map.Entry<Crit, Integer>> flavorEntryList = new ArrayList<>(flavor.getFlavorMap().entrySet());
 
@@ -73,6 +84,7 @@ public class FlavorLogic {
         do {
             atLeastOneCritAdded = false;
             for (List<List<Crit>> flavorCritByGeneration : critsByFlavorByGeneration) {
+                if (flavorCritByGeneration.size() < currentGeneration + 1) continue;
                 List<Crit> newGeneration = CritService.getNextGenerationOf(flavorCritByGeneration.get(currentGeneration));
                 for (int i = newGeneration.size() - 1; i >= 0; i--) {
                     Crit crit = newGeneration.get(i);
@@ -128,8 +140,8 @@ public class FlavorLogic {
         return number - min + 1;
     }
 
-    private static int getSongWeight(Map<Crit, Integer> critMap, Pair<List<Crit>, Double>[] critPowerMap) {
-        double weight = 100;
+    static int getSongWeight(double initialWeight, Map<Crit, Integer> critMap, Pair<List<Crit>, Double>[] critPowerMap) {
+        double weight = initialWeight;
 
         for (Pair<List<Crit>, Double> singleCritHierarchy : critPowerMap) {
             double power = singleCritHierarchy.getValue();
@@ -143,12 +155,14 @@ public class FlavorLogic {
                     break;
                 }
             }
+            double weightOfCrit;
             if (crit.getId() == CritHardcode.noveltyCrit.getId())
-                weight *= calcNoveltyWeight(value, power);
-            else weight *= calcCritWeight(crit, value, power);
+                weightOfCrit = calcNoveltyWeight(value, power);
+            else weightOfCrit = calcCritWeight(crit, value, power);
+            weight *= weightOfCrit;
         }
 
-        return (int) Math.round(weight);
+        return Math.max(1, (int) Math.round(weight));
     }
 
     private static double calcCritWeight(Crit crit, Integer value, double power) {
