@@ -16,11 +16,11 @@ public class FiltersTest {
     public void basicOps() {
         Filters filters = new Filters();
 
-        Filter filter0 = filters.getNewFilter();
+        Filter filter0 = filters.addNewFilter();
         filters.put(filter0, CritHardcode.ratingCrit, ComparisonOption.MoreOrEquals, 7);
         filters.put(filter0, CritHardcode.weightCrit, ComparisonOption.MoreOrEquals, 700);
 
-        Filter filter1 = filters.getNewFilter();
+        Filter filter1 = filters.addNewFilter();
         filters.put(filter1, CritHardcode.ratingCrit, ComparisonOption.Equals, null);
         filters.put(filter1, CritHardcode.noveltyCrit, ComparisonOption.MoreOrEquals, 900);
         filters.remove(filter1, CritHardcode.ratingCrit);
@@ -40,7 +40,7 @@ public class FiltersTest {
     public void moreThanMaxValue() {
         Filters filters = new Filters();
 
-        Filter filter0 = filters.getNewFilter();
+        Filter filter0 = filters.addNewFilter();
         filters.put(filter0, CritHardcode.ratingCrit, ComparisonOption.MoreOrEquals, 9999);
     }
 

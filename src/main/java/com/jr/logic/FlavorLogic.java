@@ -18,7 +18,7 @@ import java.util.*;
  */
 
 public class FlavorLogic {
-    private static final Flavor DEFAULT_DEFAULT_FLAVOR = new Flavor();
+    public static final Flavor DEFAULT_DEFAULT_FLAVOR = new Flavor();
     @Getter
     private static Flavor defaultFlavor;
     public static final double DEFAULT_UNDEFINED_CRIT_NORMALIZED_VALUE_PERCENT = 0.1;

@@ -1,9 +1,9 @@
 package com.jr.model;
 
-import com.jr.service.SongService;
 import com.jr.model.sub.Comparison;
 import com.jr.model.sub.ComparisonOption;
 import com.jr.model.sub.Filter;
+import com.jr.service.SongService;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -18,7 +18,7 @@ public class Filters {
     @Getter
     private final List<Filter> filters = new ArrayList<>();
 
-    public Filter getNewFilter() {
+    public Filter addNewFilter() {
         Filter newFilter = new Filter();
         filters.add(newFilter);
         return newFilter;

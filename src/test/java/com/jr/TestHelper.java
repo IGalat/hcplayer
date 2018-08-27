@@ -135,6 +135,7 @@ public class TestHelper {
 
     private void setStandardNormalPlaylists() {
         new NormalPlaylistServiceTest().deleteAll();
+        FlavorLogic.saveDefaultFlavor((Flavor) FlavorLogic.DEFAULT_DEFAULT_FLAVOR.clone());
 
         Flavor epicFlavor = (Flavor) FlavorLogic.getDefaultFlavor().clone();
         epicFlavor.getFlavorMap().remove(CritHardcode.noveltyCrit);

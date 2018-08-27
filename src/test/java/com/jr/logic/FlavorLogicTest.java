@@ -51,8 +51,8 @@ public class FlavorLogicTest {
         Map<Song, Integer> weightMap = FlavorLogic.getWeightMap(testHelper.epicNormalPlaylist);
 
         //values are hand calculated
-        isValueApproximately(96398, weightMap.get(testHelper.nightwish_Stargazers));
         isValueApproximately(42450, weightMap.get(testHelper.wow_AntechmberOfUlduar));
+        isValueApproximately(96398, weightMap.get(testHelper.nightwish_Stargazers));
         isValueApproximately(5094, weightMap.get(testHelper.therion_SummernightCity));
         isValueApproximately(144896, weightMap.get(testHelper.powerwolf_DieDieCrucified));
     }
