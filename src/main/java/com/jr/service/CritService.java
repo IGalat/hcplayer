@@ -106,6 +106,10 @@ public class CritService {
         return critRepo.save(new Crit(crit.getId(), newName, crit.getMin(), crit.getMax(), crit.isWhitelist(), crit.getChildren()));
     }
 
+    public static synchronized Crit save(Crit crit) {
+        return save(crit.getName(), crit.getMin(), crit.getMax(), crit.isWhitelist(), crit.getChildren());
+    }
+
     public static Crit addChild(Crit child, Crit parent) {
         for (Crit existingChild : parent.getChildren())
             if (existingChild.equals(child))
