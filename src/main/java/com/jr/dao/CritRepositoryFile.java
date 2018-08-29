@@ -63,11 +63,10 @@ public class CritRepositoryFile implements CritRepository {
                 Crit crit = crits.get(i - 1);
                 if (critToSave.getId() == crit.getId()
                         || critToSave.getName().equals(crit.getName())) {
-                    critToSave.setId(crit.getId());
-                    crits.remove(crit);
+                    crits.set(i - 1, critToSave);
+                    break;
                 }
             }
-            crits.add(critToSave);
         }
         rewriteFile();
         return (List<Crit>) items;

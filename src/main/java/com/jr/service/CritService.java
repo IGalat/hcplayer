@@ -97,7 +97,8 @@ public class CritService {
         return critRepo.save(crit);
     }
 
-    public static synchronized Crit rename(Crit crit, String newName) { //todo find everything that uses the crit and overwrite(files at least)?
+    public static synchronized Crit rename(Crit crit, String newName) { //todo find everything that uses the crit and overwrite?
+        if (CritHardcode.isProtectedCrit(newName)) return getByName(newName);
         newName = newName.toLowerCase();
         if (Util.isNameBad(newName))
             throw new InputMismatchException("Cannot rename crit '" + crit.getName() + "' to '" + newName +
