@@ -56,9 +56,8 @@ public class Filters {
         int min = crit.getMin();
         int max = crit.getMax();
 
-        String thanOptional = (option == ComparisonOption.More || option == ComparisonOption.Less) ? " than" : "";
         String errorText = "Cannot add/change filter '" +
-                crit.getName() + " " + option + thanOptional + " " + value + "'. ";
+                crit.getName() + " " + option + " " + value + "'. ";
 
         if (value == null) {
             if (option == ComparisonOption.MoreOrEquals
@@ -68,8 +67,8 @@ public class Filters {
             else option = ComparisonOption.NotEquals;
         } else if (value < min || value > max)
             throw new InputMismatchException(errorText + "Value not in range (" + min + " to " + max + ")");
-        else if ((value == min && option == ComparisonOption.Less)
-                || (value == max && option == ComparisonOption.More))
+        else if ((value == min && option == ComparisonOption.LessThan)
+                || (value == max && option == ComparisonOption.MoreThan))
             throw new InputMismatchException(errorText + option + " than border value of crit doesn't make sense.");
         else if ((value == min && option == ComparisonOption.LessOrEquals)
                 || (value == max && option == ComparisonOption.MoreOrEquals))

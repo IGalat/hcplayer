@@ -32,7 +32,7 @@ public class NormalPlaylistRepositoryFile implements NormalPlaylistRepository {
             String name = playlistMap.get(NAME_NAME);
             String flavorMap = playlistMap.get(FLAVOR_NAME);
             boolean isDefaultFlavorUsed = Boolean.parseBoolean(playlistMap.get(IS_DEFAULT_FLAVOR_USED_NAME));
-            Flavor flavor = Util.parseFlavorMap(flavorMap);
+            Flavor flavor = Flavor.parse(flavorMap);
             List<Song> songs = parseSongsFromIds(playlistMap.get(SONG_LIST_NAME));
 
             playlists.add(new NormalPlaylist(id, name, flavor, isDefaultFlavorUsed, songs));

@@ -4,8 +4,8 @@ package com.jr.model.sub;
  * @author Galatyuk Ilya
  */
 public enum ComparisonOption {
-    More,
-    Less,
+    MoreThan,
+    LessThan,
     MoreOrEquals,
     LessOrEquals,
     Equals,

@@ -4,9 +4,6 @@ import com.jr.dao.CritRepositoryFile;
 import com.jr.dao.NormalPlaylistRepositoryFile;
 import com.jr.dao.SongRepositoryFile;
 import com.jr.logic.CritHardcode;
-import com.jr.model.Crit;
-import com.jr.model.Flavor;
-import com.jr.service.CritService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,20 +43,5 @@ public class Util {
         SongRepositoryFile.rewriteFile();
         NormalPlaylistRepositoryFile.rewriteFile();
     }
-
-    public static Flavor parseFlavorMap(String flavorMap) {
-        Flavor result = new Flavor();
-        if (flavorMap == null) return result;
-
-        String[] flavors = flavorMap.split("[,]");
-        for (String flavorString : flavors) {
-            String[] elements = flavorString.split("[']");
-            Crit crit = CritService.getByName(elements[0]);
-            Integer influence = Integer.parseInt(elements[1]);
-
-            if (crit != null)
-                result.getFlavorMap().put(crit, influence);
-        }
-        return result;
-    }
+    
 }

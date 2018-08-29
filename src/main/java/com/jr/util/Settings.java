@@ -60,7 +60,7 @@ public class Settings {
     public static synchronized Flavor getDefaultFlavor() {
         String defaultFlavorString = get(DEFAULT_FLAVOR_NAME);
         if (defaultFlavorString == null || defaultFlavorString.isEmpty()) return null;
-        return Util.parseFlavorMap(defaultFlavorString);
+        return Flavor.parse(defaultFlavorString);
     }
 
     public static synchronized void saveDefaultFlavor(Flavor defaultFlavor) {
