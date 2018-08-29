@@ -61,10 +61,11 @@ public class CritService {
         return crit;
     }
 
-    public static synchronized Crit save(String name, int min, int max, List<Crit> children) { //todo make it impossible to change min/max without song/filter/flavor overhaul; also, force change of all children's stat
+    public static synchronized Crit save(String name, int min, int max, List<Crit> children) {
         if (CritHardcode.isProtectedCrit(name)) return getByName(name);
 
         Crit existingCrit = getByName(name);
+        if (existingCrit != null) return existingCrit; // temp so min/max can't be changed. should they be changeable?
         Long id = existingCrit == null ? Settings.getNextId() : existingCrit.getId();
 
         name = name.toLowerCase();
@@ -95,11 +96,9 @@ public class CritService {
             throw new InputMismatchException("Cannot rename crit '" + crit.getName() + "' to '" + newName +
                     "'. Correct pattern: " + Util.GOOD_NAME_PATTERN);
 
-        return critRepo.save(new Crit(crit.getId(), newName, crit.getMin(), crit.getMax(),  crit.getChildren()));
-    }
-
-    public static synchronized Crit save(Crit crit) {
-        return save(crit.getName(), crit.getMin(), crit.getMax(), crit.getChildren());
+        Crit result = critRepo.save(new Crit(crit.getId(), newName, crit.getMin(), crit.getMax(), crit.getChildren()));
+        Util.saveData(); // because all songs/flavors/filters must change the name of crit in files
+        return result;
     }
 
     public static Crit addChild(Crit child, Crit parent) {
