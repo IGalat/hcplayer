@@ -59,14 +59,18 @@ public class CritRepositoryFile implements CritRepository {
     @Override
     public synchronized List<Crit> save(Iterable<Crit> items) {
         for (Crit critToSave : items) {
+            boolean replaced = false;
             for (int i = crits.size(); i > 0; i--) {
                 Crit crit = crits.get(i - 1);
                 if (critToSave.getId() == crit.getId()
                         || critToSave.getName().equals(crit.getName())) {
                     crits.set(i - 1, critToSave);
+                    replaced = true;
                     break;
                 }
             }
+            if (!replaced)
+                crits.add(critToSave);
         }
         rewriteFile();
         return (List<Crit>) items;

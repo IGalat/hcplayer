@@ -6,7 +6,6 @@ import com.jr.model.Playlist;
 import com.jr.model.Song;
 import com.jr.service.CritService;
 import com.jr.util.Settings;
-import javafx.util.Pair;
 import lombok.Getter;
 
 import java.util.*;
@@ -46,12 +45,12 @@ public class FlavorLogic {
     }
 
     public static Map<Song, Integer> getWeightMap(List<Song> songs, Flavor flavor) {
-        Pair<List<Crit>, Double>[] critPowerMap = getCritPowerMap(flavor);
+        CritHierarchyPower[] critPowerMap = getCritPowerMap(flavor);
         Map<Song, Integer> weightMap = new HashMap<>();
         double initialWeight = calcInitialWeight(flavor);
 
         for (Song song : songs) {
-            Integer weight = getSongWeight(initialWeight, song.getCrits(), critPowerMap);
+            Integer weight = getSongWeight(initialWeight, song, critPowerMap);
             weightMap.put(song, weight);
         }
 
@@ -67,16 +66,21 @@ public class FlavorLogic {
         return initialWeight;
     }
 
-    static Pair<List<Crit>, Double>[] getCritPowerMap(Flavor flavor) {
-        List<List<List<Crit>>> critsByFlavorByGeneration = new ArrayList<>(flavor.getFlavorMap().size());
-        List<Map.Entry<Crit, Integer>> flavorEntryList = new ArrayList<>(flavor.getFlavorMap().entrySet());
+    private static CritHierarchyPower[] getCritPowerMap(Flavor flavor) {
+        int quantityOfPrimals = flavor.getFlavorMap().size();
+        List<List<List<Crit>>> critsByFlavorByGeneration = new ArrayList<>(quantityOfPrimals);
+        List<Integer> influences = new ArrayList<>(quantityOfPrimals);
+        List<Long> addedIds = new ArrayList<>();
+        List<Long> idsToAdd = new ArrayList<>();
 
-        for (Map.Entry<Crit, Integer> flavorEntry : flavorEntryList) {
+        for (Map.Entry<Crit, Integer> flavorEntry : flavor.getFlavorMap().entrySet()) {
             List<List<Crit>> flavorCritByGeneration = new ArrayList<>();
             critsByFlavorByGeneration.add(flavorCritByGeneration);
-
             List<Crit> generationZero = Collections.singletonList(flavorEntry.getKey());
             flavorCritByGeneration.add(generationZero);
+
+            influences.add(flavorEntry.getValue());
+            addedIds.add(flavorEntry.getKey().getId());
         }
 
         boolean atLeastOneCritAdded;
@@ -88,47 +92,31 @@ public class FlavorLogic {
                 List<Crit> newGeneration = CritService.getNextGenerationOf(flavorCritByGeneration.get(currentGeneration));
                 for (int i = newGeneration.size() - 1; i >= 0; i--) {
                     Crit crit = newGeneration.get(i);
-                    if (critIsAbsent(crit, critsByFlavorByGeneration, currentGeneration)) {
-                        atLeastOneCritAdded = true;
-                    } else {
+                    if (addedIds.contains(crit.getId())) {
                         newGeneration.remove(crit);
+                    } else {
+                        atLeastOneCritAdded = true;
+                        idsToAdd.add(crit.getId());
                     }
                 }
                 if (newGeneration.size() > 0)
                     flavorCritByGeneration.add(newGeneration);
             }
+            addedIds.addAll(idsToAdd);
+            idsToAdd = new ArrayList<>();
+
             currentGeneration++;
         } while (atLeastOneCritAdded);
 
-        Pair<List<Crit>, Double>[] critPowerMap = new Pair[flavor.getFlavorMap().size()];
-        for (int i = 0; i < flavorEntryList.size(); i++) {
-            List<List<Crit>> flavorCritByGeneration = critsByFlavorByGeneration.get(i);
-            List<Crit> crits = new ArrayList<>();
-            for (List<Crit> generation : flavorCritByGeneration)
-                crits.addAll(generation);
-
-            Pair<List<Crit>, Double> flavorCritPower = new Pair<>(crits, calcPower(flavorEntryList.get(i)));
-            if (crits.get(0).getId() == CritHardcode.noveltyCrit.getId()) {
-                Double noveltyInfluence = Double.valueOf(flavorEntryList.get(i).getValue());
-                flavorCritPower = new Pair<>(crits, noveltyInfluence);
-            }
-            critPowerMap[i] = flavorCritPower;
+        CritHierarchyPower[] critHierarchyPowers = new CritHierarchyPower[quantityOfPrimals];
+        for (int i = 0; i < quantityOfPrimals; i++) {
+            critHierarchyPowers[i] = new CritHierarchyPower(critsByFlavorByGeneration.get(i), influences.get(i));
         }
-        return critPowerMap;
+        return critHierarchyPowers;
     }
 
-    private static boolean critIsAbsent(Crit crit, List<List<List<Crit>>> critsByFlavorByGeneration, int upToGen) {
-        for (List<List<Crit>> flavorCritByGeneration : critsByFlavorByGeneration) {
-            int searchUpToGeneration = Math.min(upToGen, flavorCritByGeneration.size() - 1);
-            for (int i = 0; i <= searchUpToGeneration; i++)
-                if (flavorCritByGeneration.get(i).contains(crit)) return false;
-        }
-        return true;
-    }
-
-    private static double calcPower(Map.Entry<Crit, Integer> entry) {
-        int range = normalize(entry.getKey().getMax(), entry.getKey().getMin());
-        int influence = entry.getValue();
+    private static double calcPower(Crit crit, int influence) {
+        int range = normalize(crit.getMax(), crit.getMin());
         if (range == 1) return (double) influence;
 
         if (influence > 0)
@@ -140,29 +128,26 @@ public class FlavorLogic {
         return number - min + 1;
     }
 
-    static int getSongWeight(double initialWeight, Map<Crit, Integer> critMap, Pair<List<Crit>, Double>[] critPowerMap) {
+    static int getSongWeight(double initialWeight, Song song, CritHierarchyPower[] critPowerMap) {
+        Map<Crit, Integer> songCritMap = song.getCrits();
         double weight = initialWeight;
 
-        for (Pair<List<Crit>, Double> singleCritHierarchy : critPowerMap) {
-            double power = singleCritHierarchy.getValue();
-            List<Crit> hierarchy = singleCritHierarchy.getKey();
-
-            Crit crit = hierarchy.get(0);
+        for (CritHierarchyPower critHierarchyPower : critPowerMap) {
             Integer value = null;
-            for (Map.Entry<Crit, Integer> critAndValue : critMap.entrySet()) {
-                if (hierarchy.contains(critAndValue.getKey())) {
+            for (Map.Entry<Crit, Integer> critAndValue : songCritMap.entrySet()) {
+                if (critHierarchyPower.hierarchyIds.contains(critAndValue.getKey().getId())) {
                     value = critAndValue.getValue();
                     break;
                 }
             }
             double weightOfCrit;
-            if (crit.getId() == CritHardcode.noveltyCrit.getId())
-                weightOfCrit = calcNoveltyWeight(value, power);
-            else weightOfCrit = calcCritWeight(crit, value, power);
+            if (critHierarchyPower.crit.getId() == CritHardcode.noveltyCrit.getId())
+                weightOfCrit = calcNoveltyWeight(value, critHierarchyPower.power);
+            else weightOfCrit = calcCritWeight(critHierarchyPower.crit, value, critHierarchyPower.power);
             weight *= weightOfCrit;
         }
 
-        return Math.max(1, (int) Math.round(weight));
+        return Math.max(1, (int) weight);
     }
 
     private static double calcCritWeight(Crit crit, Integer value, double power) {
@@ -200,7 +185,7 @@ public class FlavorLogic {
         }
 
         // чтобы была квадратичная зависимость даже при малых value(в отличие от обратной кв. зависимости в таких случаях):
-        double curve = 2; //maxNormalized*2 = ~4M
+        double curve = 2; //maxNormalized(2001)*2 = ~4M
         double multiplier = (power - 1) / Math.pow(normalize(novelty.getMax(), novelty.getMin()), curve);
 
         double weight = calcCritWeight(novelty, (int) Math.round(valueD), curve);
@@ -208,4 +193,23 @@ public class FlavorLogic {
         return weight;
     }
 
+    static class CritHierarchyPower {
+        List<Long> hierarchyIds;
+        Crit crit;
+        double power;
+
+        CritHierarchyPower(List<List<Crit>> hierarchyByGenerations, Integer influence) {
+            hierarchyIds = new ArrayList<>();
+            for (List<Crit> generation : hierarchyByGenerations)
+                for (Crit crit : generation)
+                    hierarchyIds.add(crit.getId());
+
+            crit = hierarchyByGenerations.get(0).get(0);
+            if (crit.getId() == CritHardcode.noveltyCrit.getId()) {
+                power = influence;
+            } else {
+                power = calcPower(crit, influence);
+            }
+        }
+    }
 }

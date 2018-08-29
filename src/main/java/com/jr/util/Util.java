@@ -57,7 +57,8 @@ public class Util {
             Crit crit = CritService.getByName(elements[0]);
             Integer influence = Integer.parseInt(elements[1]);
 
-            result.getFlavorMap().put(crit, influence);
+            if (crit != null)
+                result.getFlavorMap().put(crit, influence);
         }
         return result;
     }

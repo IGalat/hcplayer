@@ -137,9 +137,10 @@ public class TestHelper {
         new NormalPlaylistServiceTest().deleteAll();
         FlavorLogic.saveDefaultFlavor((Flavor) FlavorLogic.DEFAULT_DEFAULT_FLAVOR.clone());
 
-        Flavor epicFlavor = (Flavor) FlavorLogic.getDefaultFlavor().clone();
-        epicFlavor.getFlavorMap().remove(CritHardcode.noveltyCrit);
+        Flavor epicFlavor = new Flavor();
         epicFlavor
+                .putCritFlavor(CritHardcode.ratingCrit, 10)
+                .putCritFlavor(CritHardcode.weightCrit, 10000)
                 .putCritFlavor(wordless, 100)
                 .putCritFlavor(energetic, 10)
                 .putCritFlavor(powerMetal, 80)
