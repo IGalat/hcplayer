@@ -18,63 +18,52 @@ import org.junit.Test;
  * @author Galatyuk Ilya
  */
 public class TestHelper {
-    public Crit wordless;
-    public Crit nostalgic;
+    public static Crit wordless;
+    public static Crit nostalgic;
 
-    public Crit genre;
-    public Crit metal;
-    public Crit folk;
-    public Crit folkMetal;
-    public Crit powerMetal;
-    public Crit symphonicPowerMetal;
-    public Crit classic;
-    public Crit renaissance;
+    public static Crit genre;
+    public static Crit metal;
+    public static Crit folk;
+    public static Crit folkMetal;
+    public static Crit powerMetal;
+    public static Crit symphonicPowerMetal;
+    public static Crit classic;
+    public static Crit renaissance;
 
-    public Crit mood;
-    public Crit cheerful;
-    public Crit calm;
-    public Crit sad;
-    public Crit energetic;
-    public Crit epic;
-    public Crit singsong;
-    public Crit club;
+    public static Crit mood;
+    public static Crit cheerful;
+    public static Crit calm;
+    public static Crit sad;
+    public static Crit energetic;
+    public static Crit epic;
+    public static Crit singsong;
+    public static Crit club;
 
-    public Song vivaldi_TangoOfDeath;
-    public Song mozart_RondoAllaTurka;
-    public Song wow_AntechmberOfUlduar;
-    public Song dragonforce_StrikeOfTheNinja;
-    public Song eluveitie_Lvgvs;
-    public Song nightwish_FeelForYou;
-    public Song nightwish_Stargazers;
-    public Song rhapsodyOfFire_ReignOfTerror;
-    public Song scooter_AiiiShotTheDj;
-    public Song soil_BreakingMeDown;
-    public Song therion_SummernightCity;
-    public Song omnia_FeeRaHuri_Live;
-    public Song pain_SameOldSong;
-    public Song powerwolf_DieDieCrucified;
+    public static Song vivaldi_TangoOfDeath;
+    public static Song mozart_RondoAllaTurka;
+    public static Song wow_AntechmberOfUlduar;
+    public static Song dragonforce_StrikeOfTheNinja;
+    public static Song eluveitie_Lvgvs;
+    public static Song nightwish_FeelForYou;
+    public static Song nightwish_Stargazers;
+    public static Song rhapsodyOfFire_ReignOfTerror;
+    public static Song scooter_AiiiShotTheDj;
+    public static Song soil_BreakingMeDown;
+    public static Song therion_SummernightCity;
+    public static Song omnia_FeeRaHuri_Live;
+    public static Song pain_SameOldSong;
+    public static Song powerwolf_DieDieCrucified;
 
-    public NormalPlaylist epicNormalPlaylist;
-    public NormalPlaylist metalNormalPlaylist;
+    public static NormalPlaylist epicNormalPlaylist;
+    public static NormalPlaylist metalNormalPlaylist;
 
-    @BeforeClass
-    public static void init() {
-        FileOps.setConfigFolder(FileOpsTest.TEST_FOLDER);
-    }
-
-    @AfterClass
-    public static void close() {
-        FileOps.setConfigFolder(FileOps.DEFAULT_CONFIG_FOLDER);
-    }
-
-    @Test
-    public void setStandardTestData() {
+    public static void setStandardTestData() {
         setStandardCrits();
         setStandardSongs();
         setStandardNormalPlaylists();
     }
 
-    private void setStandardCrits() {
+    private static void setStandardCrits() {
         new CritServiceTest().deleteAll();
 
         wordless = CritService.save("wordless", 1, 1);
@@ -100,7 +89,7 @@ public class TestHelper {
         club = CritService.save("club", mood);
     }
 
-    private void setStandardSongs() {
+    private static void setStandardSongs() {
         new SongServiceTest().deleteAll();
 
         vivaldi_TangoOfDeath = SongService.save("Antonio Vivaldi - Tango of Death.mp3"
@@ -133,7 +122,7 @@ public class TestHelper {
                 , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(powerMetal, 10), new Pair<>(epic, 8), new Pair<>(energetic, 8));
     }
 
-    private void setStandardNormalPlaylists() {
+    private static void setStandardNormalPlaylists() {
         new NormalPlaylistServiceTest().deleteAll();
         FlavorLogic.saveDefaultFlavor((Flavor) FlavorLogic.DEFAULT_DEFAULT_FLAVOR.clone());
 

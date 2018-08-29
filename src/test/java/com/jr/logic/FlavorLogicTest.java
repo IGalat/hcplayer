@@ -13,7 +13,6 @@ import java.util.Map;
  * @author Galatyuk Ilya
  */
 public class FlavorLogicTest {
-    private final static TestHelper testHelper = new TestHelper();
 
     @BeforeClass
     public static void init() {
@@ -22,7 +21,7 @@ public class FlavorLogicTest {
 
     @Before
     public void initMethod() {
-        testHelper.setStandardTestData();
+        TestHelper.setStandardTestData();
     }
 
     @AfterClass
@@ -34,11 +33,11 @@ public class FlavorLogicTest {
     public void defaultFlavor() {
         Flavor defaultFlavor = new Flavor();
         defaultFlavor
-                .putCritFlavor(testHelper.singsong, 50)
+                .putCritFlavor(TestHelper.singsong, 50)
                 .putCritFlavor(CritHardcode.ratingCrit, 100)
                 .putCritFlavor(CritHardcode.weightCrit, 10000)
-                .putCritFlavor(testHelper.cheerful, 10)
-                .putCritFlavor(testHelper.energetic, 3);
+                .putCritFlavor(TestHelper.cheerful, 10)
+                .putCritFlavor(TestHelper.energetic, 3);
         FlavorLogic.saveDefaultFlavor(defaultFlavor);
 
         Flavor resultDefaultFlavor = FlavorLogic.getDefaultFlavor();
@@ -48,13 +47,13 @@ public class FlavorLogicTest {
 
     @Test
     public void weightMapValues() {
-        Map<Song, Integer> weightMap = FlavorLogic.getWeightMap(testHelper.epicNormalPlaylist);
+        Map<Song, Integer> weightMap = FlavorLogic.getWeightMap(TestHelper.epicNormalPlaylist);
 
         //values are hand calculated
-        isValueApproximately(42450, weightMap.get(testHelper.wow_AntechmberOfUlduar));
-        isValueApproximately(96398, weightMap.get(testHelper.nightwish_Stargazers));
-        isValueApproximately(5094, weightMap.get(testHelper.therion_SummernightCity));
-        isValueApproximately(144896, weightMap.get(testHelper.powerwolf_DieDieCrucified));
+        isValueApproximately(42450, weightMap.get(TestHelper.wow_AntechmberOfUlduar));
+        isValueApproximately(96398, weightMap.get(TestHelper.nightwish_Stargazers));
+        isValueApproximately(5094, weightMap.get(TestHelper.therion_SummernightCity));
+        isValueApproximately(144896, weightMap.get(TestHelper.powerwolf_DieDieCrucified));
     }
 
     private void isValueApproximately(Integer expected, Integer value) {

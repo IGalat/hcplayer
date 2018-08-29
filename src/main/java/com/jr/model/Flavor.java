@@ -18,7 +18,7 @@ public class Flavor implements Cloneable {
     private Map<Crit, Integer> flavorMap = new HashMap<>(); // from 1 to influence; if influence is negative - inverse
     @Getter
     @Setter
-    private transient FlavorLogic.CritHierarchyPower[] critPowerMap;
+    private transient FlavorLogic.HierarchyPower[] critPowerMap;
 
     @Override
     public String toString() {

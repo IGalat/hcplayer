@@ -46,19 +46,24 @@ public class Settings {
 
 
     public static synchronized long getNextId() {
-        Long maxId = Long.parseLong(get(MAX_ID_NAME));
+        String maxIdString = get(MAX_ID_NAME);
+        Long maxId;
+        if (maxIdString != null)
+            maxId = Long.parseLong(maxIdString);
+        else
+            maxId = 1L;
         maxId++;
         save(MAX_ID_NAME, maxId.toString());
         return maxId;
     }
 
-    public static synchronized Flavor getDefaultFlavor(){
+    public static synchronized Flavor getDefaultFlavor() {
         String defaultFlavorString = get(DEFAULT_FLAVOR_NAME);
-        if(defaultFlavorString== null || defaultFlavorString.isEmpty()) return null;
+        if (defaultFlavorString == null || defaultFlavorString.isEmpty()) return null;
         return Util.parseFlavorMap(defaultFlavorString);
     }
 
-    public static synchronized void saveDefaultFlavor(Flavor defaultFlavor){
+    public static synchronized void saveDefaultFlavor(Flavor defaultFlavor) {
         save(DEFAULT_FLAVOR_NAME, defaultFlavor.toString());
     }
 

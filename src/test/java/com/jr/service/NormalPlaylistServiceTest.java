@@ -17,7 +17,6 @@ import java.util.Set;
  * @author Galatyuk Ilya
  */
 public class NormalPlaylistServiceTest {
-    private final static TestHelper testHelper = new TestHelper();
 
     @BeforeClass
     public static void init() {
@@ -25,8 +24,8 @@ public class NormalPlaylistServiceTest {
     }
 
     @Before
-    public void initMethod(){
-        testHelper.setStandardTestData();
+    public void initMethod() {
+        TestHelper.setStandardTestData();
     }
 
     @AfterClass
@@ -51,23 +50,23 @@ public class NormalPlaylistServiceTest {
         NormalPlaylist empty = NormalPlaylistService.save("Empty");
 
         NormalPlaylistService.save("Epic", null
-                , testHelper.wow_AntechmberOfUlduar
-                , testHelper.nightwish_Stargazers
-                , testHelper.therion_SummernightCity
-                , testHelper.powerwolf_DieDieCrucified);
+                , TestHelper.wow_AntechmberOfUlduar
+                , TestHelper.nightwish_Stargazers
+                , TestHelper.therion_SummernightCity
+                , TestHelper.powerwolf_DieDieCrucified);
 
         NormalPlaylist epic = NormalPlaylistService.getByName("Epic");
 
         NormalPlaylist metal = NormalPlaylistService.save("Metal heaven");
         NormalPlaylistService.addSongs(metal
-                , testHelper.dragonforce_StrikeOfTheNinja
-                , testHelper.eluveitie_Lvgvs
-                , testHelper.nightwish_FeelForYou
-                , testHelper.nightwish_Stargazers
-                , testHelper.rhapsodyOfFire_ReignOfTerror
-                , testHelper.soil_BreakingMeDown
-                , testHelper.pain_SameOldSong
-                , testHelper.powerwolf_DieDieCrucified);
+                , TestHelper.dragonforce_StrikeOfTheNinja
+                , TestHelper.eluveitie_Lvgvs
+                , TestHelper.nightwish_FeelForYou
+                , TestHelper.nightwish_Stargazers
+                , TestHelper.rhapsodyOfFire_ReignOfTerror
+                , TestHelper.soil_BreakingMeDown
+                , TestHelper.pain_SameOldSong
+                , TestHelper.powerwolf_DieDieCrucified);
 
         NormalPlaylistService.rename(metal, "Metal");
 
@@ -78,10 +77,10 @@ public class NormalPlaylistServiceTest {
         Assert.assertEquals(2, NormalPlaylistService.getAll().size());
 
         for (Song song : epic.getSongs())
-            Assert.assertTrue(isCritPresent(song, testHelper.epic));
+            Assert.assertTrue(isCritPresent(song, TestHelper.epic));
 
         for (Song song : metal.getSongs())
-            Assert.assertTrue(isCritPresent(song, testHelper.metal));
+            Assert.assertTrue(isCritPresent(song, TestHelper.metal));
     }
 
     private boolean isCritPresent(Song song, Crit critToCheck) {

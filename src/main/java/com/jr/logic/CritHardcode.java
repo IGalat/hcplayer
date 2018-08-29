@@ -1,7 +1,7 @@
 package com.jr.logic;
 
-import com.jr.service.CritService;
 import com.jr.model.Crit;
+import com.jr.service.CritService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,9 +19,9 @@ public class CritHardcode {
     public static final String WEIGHT_CRIT_NAME = "weight";
     public static final List<String> PROTECTED_CRITS_NAMES = new ArrayList<>();
     public static final Integer DEFAULT_WEIGHT_CRIT = 100;
-    public static final Crit ratingCrit = CritService.getByName(RATING_CRIT_NAME);
-    public static final Crit noveltyCrit = CritService.getByName(NOVELTY_CRIT_NAME);
-    public static final Crit weightCrit = CritService.getByName(WEIGHT_CRIT_NAME);
+    public static final Crit ratingCrit = getRatingCrit();
+    public static final Crit noveltyCrit = getNoveltyCrit();
+    public static final Crit weightCrit = getWeightCrit();
 
     private static boolean saveStandardCritsCalled = false;
     private static boolean standardCritsSaved = false;
@@ -50,6 +50,21 @@ public class CritHardcode {
             result = -result;
 
         return result;
+    }
+
+    private static Crit getRatingCrit() {
+        saveStandardCrits();
+        return CritService.getByName(RATING_CRIT_NAME);
+    }
+
+    private static Crit getNoveltyCrit() {
+        saveStandardCrits();
+        return CritService.getByName(NOVELTY_CRIT_NAME);
+    }
+
+    private static Crit getWeightCrit() {
+        saveStandardCrits();
+        return CritService.getByName(WEIGHT_CRIT_NAME);
     }
 
     public static void saveStandardCrits() {

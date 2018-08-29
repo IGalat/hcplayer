@@ -28,7 +28,6 @@ public class SongServiceTest {
         FileOps.setConfigFolder(FileOps.DEFAULT_CONFIG_FOLDER);
     }
 
-    @Ignore
     @Test
     public void deleteAll() {
         List<Song> songs = SongService.getAll();
