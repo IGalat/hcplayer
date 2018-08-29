@@ -5,3 +5,4 @@
 target/
 config/
 log/
+src/test/resources/user/

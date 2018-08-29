@@ -45,7 +45,9 @@ public class FlavorLogic {
     }
 
     public static Map<Song, Integer> getWeightMap(List<Song> songs, Flavor flavor) {
-        CritHierarchyPower[] critPowerMap = getCritPowerMap(flavor);
+        CritHierarchyPower[] critPowerMap = flavor.getCritPowerMap();
+        if (critPowerMap == null)
+            critPowerMap = getCritPowerMap(flavor);
         Map<Song, Integer> weightMap = new HashMap<>();
         double initialWeight = calcInitialWeight(flavor);
 
@@ -193,7 +195,7 @@ public class FlavorLogic {
         return weight;
     }
 
-    static class CritHierarchyPower {
+    public static class CritHierarchyPower {
         List<Long> hierarchyIds;
         Crit crit;
         double power;

@@ -1,7 +1,9 @@
 package com.jr.model;
 
+import com.jr.logic.FlavorLogic;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +16,9 @@ import java.util.Map;
 public class Flavor implements Cloneable {
     @Getter
     private Map<Crit, Integer> flavorMap = new HashMap<>(); // from 1 to influence; if influence is negative - inverse
+    @Getter
+    @Setter
+    private transient FlavorLogic.CritHierarchyPower[] critPowerMap;
 
     @Override
     public String toString() {
@@ -28,7 +33,17 @@ public class Flavor implements Cloneable {
     public Flavor putCritFlavor(Crit crit, Integer influence) {
         if (influence == 0 || influence == 1 || influence == -1)
             return this;
+
+        critPowerMap = null;
         getFlavorMap().put(crit, influence);
+        return this;
+    }
+
+    public Flavor removeCrit(Crit crit) {
+        if (flavorMap.containsKey(crit)) {
+            critPowerMap = null;
+            flavorMap.remove(crit);
+        }
         return this;
     }
 

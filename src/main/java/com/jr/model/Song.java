@@ -32,7 +32,7 @@ public class Song {
     @Setter
     private Map<Crit, Integer> crits;
 
-    private Mp3File mp3File;
+    private transient Mp3File mp3File;
 
     public Song(long id, Path path, Map<Crit, Integer> crits) {
         this.id = id;
