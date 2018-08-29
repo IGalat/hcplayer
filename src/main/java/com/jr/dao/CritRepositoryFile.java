@@ -16,7 +16,6 @@ public class CritRepositoryFile implements CritRepository {
     private static final String NAME_NAME = "name";
     private static final String MIN_NAME = "min";
     private static final String MAX_NAME = "max";
-    private static final String WHITELIST_NAME = "whitelist";
     private static final String CHILDREN_NAME = "children";
     private static final List<Crit> crits;
 
@@ -30,9 +29,8 @@ public class CritRepositoryFile implements CritRepository {
             String name = critMap.get(NAME_NAME);
             int min = Integer.parseInt(critMap.get(MIN_NAME));
             int max = Integer.parseInt(critMap.get(MAX_NAME));
-            boolean whitelist = Boolean.parseBoolean(critMap.get(WHITELIST_NAME));
 
-            crits.add(new Crit(id, name, min, max, whitelist, new ArrayList<>()));
+            crits.add(new Crit(id, name, min, max, new ArrayList<>()));
 
             String children = critMap.get(CHILDREN_NAME);
             if (children != null) allChildren.put(id, children);
@@ -93,7 +91,6 @@ public class CritRepositoryFile implements CritRepository {
             mapOfCrit.put(NAME_NAME, crit.getName());
             mapOfCrit.put(MIN_NAME, Integer.toString(crit.getMin()));
             mapOfCrit.put(MAX_NAME, Integer.toString(crit.getMax()));
-            mapOfCrit.put(WHITELIST_NAME, Boolean.toString(crit.isWhitelist()));
 
             if (crit.getChildren().size() > 0) {
                 StringBuilder children = new StringBuilder();

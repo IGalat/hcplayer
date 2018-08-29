@@ -17,11 +17,10 @@ public class Crit implements Cloneable {
     private String name;
     private int min;
     private int max;
-    private boolean whitelist;
     private List<Crit> children;
 
     @Override
     public Object clone() {
-        return new Crit(this.getId(), this.getName(), this.getMin(), this.getMax(), this.isWhitelist(), new ArrayList<>(this.getChildren()));
+        return new Crit(this.getId(), this.getName(), this.getMin(), this.getMax(), new ArrayList<>(this.getChildren()));
     }
 }

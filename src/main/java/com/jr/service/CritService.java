@@ -16,7 +16,6 @@ public class CritService {
     private static final CritRepository critRepo = new CritRepositoryFile();
     public static final int DEFAULT_MIN = 1;
     public static final int DEFAULT_MAX = 10;
-    public static final boolean DEFAULT_IS_WHITELIST = true;
 
     public static List<Crit> getAll() {
         Util.init(); //todo перекинуть куда-то в подходящее место
@@ -48,19 +47,11 @@ public class CritService {
     }
 
     public static Crit save(String name) {
-        return save(name, DEFAULT_MIN, DEFAULT_MAX, DEFAULT_IS_WHITELIST);
+        return save(name, DEFAULT_MIN, DEFAULT_MAX);
     }
 
     public static Crit save(String name, int min, int max) {
-        return save(name, min, max, DEFAULT_IS_WHITELIST);
-    }
-
-    public static Crit save(String name, boolean whitelist) {
-        return save(name, DEFAULT_MIN, DEFAULT_MAX, whitelist);
-    }
-
-    public static Crit save(String name, int min, int max, boolean whitelist) {
-        return save(name, min, max, whitelist, null);
+        return save(name, min, max, null);
     }
 
     public static Crit save(String name, Crit... parents) {
@@ -70,7 +61,7 @@ public class CritService {
         return crit;
     }
 
-    public static synchronized Crit save(String name, int min, int max, boolean whitelist, List<Crit> children) { //todo make it impossible to change min/max without song/filter/flavor overhaul; also, force change of all children's stat
+    public static synchronized Crit save(String name, int min, int max, List<Crit> children) { //todo make it impossible to change min/max without song/filter/flavor overhaul; also, force change of all children's stat
         if (CritHardcode.isProtectedCrit(name)) return getByName(name);
 
         Crit existingCrit = getByName(name);
@@ -93,7 +84,7 @@ public class CritService {
         if (children == null)
             children = new ArrayList<>();
 
-        Crit crit = new Crit(id, name, min, max, whitelist, children);
+        Crit crit = new Crit(id, name, min, max, children);
         return critRepo.save(crit);
     }
 
@@ -104,11 +95,11 @@ public class CritService {
             throw new InputMismatchException("Cannot rename crit '" + crit.getName() + "' to '" + newName +
                     "'. Correct pattern: " + Util.GOOD_NAME_PATTERN);
 
-        return critRepo.save(new Crit(crit.getId(), newName, crit.getMin(), crit.getMax(), crit.isWhitelist(), crit.getChildren()));
+        return critRepo.save(new Crit(crit.getId(), newName, crit.getMin(), crit.getMax(),  crit.getChildren()));
     }
 
     public static synchronized Crit save(Crit crit) {
-        return save(crit.getName(), crit.getMin(), crit.getMax(), crit.isWhitelist(), crit.getChildren());
+        return save(crit.getName(), crit.getMin(), crit.getMax(), crit.getChildren());
     }
 
     public static Crit addChild(Crit child, Crit parent) {
@@ -125,11 +116,9 @@ public class CritService {
             throw new InputMismatchException(errorText + "Child's min = " + child.getMin() + ", parent's = " + parent.getMin());
         if (child.getMax() != parent.getMax())
             throw new InputMismatchException(errorText + "Child's max = " + child.getMax() + ", parent's = " + parent.getMax());
-        if (child.isWhitelist() != parent.isWhitelist())
-            throw new InputMismatchException(errorText + "Child's whitelist = " + child.isWhitelist() + ", parent's = " + parent.isWhitelist());
 
         parent.getChildren().add(child);
-        return save(parent.getName(), parent.getMin(), parent.getMax(), parent.isWhitelist(), parent.getChildren());
+        return save(parent.getName(), parent.getMin(), parent.getMax(), parent.getChildren());
     }
 
     public static Crit removeChild(Crit child, Crit parent) {
@@ -139,7 +128,7 @@ public class CritService {
             return parent;
 
         parent.getChildren().remove(child);
-        return save(parent.getName(), parent.getMin(), parent.getMax(), parent.isWhitelist(), parent.getChildren());
+        return save(parent.getName(), parent.getMin(), parent.getMax(), parent.getChildren());
     }
 
     public static Set<Crit> getAllHierarchyDown(Crit crit) {

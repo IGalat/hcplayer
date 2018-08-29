@@ -70,9 +70,9 @@ public class CritHardcode {
     public static void saveStandardCrits() {
         if (saveStandardCritsCalled) return;
         saveStandardCritsCalled = true;
-        CritService.save(RATING_CRIT_NAME, false);
-        CritService.save(NOVELTY_CRIT_NAME, -1000, 1000, false);
-        CritService.save(WEIGHT_CRIT_NAME, 1, 10000, false);
+        CritService.save(RATING_CRIT_NAME);
+        CritService.save(NOVELTY_CRIT_NAME, -1000, 1000);
+        CritService.save(WEIGHT_CRIT_NAME, 1, 10000);
         standardCritsSaved = true;
     }
 

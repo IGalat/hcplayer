@@ -1,2 +1,2 @@
-flavor=power metal'80,energetic'10,rating'10,weight'10000,symphonic power metal'1000,wordless'100;is default flavor=false;songs=177,181,185,188;name=Epic;id=189;
-flavor=sad'1000,singsong'10000,epic'-100,symphonic power metal'10;is default flavor=false;songs=178,179,180,181,182,184,187,188;name=Metal;id=190;
+flavor=power metal'80,rating'10,weight'10000,wordless'100,symphonic power metal'1000,energetic'10;is default flavor=false;songs=570,574,578,581;name=Epic;id=582;
+flavor=singsong'10000,epic'-100,symphonic power metal'10,sad'1000;is default flavor=false;songs=571,572,573,574,575,577,580,581;name=Metal;id=583;
