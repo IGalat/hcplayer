@@ -62,7 +62,11 @@ public class CritRepositoryFile implements CritRepository {
                 Crit crit = crits.get(i - 1);
                 if (critToSave.getId() == crit.getId()
                         || critToSave.getName().equals(crit.getName())) {
-                    crits.set(i - 1, critToSave);
+                    crits.get(i - 1).setId(critToSave.getId());
+                    crits.get(i - 1).setName(critToSave.getName());
+                    crits.get(i - 1).setMax(critToSave.getMax());
+                    crits.get(i - 1).setMin(critToSave.getMin());
+                    crits.get(i - 1).setChildren(critToSave.getChildren());
                     replaced = true;
                     break;
                 }
