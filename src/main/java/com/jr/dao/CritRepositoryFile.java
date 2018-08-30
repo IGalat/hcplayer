@@ -95,7 +95,8 @@ public class CritRepositoryFile implements CritRepository {
             if (crit.getChildren().size() > 0) {
                 StringBuilder children = new StringBuilder();
                 for (Crit child : crit.getChildren()) {
-                    children.append(child.getName()).append(",");
+                    if (child != null)
+                        children.append(child.getName()).append(",");
                 }
                 children.deleteCharAt(children.length() - 1);
                 mapOfCrit.put(CHILDREN_NAME, children.toString());
