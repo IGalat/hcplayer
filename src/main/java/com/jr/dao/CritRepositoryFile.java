@@ -2,6 +2,7 @@ package com.jr.dao;
 
 import com.jr.model.Crit;
 import com.jr.util.FileOps;
+import javafx.collections.FXCollections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class CritRepositoryFile implements CritRepository {
 
     static {
         List<Map<String, String>> allCritsMap = FileOps.getAll(FileOps.getCritsName());
-        crits = new ArrayList<>();
+        crits = FXCollections.observableArrayList();
         Map<Long, String> allChildren = new HashMap<>();
 
         for (Map<String, String> critMap : allCritsMap) {

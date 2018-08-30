@@ -5,7 +5,7 @@ import com.jr.model.NormalPlaylist;
 import com.jr.model.Song;
 import com.jr.service.SongService;
 import com.jr.util.FileOps;
-import com.jr.util.Util;
+import javafx.collections.FXCollections;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class NormalPlaylistRepositoryFile implements NormalPlaylistRepository {
 
     static {
         List<Map<String, String>> allPlaylistsMap = FileOps.getAll(FileOps.getNormalPlaylistsName());
-        playlists = new ArrayList<>();
+        playlists = FXCollections.observableArrayList();
 
         for (Map<String, String> playlistMap : allPlaylistsMap) {
             long id = Long.parseLong(playlistMap.get(ID_NAME));

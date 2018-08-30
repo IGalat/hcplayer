@@ -4,6 +4,7 @@ import com.jr.service.CritService;
 import com.jr.model.Crit;
 import com.jr.model.Song;
 import com.jr.util.FileOps;
+import javafx.collections.FXCollections;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -23,7 +24,7 @@ public class SongRepositoryFile implements SongRepository {
     static {
         List<Map<String, String>> allSongsMap = FileOps.getAll(FileOps.getSongsName());
 
-        songs = new ArrayList<>();
+        songs = FXCollections.observableArrayList();
         for (Map<String, String> songMap : allSongsMap) {
             //necessary to remove after read properties: only crits left after
             Long id = Long.parseLong(songMap.get(ID_NAME));
