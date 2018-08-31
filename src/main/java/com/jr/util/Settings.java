@@ -13,6 +13,7 @@ import java.util.Map;
 public class Settings {
     private static final String MAX_ID_NAME = "maxId";
     private static final String DEFAULT_FLAVOR_NAME = "default flavor";
+    public static final boolean USER_FILTER_CACHE = false;
 
     private static synchronized Map<String, String> getSettingsFromFile() {
         List<Map<String, String>> allSettingsList = FileOps.getAll(FileOps.getSettingsName());

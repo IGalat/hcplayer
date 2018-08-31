@@ -1,7 +1,8 @@
 package com.jr.logic;
 
-import com.jr.model.FilteredPlaylist;
+import com.jr.model.Filter;
 import com.jr.model.Song;
+import com.jr.util.Settings;
 
 import java.util.List;
 
@@ -10,15 +11,19 @@ import java.util.List;
  */
 public class FiltersLogic {
 
-    public static List<Song> getSongList(FilteredPlaylist playlist) {
-        List<Song> cached = playlist.getFilter().getCachedSongList();
+    public static List<Song> getSongList(Filter filter) {
+        List<Song> cached = filter.getCachedSongList();
         if (cached != null) return cached;
 
-        return getFreshSongList(playlist);
+        return getFreshSongList(filter);
     }
 
-    public static List<Song> getFreshSongList(FilteredPlaylist playlist) {
-        return null; //todo
+    public static List<Song> getFreshSongList(Filter filter) {
+        List<Song> songs = null; //todo
+
+        if (Settings.USER_FILTER_CACHE)
+            filter.setCachedSongList(songs);
+        return songs;
     }
 
 }

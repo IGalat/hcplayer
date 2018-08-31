@@ -1,8 +1,7 @@
 package com.jr.model;
 
 import com.jr.model.sub.Comparison;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -13,13 +12,10 @@ import java.util.Stack;
  * @author Galatyuk Ilya
  */
 
-@EqualsAndHashCode
+@Data
 public class Filter {
-    @Getter
     private final String logicExpression;
-    @Getter
     private final Comparison[] comparisons;
-    @Getter
     private List<Song> cachedSongList;
 
     public Filter(String logicExpression, List<Comparison> comparisons) {

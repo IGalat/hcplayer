@@ -1,5 +1,6 @@
 package com.jr.model;
 
+import com.jr.logic.FiltersLogic;
 import lombok.Data;
 
 import java.util.List;
@@ -19,11 +20,11 @@ public class FilteredPlaylist implements Playlist {
 
     @Override
     public List<Song> getSongs() {
-        return filter.getFilteredSongs();
+        return FiltersLogic.getSongList(filter);
     }
 
     @Override
-    public boolean isFiltered(){
+    public boolean isFiltered() {
         return true;
     }
 
