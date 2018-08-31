@@ -44,8 +44,10 @@ public class CritServiceTest {
 
         List<Crit> expectedCritList = new ArrayList<>();
         expectedCritList.add(save("testCrit1"));
-        expectedCritList.add(save("testCrit2"));
+        Crit crit2 = save("testCrit2");
+        save("testCrit2");
         expectedCritList.add(save("testCrit3", 0, 1));
+        expectedCritList.add(rename(crit2, "testTestCrit2"));
 
         critsAreMatchingFile(expectedCritList);
     }

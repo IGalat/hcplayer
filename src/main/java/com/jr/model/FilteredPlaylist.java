@@ -14,11 +14,12 @@ public class FilteredPlaylist implements Playlist {
     private String name;
     private Flavor flavor;
     private boolean defaultFlavorUsed;
-    private Filters filters;
+    private Filter filter;
+
 
     @Override
     public List<Song> getSongs() {
-        return filters.getFilteredSongs();
+        return filter.getFilteredSongs();
     }
 
     @Override

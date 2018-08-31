@@ -1,0 +1,80 @@
+package com.jr.model;
+
+import com.jr.model.sub.Comparison;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Stack;
+
+/**
+ * @author Galatyuk Ilya
+ */
+
+@EqualsAndHashCode
+public class Filter {
+    @Getter
+    private final String logicExpression;
+    @Getter
+    private final Comparison[] comparisons;
+    @Getter
+    private List<Song> cachedSongList;
+
+    public Filter(String logicExpression, List<Comparison> comparisons) {
+        this.logicExpression = checkLogicExpression(logicExpression);
+        this.comparisons = comparisons.toArray(new Comparison[comparisons.size()]);
+    }
+
+    public Filter(String logicExpression, Comparison... comparisons) {
+        this.logicExpression = checkLogicExpression(logicExpression);
+        this.comparisons = comparisons;
+    }
+
+    public Filter(String filterString) {
+        List<Comparison> comparisons = new ArrayList<>();
+
+        while (filterString.contains("]")) {
+            int nextComparisonIndex = comparisons.size();
+            int openBracePosition = filterString.indexOf('[');
+            int closeBracePosition = filterString.indexOf(']');
+            String comparisonString = filterString.substring(openBracePosition, closeBracePosition);
+
+            Comparison comparison = Comparison.parse(comparisonString);
+            filterString = filterString.replace(comparisonString, "f" + nextComparisonIndex);
+            comparisons.add(comparison);
+        }
+
+        this.logicExpression = checkLogicExpression(filterString);
+        this.comparisons = comparisons.toArray(new Comparison[comparisons.size()]);
+    }
+
+    private String checkLogicExpression(String logicExpression) throws InputMismatchException {
+        if (!isLogicExpressionOk(logicExpression))
+            throw new InputMismatchException("Incorrect logic expression: " + logicExpression);
+        return logicExpression;
+    }
+
+    private boolean isLogicExpressionOk(String logicExpression) {
+        if (!logicExpression.matches("[^]}\\[{]*")) return false;
+
+        Stack<Character> stack = new Stack<Character>();
+
+        char c;
+        for (int i = 0; i < logicExpression.length(); i++) {
+            c = logicExpression.charAt(i);
+
+            if (c == '(')
+                stack.push(c);
+            else if (c == ')')
+                if (stack.empty())
+                    return false;
+                else if (stack.peek() == '(')
+                    stack.pop();
+                else
+                    return false;
+        }
+        return stack.empty();
+    }
+}
