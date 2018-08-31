@@ -7,12 +7,7 @@ import com.jr.model.Flavor;
 import com.jr.model.NormalPlaylist;
 import com.jr.model.Song;
 import com.jr.service.*;
-import com.jr.util.FileOps;
-import com.jr.util.FileOpsTest;
 import javafx.util.Pair;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  * @author Galatyuk Ilya
@@ -53,6 +48,14 @@ public class TestHelper {
     public static Song omnia_FeeRaHuri_Live;
     public static Song pain_SameOldSong;
     public static Song powerwolf_DieDieCrucified;
+    public static Song avicii_WakeMeUp;
+    public static Song brunuhVille_SpiritOfTheWind;
+    public static Song misc_LeprechaunsDance;
+    public static Song pakito_LivingOnVideo;
+    public static Song pyramid_Wolf;
+    public static Song shadManning_CrusadeOfCannyr;
+    public static Song scorpions_hurricane2000;
+    public static Song halo_theGlitteringBand;
 
     public static NormalPlaylist epicNormalPlaylist;
     public static NormalPlaylist metalNormalPlaylist;
@@ -92,34 +95,52 @@ public class TestHelper {
     private static void setStandardSongs() {
         new SongServiceTest().deleteAll();
 
-        vivaldi_TangoOfDeath = SongService.save("Antonio Vivaldi - Tango of Death.mp3"
+        String prefix = "src\\main\\resources\\songs\\";
+
+        vivaldi_TangoOfDeath = SongService.save(prefix + "Antonio Vivaldi - Tango of Death.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 7), new Pair<>(classic, 10), new Pair<>(energetic, 7), new Pair<>(wordless, 1));
-        mozart_RondoAllaTurka = SongService.save("Wolfgang Amadeus Mozart - Rondo Alla Turka.mp3"
+        mozart_RondoAllaTurka = SongService.save(prefix + "Wolfgang Amadeus Mozart - Rondo Alla Turka.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 4), new Pair<>(classic, 10), new Pair<>(energetic, 8), new Pair<>(cheerful, 9), new Pair<>(wordless, 1));
-        wow_AntechmberOfUlduar = SongService.save("Wow - Antechamber of Ulduar.mp3"
+        wow_AntechmberOfUlduar = SongService.save(prefix + "WoW - Antechamber of Ulduar.mp3"
                 , new Pair<>(classic, 7), new Pair<>(epic, 8), new Pair<>(wordless, 1));
         dragonforce_StrikeOfTheNinja = SongService.save("Dragonforce - Strike Of The Ninja.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 5), new Pair<>(powerMetal, 10), new Pair<>(energetic, 10));
-        eluveitie_Lvgvs = SongService.save("Eluveitie - Lvgvs.mp3"
+        eluveitie_Lvgvs = SongService.save(prefix + "Eluveitie - Lvgvs.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 7), new Pair<>(folkMetal, 7), new Pair<>(energetic, 6), new Pair<>(singsong, 7));
-        nightwish_FeelForYou = SongService.save("Nightwish - Feel For You.mp3"
+        nightwish_FeelForYou = SongService.save(prefix + "Nightwish - Feel For You.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 6), new Pair<>(symphonicPowerMetal, 7), new Pair<>(calm, 5), new Pair<>(energetic, 5));
-        nightwish_Stargazers = SongService.save("Nightwish - Stargazers.mp3"
+        nightwish_Stargazers = SongService.save(prefix + "Nightwish - Stargazers.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 5), new Pair<>(symphonicPowerMetal, 9), new Pair<>(epic, 6));
-        rhapsodyOfFire_ReignOfTerror = SongService.save("Rhapsody of Fire - Reign Of Terror.mp3"
+        rhapsodyOfFire_ReignOfTerror = SongService.save(prefix + "Rhapsody of Fire - Reign Of Terror.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(powerMetal, 9), new Pair<>(energetic, 10));
-        scooter_AiiiShotTheDj = SongService.save("Scooter - Aiii Shot The Dj.mp3"
+        scooter_AiiiShotTheDj = SongService.save(prefix + "Scooter - Aiii Shot The Dj.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(energetic, 10), new Pair<>(club, 10), new Pair<>(singsong, 6), new Pair<>(cheerful, 8));
-        soil_BreakingMeDown = SongService.save("Soil - Breaking Me Down.mp3"
+        soil_BreakingMeDown = SongService.save(prefix + "Soil - Breaking Me Down.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 6), new Pair<>(energetic, 8), new Pair<>(metal, 8));
-        therion_SummernightCity = SongService.save("Therion - Summernight City.mp3"
+        therion_SummernightCity = SongService.save(prefix + "Therion - Summernight City.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(epic, 8), new Pair<>(energetic, 6));
-        omnia_FeeRaHuri_Live = SongService.save("OMNIA (Official) - Fee Ra Huri.mp3"
+        omnia_FeeRaHuri_Live = SongService.save(prefix + "OMNIA (Official) - Fee Ra Huri.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 10), new Pair<>(folk, 7), new Pair<>(cheerful, 8), new Pair<>(energetic, 9));
-        pain_SameOldSong = SongService.save("Pain - Same Old Song(Industrial Metal).mp3"
+        pain_SameOldSong = SongService.save(prefix + "Pain - Same Old Song(Industrial Metal).mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 7), new Pair<>(metal, 9), new Pair<>(sad, 6));
-        powerwolf_DieDieCrucified = SongService.save("Powerwolf - Die, Die, Crucified.mp3"
+        powerwolf_DieDieCrucified = SongService.save(prefix + "Powerwolf - Die, Die, Crucified.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(powerMetal, 10), new Pair<>(epic, 8), new Pair<>(energetic, 8));
+        avicii_WakeMeUp = SongService.save(prefix + "Avicii - wake me up.mp3"
+                , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(energetic, 7), new Pair<>(singsong, 8), new Pair<>(cheerful, 10));
+        brunuhVille_SpiritOfTheWind = SongService.save(prefix + "BrunuhVille - Spirit of the Wild.mp3"
+                , new Pair<>(CritHardcode.ratingCrit, 5), new Pair<>(wordless, 1), new Pair<>(epic, 4), new Pair<>(calm, 5));
+        misc_LeprechaunsDance = SongService.save(prefix + "Misc - Leprechauns Dance.mp3"
+                , new Pair<>(CritHardcode.ratingCrit, 7), new Pair<>(wordless, 1), new Pair<>(cheerful, 6));
+        pakito_LivingOnVideo = SongService.save(prefix + "Pakito - Living On Video.mp3"
+                , new Pair<>(CritHardcode.ratingCrit, 4), new Pair<>(wordless, 1), new Pair<>(energetic, 9), new Pair<>(club, 8));
+        pyramid_Wolf = SongService.save(prefix + "Pyramid - Wolf.mp3"
+                , new Pair<>(CritHardcode.ratingCrit, 6), new Pair<>(wordless, 1), new Pair<>(energetic, 6));
+        shadManning_CrusadeOfCannyr = SongService.save(prefix + "Shad Manning - Crusade of Crannhyr.mp3"
+                , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(wordless, 1), new Pair<>(energetic, 4), new Pair<>(epic, 6));
+        scorpions_hurricane2000 = SongService.save("C:\\_my\\Музыка\\Scorpions\\Scorpions und die Berliner Phi - Hurricane 2000.mp3"
+                , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(energetic, 6), new Pair<>(epic, 9));
+        halo_theGlitteringBand = SongService.save("C:\\Users\\admin\\Desktop\\Halo 2 - This Glittering Band.mp3"
+                , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(wordless, 1), new Pair<>(epic, 6));
     }
 
     private static void setStandardNormalPlaylists() {
@@ -139,7 +160,11 @@ public class TestHelper {
                 , wow_AntechmberOfUlduar
                 , nightwish_Stargazers
                 , therion_SummernightCity
-                , powerwolf_DieDieCrucified);
+                , powerwolf_DieDieCrucified
+                , brunuhVille_SpiritOfTheWind
+                , shadManning_CrusadeOfCannyr
+                , scorpions_hurricane2000
+                , halo_theGlitteringBand);
 
         Flavor metalFlavor = new Flavor();
         metalFlavor
