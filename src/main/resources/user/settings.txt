@@ -1,1 +1,2 @@
-maxId=482;
+maxId=524;
+default flavor=novelty'10,weight'10000,rating'10;

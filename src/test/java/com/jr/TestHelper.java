@@ -8,6 +8,8 @@ import com.jr.model.NormalPlaylist;
 import com.jr.model.Song;
 import com.jr.service.*;
 import javafx.util.Pair;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * @author Galatyuk Ilya
@@ -59,6 +61,13 @@ public class TestHelper {
 
     public static NormalPlaylist epicNormalPlaylist;
     public static NormalPlaylist metalNormalPlaylist;
+
+    //convenience method: set up things in non-test resources
+    @Ignore
+    @Test
+    public void setResources() {
+        setStandardTestData();
+    }
 
     public static void setStandardTestData() {
         setStandardCrits();
