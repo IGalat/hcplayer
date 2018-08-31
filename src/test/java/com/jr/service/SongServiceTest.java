@@ -3,10 +3,14 @@ package com.jr.service;
 import com.jr.logic.CritHardcode;
 import com.jr.model.Crit;
 import com.jr.model.Song;
+import com.jr.util.Defaults;
 import com.jr.util.FileOps;
 import com.jr.util.FileOpsTest;
 import javafx.util.Pair;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +29,7 @@ public class SongServiceTest {
 
     @AfterClass
     public static void close() {
-        FileOps.setConfigFolder(FileOps.DEFAULT_CONFIG_FOLDER);
+        FileOps.setConfigFolder(Defaults.CONFIG_FOLDER);
     }
 
     @Test

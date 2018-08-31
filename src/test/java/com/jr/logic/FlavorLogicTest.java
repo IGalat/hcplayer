@@ -3,6 +3,7 @@ package com.jr.logic;
 import com.jr.TestHelper;
 import com.jr.model.Flavor;
 import com.jr.model.Song;
+import com.jr.util.Defaults;
 import com.jr.util.FileOps;
 import com.jr.util.FileOpsTest;
 import org.junit.*;
@@ -26,7 +27,7 @@ public class FlavorLogicTest {
 
     @AfterClass
     public static void close() {
-        FileOps.setConfigFolder(FileOps.DEFAULT_CONFIG_FOLDER);
+        FileOps.setConfigFolder(Defaults.CONFIG_FOLDER);
     }
 
     @Test

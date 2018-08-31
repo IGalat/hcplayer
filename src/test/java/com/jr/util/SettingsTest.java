@@ -17,7 +17,7 @@ public class SettingsTest {
 
     @AfterClass
     public static void close() {
-        FileOps.setConfigFolder(FileOps.DEFAULT_CONFIG_FOLDER);
+        FileOps.setConfigFolder(Defaults.CONFIG_FOLDER);
     }
 
     @Test
@@ -27,5 +27,14 @@ public class SettingsTest {
             Settings.getNextId();
         }
         Assert.assertTrue(initId + 6 == Settings.getNextId());
+    }
+
+    @Test
+    public void playerVolume() {
+        Settings.savePlayerVolume(0.8);
+        Assert.assertEquals(0.8, Settings.getPlayerVolume(), 0.0000001);
+
+        Settings.savePlayerVolume(8);
+        Assert.assertEquals(8, Settings.getPlayerVolume(), 0.0000001);
     }
 }

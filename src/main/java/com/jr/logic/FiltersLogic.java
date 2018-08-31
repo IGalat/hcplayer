@@ -2,6 +2,7 @@ package com.jr.logic;
 
 import com.jr.model.Filter;
 import com.jr.model.Song;
+import com.jr.util.Defaults;
 import com.jr.util.Settings;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class FiltersLogic {
     public static List<Song> getFreshSongList(Filter filter) {
         List<Song> songs = null; //todo
 
-        if (Settings.USER_FILTER_CACHE)
+        if (Defaults.USE_FILTER_CACHE)
             filter.setCachedSongList(songs);
         return songs;
     }

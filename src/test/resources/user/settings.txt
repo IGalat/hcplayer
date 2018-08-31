@@ -1,2 +1,3 @@
-maxId=601;
+maxId=853;
+player volume=1.0;
 default flavor=weight'10000,rating'10,novelty'10;

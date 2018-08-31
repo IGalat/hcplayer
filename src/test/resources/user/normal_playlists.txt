@@ -1,2 +1,2 @@
-flavor=rating'10,weight'10000;is default flavor=false;name=Epic;id=582;
-flavor=;is default flavor=false;name=Metal;id=583;
+flavor=wordless'100,rating'10,weight'10000,power metal'80,energetic'10,symphonic power metal'1000;is default flavor=false;songs=832,836,840,843,845,849,850,851;name=Epic;id=852;
+flavor=singsong'10000,epic'-100,sad'1000,symphonic power metal'10;is default flavor=false;songs=833,834,835,836,837,839,842,843;name=Metal;id=853;

@@ -10,8 +10,7 @@ import java.util.Map;
  * @author Galatyuk Ilya
  */
 public class FileOps {
-    public static final String DEFAULT_CONFIG_FOLDER = "src/main/resources/user/";
-    private static String configFolder = DEFAULT_CONFIG_FOLDER;
+    private static String configFolder = Defaults.CONFIG_FOLDER;
     private static String critsName = "crits.txt";
     private static String songsName = "songs.txt";
     private static String normalPlaylistsName = "normal_playlists.txt";

@@ -1,5 +1,7 @@
 package com.jr.util;
 
+import com.jr.execution.HCPlayer;
+import com.jr.logic.FlavorLogic;
 import com.jr.model.Flavor;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.Map;
 public class Settings {
     private static final String MAX_ID_NAME = "maxId";
     private static final String DEFAULT_FLAVOR_NAME = "default flavor";
-    public static final boolean USER_FILTER_CACHE = false;
+    private static final String PLAYER_VOLUME_NAME = "player volume";
 
     private static synchronized Map<String, String> getSettingsFromFile() {
         List<Map<String, String>> allSettingsList = FileOps.getAll(FileOps.getSettingsName());
@@ -58,14 +60,29 @@ public class Settings {
         return maxId;
     }
 
+    public static synchronized void saveSettings() {
+        savePlayerVolume(HCPlayer.getVolume());
+        saveDefaultFlavor(FlavorLogic.getDefaultFlavor());
+    }
+
+    public static synchronized void saveDefaultFlavor(Flavor defaultFlavor) {
+        save(DEFAULT_FLAVOR_NAME, defaultFlavor.toString());
+    }
+
     public static synchronized Flavor getDefaultFlavor() {
         String defaultFlavorString = get(DEFAULT_FLAVOR_NAME);
         if (defaultFlavorString == null || defaultFlavorString.isEmpty()) return null;
         return Flavor.parse(defaultFlavorString);
     }
 
-    public static synchronized void saveDefaultFlavor(Flavor defaultFlavor) {
-        save(DEFAULT_FLAVOR_NAME, defaultFlavor.toString());
+    public static synchronized void savePlayerVolume(double volume) {
+        save(PLAYER_VOLUME_NAME, Double.toString(volume));
+    }
+
+    public static synchronized double getPlayerVolume() {
+        String playerVolumeString = get(PLAYER_VOLUME_NAME);
+        if (playerVolumeString == null || playerVolumeString.isEmpty()) return Defaults.PLAYER_VOLUME;
+        return Double.parseDouble(playerVolumeString);
     }
 
 }

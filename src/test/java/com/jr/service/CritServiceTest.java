@@ -2,6 +2,7 @@ package com.jr.service;
 
 import com.jr.logic.CritHardcode;
 import com.jr.model.Crit;
+import com.jr.util.Defaults;
 import com.jr.util.FileOps;
 import com.jr.util.FileOpsTest;
 import org.junit.AfterClass;
@@ -26,7 +27,7 @@ public class CritServiceTest {
 
     @AfterClass
     public static void close() {
-        FileOps.setConfigFolder(FileOps.DEFAULT_CONFIG_FOLDER);
+        FileOps.setConfigFolder(Defaults.CONFIG_FOLDER);
     }
 
     public void deleteAll() {

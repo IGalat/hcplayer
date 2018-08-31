@@ -4,6 +4,7 @@ import com.jr.dao.CritRepository;
 import com.jr.dao.CritRepositoryFile;
 import com.jr.logic.CritHardcode;
 import com.jr.model.Crit;
+import com.jr.util.Defaults;
 import com.jr.util.Settings;
 import com.jr.util.Util;
 
@@ -70,7 +71,7 @@ public class CritService {
 
         name = name.toLowerCase();
         if (Util.isNameBad(name))
-            throw new InputMismatchException("Bad name for crit : '" + name + "'. Correct pattern: " + Util.GOOD_NAME_PATTERN);
+            throw new InputMismatchException("Bad name for crit : '" + name + "'. Correct pattern: " + Defaults.GOOD_NAME_PATTERN);
 
         min = CritHardcode.critValueToBreakpoint(min);
         max = CritHardcode.critValueToBreakpoint(max);
@@ -94,7 +95,7 @@ public class CritService {
         newName = newName.toLowerCase();
         if (Util.isNameBad(newName))
             throw new InputMismatchException("Cannot rename crit '" + crit.getName() + "' to '" + newName +
-                    "'. Correct pattern: " + Util.GOOD_NAME_PATTERN);
+                    "'. Correct pattern: " + Defaults.GOOD_NAME_PATTERN);
 
         Crit result = critRepo.save(new Crit(crit.getId(), newName, crit.getMin(), crit.getMax(), crit.getChildren()));
         Util.saveData(); // because all songs/flavors/filters must change the name of crit in files

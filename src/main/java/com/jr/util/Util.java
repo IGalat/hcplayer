@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
  * @author Galatyuk Ilya
  */
 public class Util {
-    public static final String GOOD_NAME_PATTERN = "[a-zA-Z0-9 _-]*";
     private static boolean isInitialized = false;
     private static final Logger log = LogManager.getLogger(Util.class);
 
@@ -22,7 +21,7 @@ public class Util {
     }
 
     public static boolean isNameBad(String name) {
-        return !Pattern.matches(GOOD_NAME_PATTERN, name);
+        return !Pattern.matches(Defaults.GOOD_NAME_PATTERN, name);
     }
 
     public static void init() {
@@ -35,6 +34,7 @@ public class Util {
     }
 
     public static void shutdown() {
+        log.info("shutdown() called\n");
         saveData();
     }
 
@@ -42,6 +42,7 @@ public class Util {
         CritRepositoryFile.rewriteFile();
         SongRepositoryFile.rewriteFile();
         NormalPlaylistRepositoryFile.rewriteFile();
+        Settings.saveSettings();
     }
-    
+
 }

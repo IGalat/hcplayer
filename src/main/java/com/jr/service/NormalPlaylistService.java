@@ -5,6 +5,7 @@ import com.jr.dao.NormalPlaylistRepositoryFile;
 import com.jr.model.Flavor;
 import com.jr.model.NormalPlaylist;
 import com.jr.model.Song;
+import com.jr.util.Defaults;
 import com.jr.util.Settings;
 import com.jr.util.Util;
 
@@ -63,7 +64,7 @@ public class NormalPlaylistService {
         Long id = existingPlaylist == null ? Settings.getNextId() : existingPlaylist.getId();
 
         if (Util.isNameBad(name))
-            throw new InputMismatchException("Bad name for playlist : '" + name + "'. Correct pattern: " + Util.GOOD_NAME_PATTERN);
+            throw new InputMismatchException("Bad name for playlist : '" + name + "'. Correct pattern: " + Defaults.GOOD_NAME_PATTERN);
 
         if (flavor == null) {
             flavor = new Flavor();
@@ -82,7 +83,7 @@ public class NormalPlaylistService {
     public static NormalPlaylist rename(NormalPlaylist playlist, String newName) {
         if (Util.isNameBad(newName))
             throw new InputMismatchException("Cannot rename playlist '" + playlist.getName() + "' to '" + newName +
-                    "'. Correct pattern: " + Util.GOOD_NAME_PATTERN);
+                    "'. Correct pattern: " + Defaults.GOOD_NAME_PATTERN);
 
         return playlistRepo.save(new NormalPlaylist(
                 playlist.getId()
