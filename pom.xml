@@ -5,7 +5,7 @@
 
     <groupId>com.jr.hc.player</groupId>
     <artifactId>hcplayer</artifactId>
-    <version>0.0.5-CUMSHOT</version>
+    <version>0.0.666-CUMSHOT</version>
     <packaging>jar</packaging>
 
     <name>Hierarchical Criteria Player</name>
@@ -107,7 +107,7 @@
                     <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>front.main.Main_HCPlayer</mainClass>
+                                <mainClass>front.Main</mainClass>
                             </manifest>
                         </archive>
                     </configuration>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<TableView xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="front.controllers.PlayListController" fx:id="PlayList" editable="true">
+    <columns>
+        <TableColumn text="name" fx:id="nameCol"/>
+    </columns>
+    <columnResizePolicy>
+        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+    </columnResizePolicy>
+</TableView>

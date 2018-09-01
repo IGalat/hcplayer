@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.BorderPane?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="front.GlobalBorderPaneController">
-    <left>
-        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-            <tabs>
-                <Tab text="Play List" />
-
-                <Tab text="Crits">
-                    <content>
-                        <fx:include source="CritTableView.fxml" />
-                    </content>
-                </Tab>
-            </tabs>
-        </TabPane>
-    </left>
-    <right>
-        <fx:include source="MusicLibTableView.fxml" />
-    </right>
-</BorderPane>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="front.controllers.GlobalBorderPaneController">
+    <children>
+        <fx:include source="Menu.fxml"/>
+        <fx:include source="Player.fxml"/>
+        <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+            <children>
+                <fx:include source="Songs.fxml" HBox.hgrow="SOMETIMES"/>
+                <TabPane tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS" fx:id="centerTable">
+                    <tabs>
+                        <Tab text="Play List">
+                            <content>
+                                <fx:include source="PlayList.fxml"/>
+                            </content>
+                        </Tab>
+                        <Tab text="Crits">
+                            <content>
+                                <fx:include source="Crits.fxml"/>
+                            </content>
+                        </Tab>
+                        <Tab disable="true">
+                            <graphic>
+                                <Button fx:id="addNew" mnemonicParsing="false" text="+ Add New row +"/>
+                            </graphic>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+                <fx:include source="MusicLibrary.fxml" HBox.hgrow="SOMETIMES"/>
+            </children>
+        </HBox>
+        <fx:include source="StatusBar.fxml"/>
+    </children>
+</VBox>

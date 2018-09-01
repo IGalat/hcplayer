@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.Font?>
+<ToolBar fx:id="toolBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="front.controllers.PlayerController">
+    <items>
+        <Button fx:id="buttonStatus" mnemonicParsing="false" text="Status"/>
+        <Button fx:id="buttonPlay" mnemonicParsing="false">
+            <graphic>
+                <ImageView fx:id="iPlay" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="/images/play_green.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="buttonPause" mnemonicParsing="false">
+            <graphic>
+                <ImageView  fx:id="iPause" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="/images/pause_green.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="buttonStop" mnemonicParsing="false">
+            <graphic>
+                <ImageView fx:id="iStop" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="/images/stop_green.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Label text="music info" fx:id="musicInfo">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Label>
+    </items>
+</ToolBar>
