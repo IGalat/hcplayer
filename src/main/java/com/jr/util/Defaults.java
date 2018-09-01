@@ -10,4 +10,5 @@ public class Defaults {
     public static final double PLAYER_VOLUME = 0.2;
     public static final int MIN_SONGS_WITHOUT_REPEAT = 5;
     public static final double MIN_SONGS_WITHOUT_REPEAT_IN_PLAYLIST_PERCENTAGE = 0.2;
+    public static final long TIME_BETWEEN_SONGS_MILLISEC = 1000;
 }

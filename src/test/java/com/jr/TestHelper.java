@@ -108,11 +108,11 @@ public class TestHelper {
 
         vivaldi_TangoOfDeath = SongService.save(prefix + "Antonio Vivaldi - Tango of Death.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 7), new Pair<>(classic, 10), new Pair<>(energetic, 7), new Pair<>(wordless, 1));
-        mozart_RondoAllaTurka = SongService.save(prefix + "Wolfgang Amadeus Mozart - Rondo Alla Turka.mp3"
+        mozart_RondoAllaTurka = SongService.save(prefix + "Wolfgang Amadeus Mozart - Rondo Alla Turka (Соната №11 - 3 часть).mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 4), new Pair<>(classic, 10), new Pair<>(energetic, 8), new Pair<>(cheerful, 9), new Pair<>(wordless, 1));
         wow_AntechmberOfUlduar = SongService.save(prefix + "WoW - Antechamber of Ulduar.mp3"
                 , new Pair<>(classic, 7), new Pair<>(epic, 8), new Pair<>(wordless, 1));
-        dragonforce_StrikeOfTheNinja = SongService.save("Dragonforce - Strike Of The Ninja.mp3"
+        dragonforce_StrikeOfTheNinja = SongService.save(prefix + "Dragonforce - Strike Of The Ninja.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 5), new Pair<>(powerMetal, 10), new Pair<>(energetic, 10));
         eluveitie_Lvgvs = SongService.save(prefix + "Eluveitie - Lvgvs.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 7), new Pair<>(folkMetal, 7), new Pair<>(energetic, 6), new Pair<>(singsong, 7));

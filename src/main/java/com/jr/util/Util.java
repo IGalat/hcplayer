@@ -4,9 +4,15 @@ import com.jr.dao.CritRepositoryFile;
 import com.jr.dao.NormalPlaylistRepositoryFile;
 import com.jr.dao.SongRepositoryFile;
 import com.jr.logic.CritHardcode;
+import com.jr.model.Flavor;
+import com.jr.model.NormalPlaylist;
+import com.jr.model.Playlist;
+import com.jr.service.NormalPlaylistService;
+import com.jr.service.SongService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -30,6 +36,12 @@ public class Util {
         log.info("init() called");
         CritHardcode.saveStandardCrits();
 
+        try {
+            Class.forName("com.jr.execution.HCPlayer");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         isInitialized = true;
     }
 
@@ -43,6 +55,19 @@ public class Util {
         SongRepositoryFile.rewriteFile();
         NormalPlaylistRepositoryFile.rewriteFile();
         Settings.saveSettings();
+    }
+
+    public static Playlist getInitialPlaylist() {
+        Playlist playlist = null;
+        Long id = Settings.getPlaylistId();
+        if (id != null) {
+            playlist = NormalPlaylistService.getOne(id);
+            if (playlist == null) { //todo ask filtered playlist service
+            }
+        }
+        if (playlist != null) return playlist;
+
+        return new NormalPlaylist(-1, "", new Flavor(), true, SongService.getAll());
     }
 
 }

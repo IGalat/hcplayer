@@ -1,5 +1,6 @@
 package com.jr.util;
 
+import com.jr.logic.PlayPolicy;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -37,4 +38,31 @@ public class SettingsTest {
         Settings.savePlayerVolume(8);
         Assert.assertEquals(8, Settings.getPlayerVolume(), 0.0000001);
     }
+
+    @Test
+    public void playPolicy() {
+        Settings.savePlayPolicy(new PlayPolicy.ShuffleTracks());
+        Assert.assertEquals(PlayPolicy.ShuffleTracks.class, Settings.getPlayPolicy().getClass());
+    }
+
+    @Test
+    public void playlistId() {
+        Settings.savePlaylistId(123L);
+        Long expectedId = 123L;
+        Assert.assertEquals(expectedId, Settings.getPlaylistId());
+    }
+
+    @Test
+    public void songsWithoutRepeat(){
+        Settings.saveMinSongsWithoutRepeat(123);
+        Assert.assertEquals(java.util.Optional.ofNullable(123), java.util.Optional.ofNullable(Settings.getMinSongsWithoutRepeat()));
+    }
+
+    @Test
+    public void songsWithoutRepeatPercent(){
+        Settings.saveMinSongsWithoutRepeatInPlaylistPercentage(123);
+        Double expectedId = 123D;
+        Assert.assertEquals(expectedId, Settings.getMinSongsWithoutRepeatInPlaylistPercentage(), 0.000001);
+    }
+
 }

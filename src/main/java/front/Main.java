@@ -1,5 +1,7 @@
 package front;
 
+import com.jr.execution.HCPlayer;
+import com.jr.logic.PlayPolicy;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +16,9 @@ public class Main extends Application {
         primaryStage.setTitle("hcplayer");
         primaryStage.setScene(new Scene(root, 1024, 768));
         primaryStage.show();
+
+        HCPlayer.setPlayPolicy(new PlayPolicy.RepeatTrack());
+        HCPlayer.playNextSong();
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package com.jr.logic;
 
+import com.jr.execution.HCPlayer;
 import com.jr.model.IPlayPolicy;
 import com.jr.model.Playlist;
 import com.jr.model.Song;
@@ -16,15 +17,22 @@ public class PlayPolicy {
         switch (policyName) {
             case "Normal":
                 return new Normal();
-            case "ShuffleSongs":
-                return new ShuffleSongs();
+            case "ShuffleTracks":
+                return new ShuffleTracks();
             case "Random":
                 return new Random();
             case "WeightedRandom":
                 return new WeightedRandom();
+            case "RepeatTrack":
+                return new RepeatTrack();
             default:
                 return new Normal();
         }
+    }
+
+    private static int resultingMinSongsWoRepeat(int playlistSize) {
+        int byPercentage = (int) Math.round(playlistSize * HCPlayer.getMinSongsWithoutRepeatInPlaylistPercentage());
+        return Math.min(byPercentage, HCPlayer.getMinSongsWithoutRepeat());
     }
 
 
@@ -60,7 +68,7 @@ public class PlayPolicy {
     }
 
 
-    public static class ShuffleSongs implements IPlayPolicy {
+    public static class ShuffleTracks implements IPlayPolicy {
 
         @Override
         public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
@@ -69,7 +77,7 @@ public class PlayPolicy {
 
         @Override
         public String toString() {
-            return "ShuffleSongs";
+            return "ShuffleTracks";
         }
     }
 
@@ -98,6 +106,22 @@ public class PlayPolicy {
         @Override
         public String toString() {
             return "WeightedRandom";
+        }
+    }
+
+
+    public static class RepeatTrack implements IPlayPolicy {
+
+        @Override
+        public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
+            if (playingHistory.size() > 0)
+                return SongService.getOne(playingHistory.get(playingHistory.size() - 1));
+            return null;// playlist.getSongs().get(0);
+        }
+
+        @Override
+        public String toString() {
+            return "RepeatTrack";
         }
     }
 

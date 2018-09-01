@@ -3,14 +3,15 @@ package com.jr.execution;
 import com.jr.model.IPlayPolicy;
 import com.jr.model.Playlist;
 import com.jr.model.Song;
-import com.jr.service.SongService;
+import com.jr.util.Settings;
+import com.jr.util.Util;
 import javafx.scene.media.MediaPlayer;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Galatyuk Ilya
@@ -18,15 +19,19 @@ import java.util.List;
 public final class HCPlayer {
     @Getter
     @Setter
-    private static IPlayPolicy playPolicy;
+    private static IPlayPolicy playPolicy = Settings.getPlayPolicy();
     @Getter
-    private static Playlist playlist; //todo save/load chosen playlist; default all-encompassing playlist with standard flavor
+    private static Playlist playlist = Util.getInitialPlaylist();
     @Getter
-    private static Song playingSong;
+    private static Song currentSong;
     @Getter
-    private static List<Long> playingHistory = new ArrayList<>(); // only for current playlist //todo fill it when needed!
-
-    //todo init block? with setting new playlist
+    private static List<Long> playingHistory = new ArrayList<>(); // only for current playlist //todo fill it when needed
+    @Setter
+    @Getter
+    private static int minSongsWithoutRepeat = Settings.getMinSongsWithoutRepeat();
+    @Setter
+    @Getter
+    private static double minSongsWithoutRepeatInPlaylistPercentage = Settings.getMinSongsWithoutRepeatInPlaylistPercentage();
 
     public static MediaPlayer getMediaPlayer() {
         return MediaPlayerAdapter.getMediaPlayer();
@@ -39,20 +44,26 @@ public final class HCPlayer {
     public static void setPlaylist(Playlist playlist, Long songToPlayFirst) {
         HCPlayer.playlist = playlist;
         playingHistory = new ArrayList<>();
-        //todo set playing song to play first in playlist; set playingSong; start playing
-        play(songToPlayFirst);
+        //todo set playing song to play first in playlist; set currentSong; start playing
+        //play(songToPlayFirst);
     }
 
     public static Song playNextSong() {
-        if (playlist.getSongs() == null || playlist.getSongs().size() < 1)
-            return null; //todo
+        if (playlist.getSongs() == null || playlist.getSongs().size() < 1) {
+            play(currentSong);
+            return currentSong;
+        }
+        playlist.getSongs().removeIf(Objects::isNull);
 
+        Song nextSong = playPolicy.getNextSong(playlist, playingHistory);
+        if (nextSong != null)
+            currentSong = nextSong;
+        if (currentSong == null)
+            return null;
 
-        playingSong = playPolicy.getNextSong(playlist, playingHistory);
-        playingHistory.add(playingSong.getId());
-
-        //todo actually play
-        return null;
+        playingHistory.add(currentSong.getId());
+        play(currentSong);
+        return currentSong;
     }
 
     public static Song playPreviousSong() {
@@ -60,15 +71,13 @@ public final class HCPlayer {
     }
 
     public static void stop() {
-        //todo lower/up song's novelty, song to settings(so start with it, but don't save time), ?
+        //todo lower/up song's novelty depending on time of stop, song to settings(so start with it, but don't save time), ?
+        //wait, it doesn't necessarily get called for next song. gotta either call or change place of to do
         MediaPlayerAdapter.stop();
     }
 
-    public static void play(Long songToPlay) {
-        //todo pick song and potentially start time; check it exists
-        //also adjust volume and such
-        Path path = SongService.getOne(songToPlay).getPath();
-        MediaPlayerAdapter.play(path);
+    public static void play(Song songToPlay) {
+        MediaPlayerAdapter.play(songToPlay.getPath());
     }
 
     public static void pause() {
@@ -82,7 +91,5 @@ public final class HCPlayer {
     public static void setVolume(double volume) {
         MediaPlayerAdapter.setVolume(volume);
     }
-
-    //todo mediaPlayer -> onStop new song
 
 }

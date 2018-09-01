@@ -1,5 +1,6 @@
 package com.jr.execution;
 
+import com.jr.util.Defaults;
 import com.jr.util.Settings;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -41,6 +42,15 @@ class MediaPlayerAdapter {
         Media media = new Media(path.toUri().toString());
 
         mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            try {
+                Thread.currentThread().sleep(Defaults.TIME_BETWEEN_SONGS_MILLISEC);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            HCPlayer.playNextSong();
+        });
+
         mediaPlayer.setVolume(volume);
         mediaPlayer.play();
     }
