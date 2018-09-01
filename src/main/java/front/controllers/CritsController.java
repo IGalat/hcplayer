@@ -15,6 +15,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -66,10 +68,12 @@ public class CritsController extends AbstractController implements Initializable
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
-                    selectedItems.forEach(crit -> {
-                        log.info(this.getClass().getSimpleName() + " trying to remove " + selectedItems.get(0).getClass().getSimpleName() + " val: " + crit);
+                    List<Integer> selectedIndices = new ArrayList<>(CritsTable.getSelectionModel().getSelectedIndices());
+                    for (int i = selectedIndices.size() - 1; i >= 0; i--) {
+                        Crit crit = CritsTable.getItems().get(selectedIndices.get(i));
+                        log.info(this.getClass().getSimpleName() + " trying to remove " + crit);
                         CritService.remove(crit);
-                    });
+                    }
                 }
             }
         });
