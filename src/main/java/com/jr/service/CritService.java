@@ -132,6 +132,18 @@ public class CritService {
         return save(parent.getName(), parent.getMin(), parent.getMax(), parent.getChildren());
     }
 
+    public static List<Crit> getParents(Crit critToGetParentsOf) {
+        long id = critToGetParentsOf.getId();
+        List<Crit> parents = new ArrayList<>();
+        for (Crit crit : getAll())
+            for (Crit child : crit.getChildren())
+                if (child.getId() == id) {
+                    parents.add(crit);
+                    break;
+                }
+        return parents;
+    }
+
     public static Set<Crit> getAllHierarchyDown(Crit crit) {
         Set<Crit> hierarchy = new HashSet<>();
         List<Crit> generation = new ArrayList<>();

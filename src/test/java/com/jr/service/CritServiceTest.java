@@ -58,7 +58,8 @@ public class CritServiceTest {
         deleteAll();
 
         List<Crit> expectedCritList = new ArrayList<>();
-        expectedCritList.add(save("testCrit1"));
+        Crit testCrit1 =  save("testCrit1");
+        expectedCritList.add(testCrit1);
         expectedCritList.add(save("testCrit2"));
         expectedCritList.add(save("testCrit3"));
         expectedCritList.add(save("testCrit4"));
@@ -81,6 +82,8 @@ public class CritServiceTest {
         expectedCritList.add(crit007);
 
         critsAreMatchingFile(expectedCritList);
+
+        Assert.assertEquals(2, CritService.getParents(testCrit1).size());
     }
 
     private void critsAreMatchingFile(List<Crit> expectedCritList) {
