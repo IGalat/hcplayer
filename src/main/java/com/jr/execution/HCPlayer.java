@@ -4,7 +4,6 @@ import com.jr.model.IPlayOrder;
 import com.jr.model.Playlist;
 import com.jr.model.Song;
 import com.jr.service.SongService;
-import com.jr.util.Defaults;
 import com.jr.util.Settings;
 import com.jr.util.Util;
 import lombok.Getter;
@@ -65,12 +64,6 @@ public final class HCPlayer {
             return;
         }
 
-        try {
-            Thread.sleep(Defaults.TIME_BETWEEN_SONGS_MILLISEC);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         songs.removeIf(Objects::isNull);
 
         Song nextSong = playOrder.getNextSong(playlist, playingHistory);
@@ -84,9 +77,10 @@ public final class HCPlayer {
 
     public static void playPreviousSong() {
         int size = playingHistory.size();
-        if (size > 0)
-            playNewSong(SongService.getOne(playingHistory.get(size - 1)));
-        else
+        if (size > 1) {
+            playNewSong(SongService.getOne(playingHistory.get(size - 2)));
+            playingHistory.remove(size - 1);
+        } else
             playNewSong(currentSong);
     }
 
@@ -118,8 +112,8 @@ public final class HCPlayer {
         MediaPlayerAdapter.pause();
     }
 
-    public static void resume() {
-        MediaPlayerAdapter.resume();
+    public static void play() {
+        MediaPlayerAdapter.play();
     }
 
 }

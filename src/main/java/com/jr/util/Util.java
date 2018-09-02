@@ -3,7 +3,7 @@ package com.jr.util;
 import com.jr.dao.CritRepositoryFile;
 import com.jr.dao.NormalPlaylistRepositoryFile;
 import com.jr.dao.SongRepositoryFile;
-import com.jr.execution.HCPlayer;
+import com.jr.execution.MediaPlayerAdapter;
 import com.jr.logic.CritHardcode;
 import com.jr.model.Playlist;
 import com.jr.service.NormalPlaylistService;
@@ -45,7 +45,7 @@ public class Util {
 
     public static void shutdown() {
         log.info("shutdown() called\n");
-        HCPlayer.stop();
+        MediaPlayerAdapter.destruct();
         saveData();
     }
 

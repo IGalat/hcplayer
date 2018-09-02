@@ -48,7 +48,7 @@ public class MediaPlayerAdapterTest {
         Thread.sleep(10);
         Assert.assertEquals(MediaPlayer.Status.PAUSED, MediaPlayerAdapter.getMediaPlayer().getStatus());
 
-        MediaPlayerAdapter.resume();
+        MediaPlayerAdapter.play();
         Thread.sleep(10);
         Assert.assertEquals(MediaPlayer.Status.PLAYING, MediaPlayerAdapter.getMediaPlayer().getStatus());
 

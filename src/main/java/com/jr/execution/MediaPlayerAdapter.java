@@ -1,5 +1,6 @@
 package com.jr.execution;
 
+import com.jr.util.Defaults;
 import com.jr.util.Settings;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -32,8 +33,6 @@ public class MediaPlayerAdapter {
     static void stop() {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
-            mediaPlayer.dispose();
-            mediaPlayer = null;
         }
     }
 
@@ -45,6 +44,11 @@ public class MediaPlayerAdapter {
         ObservableForPlayer.getInstance().update();
 
         mediaPlayer.setOnEndOfMedia(() -> {
+            try {
+                Thread.sleep(Defaults.TIME_BETWEEN_SONGS_MILLISEC);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             mediaPlayer.dispose(); //or else memory leak courtesy of javafx?
             HCPlayer.playNextSong();
         });
@@ -59,9 +63,17 @@ public class MediaPlayerAdapter {
         }
     }
 
-    static void resume() {
+    static void play() {
         if (mediaPlayer != null)
             mediaPlayer.play();
+    }
+
+    public static void destruct() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
+            mediaPlayer = null;
+        }
     }
 
     static void setVolume(double volume) {
