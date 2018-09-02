@@ -37,7 +37,7 @@ public class Util {
         try {
             Class.forName("com.jr.execution.HCPlayer");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.error(e);
         }
 
         isInitialized = true;

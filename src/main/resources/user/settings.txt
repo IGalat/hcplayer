@@ -1,4 +1,5 @@
 maxId=483;
+play order=Normal;
 player volume=0.2;
 play policy=Normal;
 min songs without repeat in playlist percentage=0.2;
