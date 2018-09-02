@@ -3,6 +3,6 @@ player volume=8.0;
 playlist id=123;
 play policy=ShuffleTracks;
 min songs without repeat in playlist percentage=123.0;
-max id=2428;
+max id=2472;
 default flavor=weight'10000,rating'10,novelty'10;
 min songs without repeat=123;

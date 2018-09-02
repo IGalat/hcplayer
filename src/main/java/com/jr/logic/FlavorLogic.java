@@ -67,7 +67,7 @@ public class FlavorLogic {
         for (Map.Entry<Crit, Integer> flavorEntry : flavor.getFlavorMap().entrySet()) {
             initialWeight /= Math.sqrt(flavorEntry.getValue());
         }
-        return initialWeight;
+        return initialWeight > 0 ? initialWeight : -initialWeight;
     }
 
     private static HierarchyPower[] getCritPowerMap(Flavor flavor) {

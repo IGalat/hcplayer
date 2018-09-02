@@ -40,6 +40,7 @@ public class MediaPlayerAdapter {
     static void play(Path path) throws RuntimeException {
         Media media = new Media(path.toUri().toString());
 
+        stop();
         mediaPlayer = new MediaPlayer(media);
         ObservableForPlayer.getInstance().update();
 
