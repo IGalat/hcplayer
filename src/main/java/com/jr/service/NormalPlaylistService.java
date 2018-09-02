@@ -36,8 +36,8 @@ public class NormalPlaylistService {
         return playlistRepo.getOne(id);
     }
 
-    public static void remove(NormalPlaylist crit) {
-        playlistRepo.delete(crit);
+    public static void remove(NormalPlaylist playlist) {
+        playlistRepo.delete(playlist);
     }
 
     public static NormalPlaylist save(String name) {
@@ -105,7 +105,7 @@ public class NormalPlaylistService {
         return playlistRepo.save(normalPlaylist);
     }
 
-    public static NormalPlaylist anonPlaylist(List<Song> songs){
+    public static NormalPlaylist anonPlaylist(List<Song> songs) {
         return new NormalPlaylist(-1, "", new Flavor(), true, songs);
     }
 }

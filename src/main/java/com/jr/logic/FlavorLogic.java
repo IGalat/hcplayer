@@ -65,9 +65,9 @@ public class FlavorLogic {
     private static double calcInitialWeight(Flavor flavor) {
         double initialWeight = 100000;
         for (Map.Entry<Crit, Integer> flavorEntry : flavor.getFlavorMap().entrySet()) {
-            initialWeight /= Math.sqrt(flavorEntry.getValue());
+            initialWeight /= Math.sqrt(Math.abs(flavorEntry.getValue()));
         }
-        return initialWeight > 0 ? initialWeight : -initialWeight;
+        return initialWeight;
     }
 
     private static HierarchyPower[] getCritPowerMap(Flavor flavor) {
@@ -132,7 +132,7 @@ public class FlavorLogic {
         return number - min + 1;
     }
 
-    static int getSongWeight(double initialWeight, Song song, HierarchyPower[] critPowerMap) {
+    private static int getSongWeight(double initialWeight, Song song, HierarchyPower[] critPowerMap) {
         Map<Crit, Integer> songCritMap = song.getCrits();
         double weight = initialWeight;
 

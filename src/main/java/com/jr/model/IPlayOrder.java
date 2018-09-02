@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface IPlayOrder {
 
-    Song getNextSong(Playlist playlist, List<Long> playingHistory);
+    Song getNextSong(Playlist playlist, List<Long> playHistory);
 
     @Override
     String toString();

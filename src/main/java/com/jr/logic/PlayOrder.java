@@ -1,13 +1,17 @@
 package com.jr.logic;
 
 import com.jr.execution.HCPlayer;
+import com.jr.model.Flavor;
 import com.jr.model.IPlayOrder;
 import com.jr.model.Playlist;
 import com.jr.model.Song;
 import com.jr.service.SongService;
+import com.jr.util.Util;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +36,29 @@ public class PlayOrder {
         }
     }
 
+    private static List<Song> getPlayableSongs(List<Song> songs, List<Long> playHistory) {
+        List<Song> playableSongs = new ArrayList<>();
+        List<Long> nonPlayableIds = new ArrayList<>();
+        int playHistorySize = playHistory.size();
+
+        int byPercentage = (int) Math.round(songs.size() * HCPlayer.getMinSongsWithoutRepeatInPlaylistPercentage());
+        int quantityOfNonPlayable = Math.max(byPercentage, HCPlayer.getMinSongsWithoutRepeat());
+        if (quantityOfNonPlayable >= songs.size()) quantityOfNonPlayable = songs.size() - 1;
+
+        for (int i = 1; i <= quantityOfNonPlayable; i++) {
+            int index = playHistorySize - i;
+            if (index < 0) break;
+            nonPlayableIds.add(playHistory.get(index));
+        }
+
+        for (Song song : songs)
+            if (song != null && !nonPlayableIds.contains(song.getId())) {
+                playableSongs.add(song);
+            }
+
+        return playableSongs;
+    }
+
     private static int resultingMinSongsWoRepeat(int playlistSize) {
         int byPercentage = (int) Math.round(playlistSize * HCPlayer.getMinSongsWithoutRepeatInPlaylistPercentage());
         return Math.min(byPercentage, HCPlayer.getMinSongsWithoutRepeat());
@@ -41,13 +68,13 @@ public class PlayOrder {
     public static class Normal implements IPlayOrder {
 
         @Override
-        public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
+        public Song getNextSong(Playlist playlist, List<Long> playHistory) {
 
             List<Song> songs = playlist.getSongs();
 
             Long currentSongId;
-            if (playingHistory.size() > 0)
-                currentSongId = playingHistory.get(playingHistory.size() - 1);
+            if (playHistory.size() > 0)
+                currentSongId = playHistory.get(playHistory.size() - 1);
             else
                 return songs.get(0);
 
@@ -74,15 +101,15 @@ public class PlayOrder {
         private List<Long> shuffledIds;
 
         @Override
-        public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
+        public Song getNextSong(Playlist playlist, List<Long> playHistory) {
             List<Song> songs = playlist.getSongs();
-            if (playingHistory.size() < 2 || shuffledIds == null)
+            if (playHistory.size() < 2 || shuffledIds == null)
                 shuffledIds = shuffleSongIds(songs);
 
-            if (playingHistory.size() == 0)
+            if (playHistory.size() == 0)
                 return SongService.getOne(shuffledIds.get(0));
 
-            long nextSongId = getIdOfNextSong(playingHistory.get(playingHistory.size() - 1));
+            long nextSongId = getIdOfNextSong(playHistory.get(playHistory.size() - 1));
 
             return SongService.getOne(nextSongId);
         }
@@ -119,8 +146,10 @@ public class PlayOrder {
     public static class Random implements IPlayOrder {
 
         @Override
-        public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
-            return null; //todo
+        public Song getNextSong(Playlist playlist, List<Long> playHistory) {
+            List<Song> playableSongs = getPlayableSongs(playlist.getSongs(), playHistory);
+            int index = (int) Util.roll(playableSongs.size()) - 1;
+            return playableSongs.get(index);
         }
 
         @Override
@@ -133,8 +162,22 @@ public class PlayOrder {
     public static class WeightedRandom implements IPlayOrder {
 
         @Override
-        public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
-            return null; //todo
+        public Song getNextSong(Playlist playlist, List<Long> playHistory) {
+            Flavor flavor = playlist.isDefaultFlavorUsed() ? FlavorLogic.getDefaultFlavor() : playlist.getFlavor();
+            List<Song> playableSongs = getPlayableSongs(playlist.getSongs(), playHistory);
+            Map<Song, Integer> weightMap = FlavorLogic.getWeightMap(playableSongs, flavor);
+
+            long maxRoll = 0;
+            for (Map.Entry<Song, Integer> weight : weightMap.entrySet())
+                maxRoll += weight.getValue();
+            long roll = Util.roll(maxRoll);
+
+            for (Map.Entry<Song, Integer> weight : weightMap.entrySet()) {
+                roll -= weight.getValue();
+                if (roll <= 0) return weight.getKey();
+            }
+
+            return null; //shouldn't go here at all: logic error if did
         }
 
         @Override
@@ -147,9 +190,9 @@ public class PlayOrder {
     public static class RepeatTrack implements IPlayOrder {
 
         @Override
-        public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
-            if (playingHistory.size() > 0)
-                return SongService.getOne(playingHistory.get(playingHistory.size() - 1));
+        public Song getNextSong(Playlist playlist, List<Long> playHistory) {
+            if (playHistory.size() > 0)
+                return SongService.getOne(playHistory.get(playHistory.size() - 1));
             return playlist.getSongs().get(0);
         }
 
