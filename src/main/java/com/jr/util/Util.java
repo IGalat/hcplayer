@@ -3,6 +3,7 @@ package com.jr.util;
 import com.jr.dao.CritRepositoryFile;
 import com.jr.dao.NormalPlaylistRepositoryFile;
 import com.jr.dao.SongRepositoryFile;
+import com.jr.execution.HCPlayer;
 import com.jr.logic.CritHardcode;
 import com.jr.model.Flavor;
 import com.jr.model.NormalPlaylist;
@@ -12,7 +13,6 @@ import com.jr.service.SongService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -47,6 +47,7 @@ public class Util {
 
     public static void shutdown() {
         log.info("shutdown() called\n");
+        HCPlayer.stop();
         saveData();
     }
 

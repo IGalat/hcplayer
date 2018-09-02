@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Galatyuk Ilya
  */
-public interface IPlayPolicy {
+public interface IPlayOrder {
 
     Song getNextSong(Playlist playlist, List<Long> playingHistory);
 

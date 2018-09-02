@@ -17,6 +17,8 @@ import org.junit.Test;
 public class TestHelper {
     public static Crit wordless;
     public static Crit nostalgic;
+    public static Crit heavy;
+    public static Crit background;
 
     public static Crit genre;
     public static Crit metal;
@@ -81,6 +83,8 @@ public class TestHelper {
         wordless = CritService.save("wordless", 1, 1);
 
         nostalgic = CritService.save("nostalgic");
+        heavy = CritService.save("heavy");
+        background = CritService.save("background");
 
         genre = CritService.save("genre");
         metal = CritService.save("metal", genre);

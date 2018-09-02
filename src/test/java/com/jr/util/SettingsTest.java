@@ -1,6 +1,6 @@
 package com.jr.util;
 
-import com.jr.logic.PlayPolicy;
+import com.jr.logic.PlayOrder;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -40,9 +40,9 @@ public class SettingsTest {
     }
 
     @Test
-    public void playPolicy() {
-        Settings.savePlayPolicy(new PlayPolicy.ShuffleTracks());
-        Assert.assertEquals(PlayPolicy.ShuffleTracks.class, Settings.getPlayPolicy().getClass());
+    public void playOrder() {
+        Settings.savePlayOrder(new PlayOrder.ShuffleTracks());
+        Assert.assertEquals(PlayOrder.ShuffleTracks.class, Settings.getPlayOrder().getClass());
     }
 
     @Test

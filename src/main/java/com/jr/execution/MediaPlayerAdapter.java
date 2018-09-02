@@ -10,9 +10,14 @@ import lombok.Getter;
 import java.nio.file.Path;
 
 /**
+ * Setting mediaPlayer properties should be done via setters in this class,
+ * while getters can be(unreliably - mediaPlayer doesn't exist if no song is up) used directly
+ * <p>
+ * This class should not be used for managing which song to play! Use HCPlayer.
+ *
  * @author Galatyuk Ilya
  */
-class MediaPlayerAdapter {
+public class MediaPlayerAdapter {
     @Getter
     private static MediaPlayer mediaPlayer;
     @Getter
@@ -25,29 +30,20 @@ class MediaPlayerAdapter {
     }
 
 
-    public static void stop() {
+    static void stop() {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.dispose();
+            mediaPlayer = null;
         }
     }
 
-    public static void pause() {
-        if (mediaPlayer != null) {
-            mediaPlayer.pause();
-        }
-    }
-
-    public static void play(Path path) throws RuntimeException {
+    static void play(Path path) throws RuntimeException {
         Media media = new Media(path.toUri().toString());
 
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setOnEndOfMedia(() -> {
-            try {
-                Thread.currentThread().sleep(Defaults.TIME_BETWEEN_SONGS_MILLISEC);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            mediaPlayer.dispose(); //or else memory leak courtesy of javafx?
             HCPlayer.playNextSong();
         });
 
@@ -55,7 +51,18 @@ class MediaPlayerAdapter {
         mediaPlayer.play();
     }
 
-    public static void setVolume(double volume) {
+    static void pause() {
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+        }
+    }
+
+    static void resume() {
+        if (mediaPlayer != null)
+            mediaPlayer.play();
+    }
+
+    static void setVolume(double volume) {
         if (volume > 1)
             volume = 1;
         MediaPlayerAdapter.volume = volume;

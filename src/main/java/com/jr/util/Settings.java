@@ -1,10 +1,11 @@
 package com.jr.util;
 
 import com.jr.execution.HCPlayer;
+import com.jr.execution.MediaPlayerAdapter;
 import com.jr.logic.FlavorLogic;
-import com.jr.logic.PlayPolicy;
+import com.jr.logic.PlayOrder;
 import com.jr.model.Flavor;
-import com.jr.model.IPlayPolicy;
+import com.jr.model.IPlayOrder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,11 +19,10 @@ public class Settings {
     private static final String MAX_ID_NAME = "max id";
     private static final String DEFAULT_FLAVOR_NAME = "default flavor";
     private static final String PLAYER_VOLUME_NAME = "player volume";
-    private static final String PLAY_POLICY_NAME = "play policy";
+    private static final String PLAY_ORDER_NAME = "play order";
     private static final String PLAYLIST_ID_NAME = "playlist id";
     private static final String MIN_SONGS_WITHOUT_REPEAT_NAME = "min songs without repeat";
     private static final String MIN_SONGS_WITHOUT_REPEAT_IN_PLAYLIST_PERCENTAGE_NAME = "min songs without repeat in playlist percentage";
-    private static final String TIME_BETWEEN_SONGS_MILLISEC_NAME = "time between songs(in ms)";
 
 
     private static Map<String, String> getSettingsFromFile() {
@@ -69,9 +69,9 @@ public class Settings {
     }
 
     public static void saveSettings() {
-        savePlayerVolume(HCPlayer.getVolume());
+        savePlayerVolume(MediaPlayerAdapter.getVolume());
         saveDefaultFlavor(FlavorLogic.getDefaultFlavor());
-        savePlayPolicy(HCPlayer.getPlayPolicy());
+        savePlayOrder(HCPlayer.getPlayOrder());
         savePlaylistId(HCPlayer.getPlaylist().getId());
         saveMinSongsWithoutRepeat(HCPlayer.getMinSongsWithoutRepeat());
         saveMinSongsWithoutRepeatInPlaylistPercentage(HCPlayer.getMinSongsWithoutRepeatInPlaylistPercentage());
@@ -100,14 +100,14 @@ public class Settings {
     }
 
 
-    public static void savePlayPolicy(IPlayPolicy playPolicy) {
-        save(PLAY_POLICY_NAME, playPolicy.toString());
+    public static void savePlayOrder(IPlayOrder playOrder) {
+        save(PLAY_ORDER_NAME, playOrder.toString());
     }
 
-    public static IPlayPolicy getPlayPolicy() {
-        String playPolicyString = get(PLAY_POLICY_NAME);
-        if (playPolicyString == null || playPolicyString.isEmpty()) return new PlayPolicy.Normal();
-        return PlayPolicy.parse(playPolicyString);
+    public static IPlayOrder getPlayOrder() {
+        String playOrderString = get(PLAY_ORDER_NAME);
+        if (playOrderString == null || playOrderString.isEmpty()) return new PlayOrder.Normal();
+        return PlayOrder.parse(playOrderString);
     }
 
 

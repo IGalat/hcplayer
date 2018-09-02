@@ -1,7 +1,7 @@
 package com.jr.logic;
 
 import com.jr.execution.HCPlayer;
-import com.jr.model.IPlayPolicy;
+import com.jr.model.IPlayOrder;
 import com.jr.model.Playlist;
 import com.jr.model.Song;
 import com.jr.service.SongService;
@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * @author Galatyuk Ilya
  */
-public class PlayPolicy {
+public class PlayOrder {
 
-    public static IPlayPolicy parse(String policyName) {
-        switch (policyName) {
+    public static IPlayOrder parse(String playOrderName) {
+        switch (playOrderName) {
             case "Normal":
                 return new Normal();
             case "ShuffleTracks":
@@ -36,7 +36,7 @@ public class PlayPolicy {
     }
 
 
-    public static class Normal implements IPlayPolicy {
+    public static class Normal implements IPlayOrder {
 
         @Override
         public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
@@ -68,7 +68,7 @@ public class PlayPolicy {
     }
 
 
-    public static class ShuffleTracks implements IPlayPolicy {
+    public static class ShuffleTracks implements IPlayOrder {
 
         @Override
         public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
@@ -82,7 +82,7 @@ public class PlayPolicy {
     }
 
 
-    public static class Random implements IPlayPolicy {
+    public static class Random implements IPlayOrder {
 
         @Override
         public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
@@ -96,7 +96,7 @@ public class PlayPolicy {
     }
 
 
-    public static class WeightedRandom implements IPlayPolicy {
+    public static class WeightedRandom implements IPlayOrder {
 
         @Override
         public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
@@ -110,13 +110,13 @@ public class PlayPolicy {
     }
 
 
-    public static class RepeatTrack implements IPlayPolicy {
+    public static class RepeatTrack implements IPlayOrder {
 
         @Override
         public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
             if (playingHistory.size() > 0)
                 return SongService.getOne(playingHistory.get(playingHistory.size() - 1));
-            return null;// playlist.getSongs().get(0);
+            return playlist.getSongs().get(0);
         }
 
         @Override

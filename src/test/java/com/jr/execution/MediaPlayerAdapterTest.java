@@ -3,6 +3,7 @@ package com.jr.execution;
 import com.jr.TestHelper;
 import com.jr.service.SongService;
 import com.jr.util.*;
+import javafx.scene.media.MediaPlayer;
 import org.junit.*;
 
 /**
@@ -35,9 +36,24 @@ public class MediaPlayerAdapterTest {
         Assert.assertEquals(1, Settings.getPlayerVolume(), 0.0000001);
     }
 
+    //in one test because time it takes to launch is meh substantial
     @Test
-    public void play() {
-        MediaPlayerAdapter.setVolume(0.1);
+    public void basics() throws InterruptedException {
+        MediaPlayerAdapter.setVolume(0);
         MediaPlayerAdapter.play(SongService.getAll().get(4).getPath());
+        Thread.sleep(50);
+        Assert.assertEquals(MediaPlayer.Status.PLAYING, MediaPlayerAdapter.getMediaPlayer().getStatus());
+
+        MediaPlayerAdapter.pause();
+        Thread.sleep(10);
+        Assert.assertEquals(MediaPlayer.Status.PAUSED, MediaPlayerAdapter.getMediaPlayer().getStatus());
+
+        MediaPlayerAdapter.resume();
+        Thread.sleep(10);
+        Assert.assertEquals(MediaPlayer.Status.PLAYING, MediaPlayerAdapter.getMediaPlayer().getStatus());
+
+        MediaPlayerAdapter.stop();
+        Thread.sleep(10);
+        Assert.assertEquals(null, MediaPlayerAdapter.getMediaPlayer());
     }
 }
