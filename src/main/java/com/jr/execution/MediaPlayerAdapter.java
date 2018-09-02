@@ -1,6 +1,5 @@
 package com.jr.execution;
 
-import com.jr.util.Defaults;
 import com.jr.util.Settings;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
@@ -42,6 +41,8 @@ public class MediaPlayerAdapter {
         Media media = new Media(path.toUri().toString());
 
         mediaPlayer = new MediaPlayer(media);
+        ObservableForPlayer.getInstance().update();
+
         mediaPlayer.setOnEndOfMedia(() -> {
             mediaPlayer.dispose(); //or else memory leak courtesy of javafx?
             HCPlayer.playNextSong();

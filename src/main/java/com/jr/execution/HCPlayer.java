@@ -9,6 +9,8 @@ import com.jr.util.Settings;
 import com.jr.util.Util;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,6 @@ public final class HCPlayer {
     private static Playlist playlist = Util.getInitialPlaylist();
     @Getter
     private static Song currentSong;
-    @Getter
     private static List<Long> playingHistory = new ArrayList<>(); // only for current playlist
     @Setter
     @Getter
@@ -37,6 +38,7 @@ public final class HCPlayer {
     private static double minSongsWithoutRepeatInPlaylistPercentage = Settings.getMinSongsWithoutRepeatInPlaylistPercentage();
     @Getter
     private static List<Exception> exceptionList = new ArrayList<>();
+    private static final Logger log = LogManager.getLogger(HCPlayer.class);
 
     public static void setPlaylist(Playlist playlist) {
         setPlaylist(playlist, null);
@@ -45,6 +47,8 @@ public final class HCPlayer {
     public static void setPlaylist(Playlist playlist, Song songToPlayFirst) {
         HCPlayer.playlist = playlist;
         playingHistory = new ArrayList<>();
+        stop();
+        log.debug("Playlist set: " + playlist);
 
         if (songToPlayFirst != null) {
             playNewSong(songToPlayFirst);
@@ -54,11 +58,12 @@ public final class HCPlayer {
     }
 
     public static void playNextSong() {
+        List<Song> songs = playlist.getSongs();
         //todo songs' novelty. Class with separate thread and timer, when timer's up refresh novelties?
-        if (playlist.getSongs() == null || playlist.getSongs().size() < 1) {
-            exceptionList.add(new Exception("Playlist is nonexistent or empty, cannot playNewSong next song"));
+        if (songs == null || songs.size() < 1) {
+            addException(new Exception("Playlist '" + playlist.getName() +
+                    "' songs are nonexistent or empty, cannot play next song"));
             return;
-            //todo observable update
         }
 
         try {
@@ -67,13 +72,14 @@ public final class HCPlayer {
             e.printStackTrace();
         }
 
-        playlist.getSongs().removeIf(Objects::isNull);
+        songs.removeIf(Objects::isNull);
 
         Song nextSong = playOrder.getNextSong(playlist, playingHistory);
         if (nextSong != null)
             playNewSong(nextSong);
         else {
-            playNextSong(); //todo clean infinite loop if songs all absent or
+            addException(new Exception("Song couldn't be selected from playlist '" + playlist.getName() + "' with play order " + playOrder.toString()));
+            playNextSong(); //todo clean infinite loop if songs all absent or loops on absent song
         }
     }
 
@@ -95,13 +101,17 @@ public final class HCPlayer {
         try {
             MediaPlayerAdapter.play(songToPlay.getPath());
         } catch (RuntimeException e) {
-            exceptionList.add(e);
-            //todo observable update
+            addException(e);
         }
     }
 
+    private static void addException(Exception e) {
+        exceptionList.add(e);
+        log.error(e);
+        ObservableForPlayer.getInstance().update();
+    }
+
     public static void stop() {
-        //todo song to settings(so start with it, but don't save time), ?
         MediaPlayerAdapter.stop();
     }
 

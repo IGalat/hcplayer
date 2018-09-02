@@ -104,4 +104,8 @@ public class NormalPlaylistService {
         }
         return playlistRepo.save(normalPlaylist);
     }
+
+    public static NormalPlaylist anonPlaylist(List<Song> songs){
+        return new NormalPlaylist(-1, "", new Flavor(), true, songs);
+    }
 }

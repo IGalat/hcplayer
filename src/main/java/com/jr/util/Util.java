@@ -5,8 +5,6 @@ import com.jr.dao.NormalPlaylistRepositoryFile;
 import com.jr.dao.SongRepositoryFile;
 import com.jr.execution.HCPlayer;
 import com.jr.logic.CritHardcode;
-import com.jr.model.Flavor;
-import com.jr.model.NormalPlaylist;
 import com.jr.model.Playlist;
 import com.jr.service.NormalPlaylistService;
 import com.jr.service.SongService;
@@ -68,7 +66,7 @@ public class Util {
         }
         if (playlist != null) return playlist;
 
-        return new NormalPlaylist(-1, "", new Flavor(), true, SongService.getAll());
+        return NormalPlaylistService.anonPlaylist(SongService.getAll());
     }
 
 }
