@@ -26,6 +26,9 @@ public class GlobalBorderPaneController extends AbstractController implements In
     public void initialize(URL location, ResourceBundle resources) {
         GController.globalBorderPaneController = this;
 
+        //autosize tab headers
+        centerTable.tabMinWidthProperty().bind(centerTable.widthProperty().divide(centerTable.getTabs().size()).subtract(20));
+
         addNew.setOnAction(event -> {
             //crits
             if (centerTable.getSelectionModel().getSelectedIndex() == 1) {
