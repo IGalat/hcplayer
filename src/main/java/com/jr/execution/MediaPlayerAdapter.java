@@ -2,12 +2,17 @@ package com.jr.execution;
 
 import com.jr.util.Defaults;
 import com.jr.util.Settings;
+import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Setting mediaPlayer properties should be done via setters in this class,
@@ -22,9 +27,9 @@ public class MediaPlayerAdapter {
     private static MediaPlayer mediaPlayer;
     @Getter
     private static double volume = Settings.getPlayerVolume();
-    static final Thread onEndOfSong = new Thread(new SongEndRunnable());
-
+    static final Timer timer = new Timer();
     //todo here could be your equalizer!
+    private static final Logger log = LogManager.getLogger(MediaPlayerAdapter.class);
 
     static {
         JFXPanel fxPanel = new JFXPanel(); //javafx toolkit init
@@ -45,7 +50,7 @@ public class MediaPlayerAdapter {
         ObservableForPlayer.getInstance().update();
 
         mediaPlayer.setOnEndOfMedia(() -> {
-            onEndOfSong.start();
+            timer.schedule(new SongEndRunnable(), Defaults.TIME_BETWEEN_SONGS_MILLIS);
         });
 
         mediaPlayer.setVolume(volume);
@@ -80,17 +85,19 @@ public class MediaPlayerAdapter {
         }
     }
 
-    static class SongEndRunnable implements Runnable {
+    static class SongEndRunnable extends TimerTask {
 
         @Override
         public void run() {
-            try {
-                Thread.sleep(Defaults.TIME_BETWEEN_SONGS_MILLISEC);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            mediaPlayer.dispose(); //or else memory leak courtesy of javafx?
-            HCPlayer.playNextSong();
+            Platform.runLater(()->{
+                try {
+                    Thread.sleep(Defaults.TIME_BETWEEN_SONGS_MILLIS);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                mediaPlayer.dispose(); //or else memory leak courtesy of javafx?
+                HCPlayer.playNextSong();
+            });
         }
     }
 }

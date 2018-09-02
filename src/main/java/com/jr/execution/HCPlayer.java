@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,6 +45,11 @@ public final class HCPlayer {
     }
 
     public static void playPlaylist(Playlist playlist, Song songToPlayFirst) {
+        if (playlist == null) {
+            InputMismatchException e = new InputMismatchException("HCPlayer received null playlist!");
+            addException(e);
+            throw e;
+        }
         HCPlayer.playlist = playlist;
         playHistory = new ArrayList<>();
         log.debug("Playlist set: " + playlist);
@@ -93,7 +99,6 @@ public final class HCPlayer {
         }
 
         try {
-            MediaPlayerAdapter.onEndOfSong.stop();
             MediaPlayerAdapter.play(songToPlay.getPath());
         } catch (RuntimeException e) {
             addException(e);
