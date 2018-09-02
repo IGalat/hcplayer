@@ -28,7 +28,7 @@ public final class HCPlayer {
     private static Playlist playlist = Util.getInitialPlaylist();
     @Getter
     private static Song currentSong;
-    private static List<Long> playingHistory = new ArrayList<>(); // only for current playlist
+    private static List<Long> playHistory = new ArrayList<>(); // only for current playlist
     @Setter
     @Getter
     private static int minSongsWithoutRepeat = Settings.getMinSongsWithoutRepeat();
@@ -45,7 +45,7 @@ public final class HCPlayer {
 
     public static void setPlaylist(Playlist playlist, Song songToPlayFirst) {
         HCPlayer.playlist = playlist;
-        playingHistory = new ArrayList<>();
+        playHistory = new ArrayList<>();
         log.debug("Playlist set: " + playlist);
 
         if (songToPlayFirst != null) {
@@ -66,7 +66,7 @@ public final class HCPlayer {
 
         songs.removeIf(Objects::isNull);
 
-        Song nextSong = playOrder.getNextSong(playlist, playingHistory);
+        Song nextSong = playOrder.getNextSong(playlist, playHistory);
         if (nextSong != null)
             playNewSong(nextSong);
         else {
@@ -76,22 +76,23 @@ public final class HCPlayer {
     }
 
     public static void playPreviousSong() {
-        int size = playingHistory.size();
+        int size = playHistory.size();
         if (size > 1) {
-            playNewSong(SongService.getOne(playingHistory.get(size - 2)));
-            playingHistory.remove(size - 1);
+            playNewSong(SongService.getOne(playHistory.get(size - 2)));
+            playHistory.remove(size - 1);
         } else
             playNewSong(currentSong);
     }
 
     private static void playNewSong(Song songToPlay) {
         currentSong = songToPlay;
-        if (playingHistory.size() < 1
-                || playingHistory.get(playingHistory.size() - 1) != currentSong.getId()) {
-            playingHistory.add(currentSong.getId());
+        if (playHistory.size() < 1
+                || playHistory.get(playHistory.size() - 1) != currentSong.getId()) {
+            playHistory.add(currentSong.getId());
         }
 
         try {
+            MediaPlayerAdapter.onEndOfSong.stop();
             MediaPlayerAdapter.play(songToPlay.getPath());
         } catch (RuntimeException e) {
             addException(e);

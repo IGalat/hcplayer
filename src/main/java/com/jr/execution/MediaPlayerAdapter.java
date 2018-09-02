@@ -22,6 +22,7 @@ public class MediaPlayerAdapter {
     private static MediaPlayer mediaPlayer;
     @Getter
     private static double volume = Settings.getPlayerVolume();
+    static final Thread onEndOfSong = new Thread(new SongEndRunnable());
 
     //todo here could be your equalizer!
 
@@ -44,13 +45,7 @@ public class MediaPlayerAdapter {
         ObservableForPlayer.getInstance().update();
 
         mediaPlayer.setOnEndOfMedia(() -> {
-            try {
-                Thread.sleep(Defaults.TIME_BETWEEN_SONGS_MILLISEC);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            mediaPlayer.dispose(); //or else memory leak courtesy of javafx?
-            HCPlayer.playNextSong();
+            onEndOfSong.start();
         });
 
         mediaPlayer.setVolume(volume);
@@ -82,6 +77,20 @@ public class MediaPlayerAdapter {
         MediaPlayerAdapter.volume = volume;
         if (mediaPlayer != null) {
             mediaPlayer.setVolume(volume);
+        }
+    }
+
+    static class SongEndRunnable implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                Thread.sleep(Defaults.TIME_BETWEEN_SONGS_MILLISEC);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mediaPlayer.dispose(); //or else memory leak courtesy of javafx?
+            HCPlayer.playNextSong();
         }
     }
 }
