@@ -11,6 +11,7 @@ import org.junit.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Galatyuk Ilya
@@ -42,6 +43,25 @@ public class PlayOrderTest {
             Song chosenSong = normalOrder.getNextSong(metal, playingHistory);
             playingHistory.add(chosenSong.getId());
             Assert.assertEquals(chosenSong, song);
+        }
+    }
+
+    @Test
+    public void shuffleTracks() {
+        NormalPlaylist metal = TestHelper.metalNormalPlaylist;
+        List<Song> songs = metal.getSongs();
+        IPlayOrder shuffleTracks = new PlayOrder.ShuffleTracks();
+        List<Long> playingHistory = new ArrayList<>();
+        List<Long> songIds = songs.stream().map(Song::getId).collect(Collectors.toList());
+
+        for (int i = 0; i < songs.size(); i++) {
+            Song nextSong = shuffleTracks.getNextSong(metal, playingHistory);
+            playingHistory.add(nextSong.getId());
+        }
+
+        Assert.assertEquals(songIds.size(), playingHistory.size());
+        for (Long expectedId : songIds) {
+            Assert.assertTrue("Expected song id " + expectedId + " not encountered in played songs", playingHistory.contains(expectedId));
         }
     }
 

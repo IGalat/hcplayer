@@ -6,7 +6,9 @@ import com.jr.model.Playlist;
 import com.jr.model.Song;
 import com.jr.service.SongService;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Galatyuk Ilya
@@ -69,10 +71,42 @@ public class PlayOrder {
 
 
     public static class ShuffleTracks implements IPlayOrder {
+        private List<Long> shuffledIds;
 
         @Override
         public Song getNextSong(Playlist playlist, List<Long> playingHistory) {
-            return null; //todo
+            List<Song> songs = playlist.getSongs();
+            if (playingHistory.size() < 2 || shuffledIds == null)
+                shuffledIds = shuffleSongIds(songs);
+
+            if (playingHistory.size() == 0)
+                return SongService.getOne(shuffledIds.get(0));
+
+            long nextSongId = getIdOfNextSong(playingHistory.get(playingHistory.size() - 1));
+
+            return SongService.getOne(nextSongId);
+        }
+
+        private long getIdOfNextSong(long idOfPlayingSong) {
+            int indexOfPlaying = 0;
+            for (int i = 0; i < shuffledIds.size(); i++) {
+                if (idOfPlayingSong == shuffledIds.get(i)) {
+                    indexOfPlaying = i;
+                    break;
+                }
+            }
+            int indexNext;
+            if (indexOfPlaying == shuffledIds.size() - 1)
+                indexNext = 0;
+            else indexNext = indexOfPlaying + 1;
+
+            return shuffledIds.get(indexNext);
+        }
+
+        private List<Long> shuffleSongIds(List<Song> songs) {
+            List<Long> ids = songs.stream().map(Song::getId).collect(Collectors.toList());
+            Collections.shuffle(ids);
+            return ids;
         }
 
         @Override
