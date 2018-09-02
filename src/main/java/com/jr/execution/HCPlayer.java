@@ -64,7 +64,8 @@ public final class HCPlayer {
             return;
         }
 
-        songs.removeIf(Objects::isNull);
+        if (playlist.isNormal())
+            songs.removeIf(Objects::isNull);
 
         Song nextSong = playOrder.getNextSong(playlist, playHistory);
         if (nextSong != null)
