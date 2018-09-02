@@ -33,7 +33,7 @@ public class HCPlayerTest {
         MediaPlayerAdapter.setVolume(0);
         NormalPlaylist metal = TestHelper.metalNormalPlaylist;
         HCPlayer.setPlayOrder(new PlayOrder.Normal());
-        HCPlayer.setPlaylist(metal, metal.getSongs().get(3));
+        HCPlayer.playPlaylist(metal, metal.getSongs().get(3));
 
         for (int i = 3; i < 6; i++) {
             Assert.assertEquals(metal.getSongs().get(i), HCPlayer.getCurrentSong());

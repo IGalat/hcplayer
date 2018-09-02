@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
 
 public class Main extends Application {
@@ -20,7 +22,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            log.info("init");
+            log.info("init started");
+
+            Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+                log.error(t, e);
+            });
+
             FXMLLoader loader = new FXMLLoader();
             Parent root = loader.load(getClass().getResource("/fxml/GlobalBorderPane.fxml"));
             GlobalBorderPaneController globalBorderPaneController = loader.getController();
@@ -30,15 +37,24 @@ public class Main extends Application {
             primaryStage.getIcons().add(new Image("/images/player_icon.png"));
             primaryStage.show();
         } catch (Throwable t) {
-            log.error(t);
+            StringWriter writer = new StringWriter();
+            PrintWriter pw = new PrintWriter(writer);
+            t.printStackTrace(pw);
+            String s = writer.toString();
+            log.error(s);
+            System.exit(1);
         }
     }
 
     @Override
     public void stop() {
-        log.info("shutdown");
-        Util.shutdown();
-        log.info("\n");
+        log.info("shutdown start");
+        try {
+            Util.shutdown();
+        } catch (Throwable t) {
+            log.error(t);
+        }
+        log.info("shutdown end\n");
     }
 
     public static void main(String[] args) {

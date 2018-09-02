@@ -7,4 +7,6 @@ public class GController {
     public static PlayListController playListController;
     public static CritsController critsController;
     public static StatusBarController statusBarController;
+    public static MenuController menuController;
+    public static SongsController songsController;
 }

@@ -44,7 +44,7 @@ public class Util {
     }
 
     public static void shutdown() {
-        log.info("shutdown() called\n");
+        log.info("shutdown() called");
         MediaPlayerAdapter.destruct();
         saveData();
     }

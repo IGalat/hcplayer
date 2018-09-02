@@ -8,8 +8,8 @@ import com.jr.model.Song;
 import com.jr.util.Defaults;
 import com.jr.util.Settings;
 import com.jr.util.Util;
+import javafx.collections.FXCollections;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -70,9 +70,9 @@ public class NormalPlaylistService {
             flavor = new Flavor();
         }
 
-        List<Song> songList = new ArrayList<>();
+        List<Song> songList = FXCollections.observableArrayList();
         if (songs != null)
-            songList = new ArrayList<>(Arrays.asList(songs));
+            songList = FXCollections.observableArrayList((Arrays.asList(songs)));
         if (songs == null && existingPlaylist != null && existingPlaylist.getSongs().size() > 0)
             songList = existingPlaylist.getSongs();
 
@@ -106,6 +106,6 @@ public class NormalPlaylistService {
     }
 
     public static NormalPlaylist anonPlaylist(List<Song> songs) {
-        return new NormalPlaylist(-1, "", new Flavor(), true, songs);
+        return new NormalPlaylist(-1, "", new Flavor(), true, FXCollections.observableArrayList(songs));
     }
 }

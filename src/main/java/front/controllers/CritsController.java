@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
 import org.apache.logging.log4j.LogManager;
@@ -27,14 +26,14 @@ public class CritsController extends AbstractController implements Initializable
     @FXML
     TableView<Crit> CritsTable;
 
-    //    @FXML
-//    TableColumn<Crit, Integer> idCol;
+    @FXML
+    TableColumn<Crit, Integer> idCol;
     @FXML
     TableColumn<Crit, String> nameCol;
     @FXML
-    TableColumn<Crit, Integer> minCol;
+    TableColumn<Crit, String> minMaxCol;
     @FXML
-    TableColumn<Crit, Integer> maxCol;
+    TableColumn<Crit, String> parentsChildsCol;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,8 +43,9 @@ public class CritsController extends AbstractController implements Initializable
 //        nameCol.setCellValueFactory(cellData -> cellData.getValue().getName());
         nameCol.setCellValueFactory(i -> new SimpleStringProperty(i.getValue().getName()));
 
-        minCol.setCellValueFactory(new PropertyValueFactory<Crit, Integer>("min"));
-        maxCol.setCellValueFactory(new PropertyValueFactory<Crit, Integer>("max"));
+//        minCol.setCellValueFactory(new PropertyValueFactory<Crit, Integer>("min"));
+        minMaxCol.setCellValueFactory(i -> new SimpleStringProperty(i.getValue().getMin() + " .. " + i.getValue().getMax()));
+        parentsChildsCol.setCellValueFactory(i -> new SimpleStringProperty(CritService.getParents(i.getValue()).size() + " / " + String.valueOf(i.getValue().getChildren().size())));
 
         CritsTable.setItems((ObservableList) CritService.getAll());
 
@@ -97,4 +97,22 @@ public class CritsController extends AbstractController implements Initializable
             }
         });
     }
+
+//    ObservableList<YourObjectClass> actualList = ...;
+//    FilteredList<YourObjectClass> filteredList = new FilteredList<>(actualList);
+//
+//    TableView table = ...;
+//table.setItems(filteredList);
+//
+//// to filter
+//filteredList.setPredicate(
+//        new Predicate<YourObjectClass>()
+//
+//    {
+//        public boolean test (YourObjectClass t){
+//        return false; // or true
+//    }
+//    }
+//);
+
 }

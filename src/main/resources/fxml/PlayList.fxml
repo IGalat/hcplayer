@@ -3,9 +3,12 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <TableView xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="front.controllers.PlayListController" fx:id="PlayList" editable="true">
+           fx:controller="front.controllers.PlayListController" fx:id="playlistTableView" editable="true">
     <columns>
-        <TableColumn text="name" fx:id="nameCol"/>
+        <TableColumn text="Name" fx:id="nameCol"/>
+    </columns>
+    <columns>
+        <TableColumn text="SongCount" fx:id="countCol"/>
     </columns>
     <columnResizePolicy>
         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

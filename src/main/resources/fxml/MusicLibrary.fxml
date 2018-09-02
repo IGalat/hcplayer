@@ -2,8 +2,8 @@
 
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<TableView fx:id="MusicLibTable" xmlns="http://javafx.com/javafx/8"
-           xmlns:fx="http://javafx.com/fxml/1" fx:controller="front.controllers.MusicLibraryController" >
+<TableView fx:id="musicLibTableView" xmlns="http://javafx.com/javafx/8"
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="front.controllers.MusicLibraryController">
     <columns>
         <TableColumn fx:id="artistCol" text="artist"/>
         <TableColumn fx:id="titleCol" text="title"/>

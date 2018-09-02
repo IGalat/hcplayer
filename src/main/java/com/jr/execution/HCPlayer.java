@@ -39,11 +39,11 @@ public final class HCPlayer {
     private static List<Exception> exceptionList = new ArrayList<>();
     private static final Logger log = LogManager.getLogger(HCPlayer.class);
 
-    public static void setPlaylist(Playlist playlist) {
-        setPlaylist(playlist, null);
+    public static void playPlaylist(Playlist playlist) {
+        playPlaylist(playlist, null);
     }
 
-    public static void setPlaylist(Playlist playlist, Song songToPlayFirst) {
+    public static void playPlaylist(Playlist playlist, Song songToPlayFirst) {
         HCPlayer.playlist = playlist;
         playHistory = new ArrayList<>();
         log.debug("Playlist set: " + playlist);

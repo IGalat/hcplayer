@@ -1,6 +1,8 @@
 package front.controllers;
 
-import com.jr.model.Song;
+import com.jr.execution.HCPlayer;
+import com.jr.execution.MediaPlayerAdapter;
+import com.jr.execution.ObservableForPlayer;
 import front.test.Record;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,13 +13,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
-public class PlayerController extends AbstractController implements Initializable {
+public class PlayerController extends AbstractController implements Initializable, Observer {
+    private static final Logger log = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     @FXML
     ToolBar toolBar;
@@ -30,107 +37,90 @@ public class PlayerController extends AbstractController implements Initializabl
     @FXML
     Button buttonPause;
     @FXML
-    Label musicInfo;
+    Label labelMusicInfo;
 
     @FXML
-    ImageView iPlay;
+    ImageView imPlay;
+    Image gPlay = new Image("images/play_green.png");
+    Image rPlay = new Image("images/play_red.png");
+
     @FXML
-    ImageView iStop;
+    ImageView imStop;
+    Image gStop = new Image("images/stop_green.png");
+    Image rStop = new Image("images/stop_red.png");
+
     @FXML
-    ImageView iPause;
+    ImageView imPause;
+    Image gPause = new Image("images/pause_green.png");
+    Image rPause = new Image("images/pause_red.png");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         GController.playerController = this;
+        ObservableForPlayer.getInstance().addObserver(this);
 
         buttonStatus.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
 //                System.out.println(toolBar.getParent().getChildrenUnmodifiable().get(2).getLayoutBounds().getWidth());
-                GController.playListController.records.forEach(o -> System.out.println(((Record)o).getName()));
+//                GController.playListController.playLists.forEach(o -> System.out.println(((Record) o).getName()));
             }
         });
 
         buttonPlay.setOnAction(event -> {
-            if (play(null)) {
-                iPlay.setImage(new Image("/images/play_red.png"));
-                iPause.setImage(new Image("/images/pause_green.png"));
-                iStop.setImage(new Image("/images/stop_green.png"));
-            }
+            HCPlayer.play();
         });
         buttonStop.setOnAction(event -> {
-            if (stop()) {
-                iPlay.setImage(new Image("/images/play_green.png"));
-                iPause.setImage(new Image("/images/pause_green.png"));
-                iStop.setImage(new Image("/images/stop_red.png"));
-            }
+            HCPlayer.stop();
         });
         buttonPause.setOnAction(event -> {
-            if (pause()) {
-                iPlay.setImage(new Image("/images/play_green.png"));
-                iPause.setImage(new Image("/images/pause_red.png"));
-                iStop.setImage(new Image("/images/stop_red.png"));
-            }
+            HCPlayer.pause();
         });
     }
 
-    static MediaPlayer mediaPlayer = null;
-
-    static synchronized boolean stop() {
-        mediaPlayer.stop();
-        return true;
+    private void setupPlayer(MediaPlayer mediaPlayer) {
+        mediaPlayer.setOnEndOfMedia(() -> {
+            GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString());
+        });
+        mediaPlayer.setOnError(() -> {
+            GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString());
+        });
+        mediaPlayer.setOnStalled(() -> {
+            GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString());
+        });
+        mediaPlayer.setOnPaused(() -> {
+            GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString());
+            imPlay.setImage(gPlay);
+            imStop.setImage(gStop);
+            imPause.setImage(rPause);
+        });
+        mediaPlayer.setOnPlaying(() -> {
+            GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString());
+            imPlay.setImage(rPlay);
+            imStop.setImage(gStop);
+            imPause.setImage(gPause);
+        });
+        mediaPlayer.setOnReady(() -> {
+            GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString());
+        });
+        mediaPlayer.setOnStopped(() -> {
+            GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString());
+            imPlay.setImage(gPlay);
+            imStop.setImage(rStop);
+            imPause.setImage(gPause);
+        });
+        mediaPlayer.setOnRepeat(() -> {
+            GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString());
+        });
     }
 
-    static synchronized boolean pause() {
-        mediaPlayer.pause();
-        return true;
-    }
+    @Override
+    public void update(Observable o, Object arg) {
+        log.debug("observer update started");
+        MediaPlayer mediaPlayer = MediaPlayerAdapter.getMediaPlayer();
 
-    static synchronized boolean play(Song song) {
-//        if (song == null) {
-//            if (scene.focusOwnerProperty().get() instanceof TextArea) {
-//                TextArea focusedTextArea = (TextArea) scene.focusOwnerProperty().get();
-//            }
-//        }
-        Media media = new Media(song.getPath().toUri().toString());
-        if (mediaPlayer != null) {
-            switch (mediaPlayer.getStatus()) {
-                case PAUSED:
-                case STOPPED:
-                    break;
-                case HALTED:
-                case DISPOSED:
-                case READY:
-                default:
-                    mediaPlayer.dispose();
-                    mediaPlayer = null;
-                    mediaPlayer = new MediaPlayer(media);
-                    setupPlayer();
-                    break;
-            }
-        } else {
-            mediaPlayer = new MediaPlayer(media);
-            setupPlayer();
-        }
-        try {
-            GController.playerController.musicInfo.setText(song.getTags().getArtist());
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        mediaPlayer.play();
-        return true;
-    }
-
-    static synchronized void setupPlayer() {
-        mediaPlayer.setOnEndOfMedia(() -> GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString()));
-        mediaPlayer.setOnError(() -> GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString()));
-        mediaPlayer.setOnStalled(() -> GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString()));
-        mediaPlayer.setOnPaused(() -> GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString()));
-        mediaPlayer.setOnPlaying(() -> GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString()));
-        mediaPlayer.setOnReady(() -> GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString()));
-        mediaPlayer.setOnStopped(() -> GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString()));
-        mediaPlayer.setOnRepeat(() -> GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString()));
-
-        mediaPlayer.setVolume(0.2);
+        setupPlayer(mediaPlayer);
+        GController.playerController.labelMusicInfo.setText(HCPlayer.getCurrentSong().getTags().getArtist() + " / " + HCPlayer.getCurrentSong().getTags().getTitle());
+        log.debug("observer update ended");
     }
 }

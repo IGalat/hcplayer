@@ -1,6 +1,7 @@
 package com.jr.dao;
 
 import com.jr.model.Song;
+import javafx.collections.FXCollections;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public interface SongRepository extends CommonRepository<Song, Long> {
 
     @Override
     default List<Song> findAll(Iterable<Long> ids) {
-        ArrayList<Song> songs = new ArrayList<>();
+        List<Song> songs = FXCollections.observableArrayList();
         List<Song> allSongs = findAll();
         for (Song song : allSongs) {
             for (Long id : ids) {
