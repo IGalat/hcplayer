@@ -58,6 +58,7 @@ public final class HCPlayer {
     }
 
     public static void playNextSong() {
+        stop();
         List<Song> songs = playlist.getSongs();
         //todo songs' novelty. Class with separate thread and timer, when timer's up refresh novelties?
         if (songs == null || songs.size() < 1) {
