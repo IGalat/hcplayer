@@ -90,8 +90,9 @@ public class CritService {
         return critRepo.save(crit);
     }
 
-    public static synchronized Crit rename(Crit crit, String newName) { //todo find everything that uses the crit and overwrite?
+    public static synchronized Crit rename(Crit crit, String newName) {
         if (CritHardcode.isProtectedCrit(newName)) return getByName(newName);
+        if (CritHardcode.isProtectedCrit(crit.getName())) return getByName(crit.getName());
         newName = newName.toLowerCase();
         if (Util.isNameBad(newName))
             throw new InputMismatchException("Cannot rename crit '" + crit.getName() + "' to '" + newName +
