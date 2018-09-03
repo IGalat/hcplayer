@@ -44,6 +44,6 @@
             </font>
         </Label>
         <HBox HBox.hgrow="ALWAYS"/>
-        <ToggleButton mnemonicParsing="false" text="ReplayThisSong"/>
+        <ChoiceBox prefWidth="150.0" fx:id="playOrder"/>
     </items>
 </ToolBar>

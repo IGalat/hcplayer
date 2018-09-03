@@ -8,10 +8,7 @@ import com.jr.model.Song;
 import com.jr.service.SongService;
 import com.jr.util.Util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +32,10 @@ public class PlayOrder {
                 return new Normal();
         }
     }
+
+    public static final List<String> playOrdersArray = Arrays.asList(
+            "Normal", "ShuffleTracks", "Random", "WeightedRandom", "RepeatTrack"
+    );
 
     private static List<Song> getPlayableSongs(List<Song> songs, List<Long> playHistory) {
         List<Song> playableSongs = new ArrayList<>();

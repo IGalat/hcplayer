@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
-<VBox xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="front.controllers.GlobalBorderPaneController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="front.controllers.GlobalBorderPaneController">
     <children>
-        <fx:include source="Menu.fxml" />
-        <fx:include source="Player.fxml" />
+        <fx:include source="Menu.fxml"/>
+        <fx:include source="Player.fxml"/>
         <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
             <children>
-                <fx:include source="Songs.fxml" HBox.hgrow="SOMETIMES" />
+                <fx:include source="Songs.fxml" HBox.hgrow="SOMETIMES"/>
                 <TabPane fx:id="centerTable" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
                     <tabs>
                         <Tab text="Play List">
                             <content>
-                                <fx:include source="PlayList.fxml" />
+                                <fx:include source="PlayList.fxml"/>
                             </content>
                         </Tab>
                         <Tab text="Crits">
                             <content>
-                                <fx:include source="Crits.fxml" />
+                                <fx:include source="Crits.fxml"/>
                             </content>
                         </Tab>
                         <Tab disable="true">
                             <graphic>
-                                <Button fx:id="addNew" defaultButton="true" mnemonicParsing="false" text="+ Add New row +" textAlignment="CENTER" />
+                                <Button fx:id="addNew" defaultButton="true" mnemonicParsing="false"
+                                        text="+ Add New row +" textAlignment="CENTER"/>
                             </graphic>
                         </Tab>
                     </tabs>
                 </TabPane>
-                <fx:include source="MusicLibrary.fxml" HBox.hgrow="SOMETIMES" />
+                <fx:include source="MusicLibrary.fxml" HBox.hgrow="SOMETIMES"/>
             </children>
         </HBox>
-        <fx:include source="StatusBar.fxml" />
+        <fx:include source="StatusBar.fxml"/>
     </children>
 </VBox>

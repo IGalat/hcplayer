@@ -3,12 +3,14 @@ package front.controllers;
 import com.jr.execution.HCPlayer;
 import com.jr.execution.MediaPlayerAdapter;
 import com.jr.execution.ObservableForPlayer;
-import front.test.Record;
+import com.jr.logic.PlayOrder;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
@@ -38,6 +40,8 @@ public class PlayerController extends AbstractController implements Initializabl
     Button buttonPause;
     @FXML
     Label labelMusicInfo;
+    @FXML
+    ChoiceBox<String> playOrder;
 
     @FXML
     ImageView imPlay;
@@ -54,10 +58,18 @@ public class PlayerController extends AbstractController implements Initializabl
     Image gPause = new Image("images/pause_green.png");
     Image rPause = new Image("images/pause_red.png");
 
+    MediaPlayer mediaPlayer;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         GController.playerController = this;
         ObservableForPlayer.getInstance().addObserver(this);
+
+        playOrder.setItems(FXCollections.observableArrayList(PlayOrder.playOrdersArray));
+        playOrder.getSelectionModel().selectFirst();
+        playOrder.setOnAction(event -> {
+            HCPlayer.setPlayOrder(PlayOrder.parse(playOrder.getValue()));
+        });
 
         buttonStatus.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -78,7 +90,7 @@ public class PlayerController extends AbstractController implements Initializabl
         });
     }
 
-    private void setupPlayer(MediaPlayer mediaPlayer) {
+    private void attachMediaPlayer(MediaPlayer mediaPlayer) {
         mediaPlayer.setOnEndOfMedia(() -> {
             GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString());
         });
@@ -117,10 +129,12 @@ public class PlayerController extends AbstractController implements Initializabl
     @Override
     public void update(Observable o, Object arg) {
         log.debug("observer update started");
-        MediaPlayer mediaPlayer = MediaPlayerAdapter.getMediaPlayer();
+        if (mediaPlayer == null || mediaPlayer != MediaPlayerAdapter.getMediaPlayer()) {
+            mediaPlayer = MediaPlayerAdapter.getMediaPlayer();
+            attachMediaPlayer(mediaPlayer);
 
-        setupPlayer(mediaPlayer);
-        GController.playerController.labelMusicInfo.setText(HCPlayer.getCurrentSong().getTags().getArtist() + " / " + HCPlayer.getCurrentSong().getTags().getTitle());
+            GController.playerController.labelMusicInfo.setText(HCPlayer.getCurrentSong().getTags().getArtist() + " / " + HCPlayer.getCurrentSong().getTags().getTitle());
+        }
         log.debug("observer update ended");
     }
 }

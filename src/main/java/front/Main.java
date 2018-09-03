@@ -3,6 +3,7 @@ package front;
 import com.jr.util.Util;
 import front.controllers.GlobalBorderPaneController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -63,5 +64,7 @@ public class Main extends Application {
         } catch (Throwable t) {
             log.error(t);
         }
+        Platform.exit();
+        System.exit(0);
     }
 }
