@@ -11,14 +11,14 @@
         <RollingFile name="RollingLog" fileName="log/HCPlayerLog-current.log" append="true"
                      filePattern="log/HCPlayerLog_%d{yyyy-MM-dd}_%i.log">
             <PatternLayout>
-                <pattern>%d{dd/MMM/yyyy HH:mm:ss} %c{1}: %m%n</pattern>
+                <pattern>%d{dd/MMM/yyyy HH:mm:ss:ms} %c{1}: %m%n</pattern>
             </PatternLayout>
             <Policies>
-                <SizeBasedTriggeringPolicy size="1 GB"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>
             <!--quantity of log files?-->
-            <DefaultRolloverStrategy max="50000"/>
+            <DefaultRolloverStrategy max="30"/>
         </RollingFile>
     </Appenders>
     <Loggers>

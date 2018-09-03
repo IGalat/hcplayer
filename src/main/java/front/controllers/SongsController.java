@@ -40,6 +40,7 @@ public class SongsController extends AbstractController implements Initializable
         GController.songsController = this;
         songsTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+        playlist = Util.getInitialPlaylist();
         songs = (ObservableList) Util.getInitialPlaylist().getSongs();
 
 //        artistCol.setCellValueFactory(new PropertyValueFactory<Song, String>("id"));
