@@ -79,7 +79,7 @@ public class CritsController extends AbstractController implements Initializable
         });
     }
 
-    public static void addNewRow() {
+    public void addNewRow() {
         TextInputDialog dialog = new TextInputDialog("awesomeCritNameqt,1,10");
 //        dialog.setResizable(true);
         dialog.getDialogPane().setPrefSize(400, 100);

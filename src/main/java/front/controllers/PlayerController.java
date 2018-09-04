@@ -4,6 +4,7 @@ import com.jr.execution.HCPlayer;
 import com.jr.execution.MediaPlayerAdapter;
 import com.jr.execution.ObservableForPlayer;
 import com.jr.logic.PlayOrder;
+import com.jr.util.Settings;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -66,7 +67,7 @@ public class PlayerController extends AbstractController implements Initializabl
         ObservableForPlayer.getInstance().addObserver(this);
 
         playOrder.setItems(FXCollections.observableArrayList(PlayOrder.playOrdersArray));
-        playOrder.getSelectionModel().selectFirst();
+        playOrder.setValue(Settings.getPlayOrder().toString());
         playOrder.setOnAction(event -> {
             HCPlayer.setPlayOrder(PlayOrder.parse(playOrder.getValue()));
         });
@@ -129,7 +130,7 @@ public class PlayerController extends AbstractController implements Initializabl
     @Override
     public void update(Observable o, Object arg) {
         log.debug("observer update started");
-        if (mediaPlayer == null || mediaPlayer != MediaPlayerAdapter.getMediaPlayer()) {
+        if (mediaPlayer == null || mediaPlayer != MediaPlayerAdapter.getMediaPlayer() && MediaPlayerAdapter.getMediaPlayer() != null) {
             mediaPlayer = MediaPlayerAdapter.getMediaPlayer();
             attachMediaPlayer(mediaPlayer);
 

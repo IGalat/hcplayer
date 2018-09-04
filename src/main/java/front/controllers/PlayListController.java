@@ -5,6 +5,7 @@ import com.jr.model.NormalPlaylist;
 import com.jr.model.Playlist;
 import com.jr.service.NormalPlaylistService;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,6 +21,7 @@ import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class PlayListController extends AbstractController implements Initializable {
@@ -89,6 +91,20 @@ public class PlayListController extends AbstractController implements Initializa
                 }
             });
             return row;
+        });
+    }
+
+    public void addNewRow() {
+        TextInputDialog dialog = new TextInputDialog("awesomePlayListNameqt");
+//        dialog.setResizable(true);
+        dialog.getDialogPane().setPrefSize(400, 100);
+//        dialog.setHeaderText("format: playlistName");
+        dialog.setContentText("Enter playList name:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(s -> {
+            log.info("Trying to save " + NormalPlaylistService.save(result.get()));
         });
     }
 }

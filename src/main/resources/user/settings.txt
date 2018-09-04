@@ -1,9 +1,9 @@
 maxId=483;
-play order=Normal;
+play order=Random;
 player volume=0.2;
-playlist id=84;
+playlist id=9;
 play policy=Normal;
 min songs without repeat in playlist percentage=0.2;
-max id=5;
+max id=9;
 default flavor=novelty'10,weight'10000,rating'10;
 min songs without repeat=5;

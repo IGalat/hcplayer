@@ -30,6 +30,10 @@ public class GlobalBorderPaneController extends AbstractController implements In
         centerTable.tabMinWidthProperty().bind(centerTable.widthProperty().divide(centerTable.getTabs().size()).subtract(20));
 
         addNew.setOnAction(event -> {
+            //playlists
+            if (centerTable.getSelectionModel().getSelectedIndex() == 0) {
+                GController.playListController.addNewRow();
+            }
             //crits
             if (centerTable.getSelectionModel().getSelectedIndex() == 1) {
                 GController.critsController.addNewRow();

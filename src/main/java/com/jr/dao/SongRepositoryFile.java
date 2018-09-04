@@ -1,8 +1,8 @@
 package com.jr.dao;
 
-import com.jr.service.CritService;
 import com.jr.model.Crit;
 import com.jr.model.Song;
+import com.jr.service.CritService;
 import com.jr.util.FileOps;
 import javafx.collections.FXCollections;
 
