@@ -9,16 +9,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SongsController extends AbstractController implements Initializable {
@@ -32,7 +32,7 @@ public class SongsController extends AbstractController implements Initializable
     @FXML
     TableColumn<Song, String> titleCol;
 
-    private ObservableList<Song> songs;
+    private List<Song> songs;
     public Playlist playlist;
 
     @Override
@@ -83,6 +83,26 @@ public class SongsController extends AbstractController implements Initializable
             return row;
         });
 
+
+        songsTableView.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.DELETE && songsTableView.getSelectionModel().getSelectedIndex() >= 0) {
+                ObservableList<Song> selectedItems = songsTableView.getSelectionModel().getSelectedItems();
+                String s = (selectedItems.size() > 1) ? String.valueOf(selectedItems.size()) + " " + selectedItems.get(0).getClass().getSimpleName() : selectedItems.get(0).getPath().getFileName().toString();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + s + " ?", ButtonType.YES, ButtonType.CANCEL);
+                alert.setHeaderText(null);
+                alert.showAndWait();
+
+                if (alert.getResult() == ButtonType.YES) {
+                    List<Integer> selectedIndices = new ArrayList<>(songsTableView.getSelectionModel().getSelectedIndices());
+                    for (int i = selectedIndices.size() - 1; i >= 0; i--) {
+                        Song song = songsTableView.getItems().get(selectedIndices.get(i));
+                        log.info(this.getClass().getSimpleName() + " trying to remove " + song);
+                        songsTableView.getItems().remove(song);
+                    }
+                }
+            }
+        });
 
     }
 }

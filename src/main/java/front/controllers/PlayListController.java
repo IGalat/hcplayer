@@ -5,7 +5,6 @@ import com.jr.model.NormalPlaylist;
 import com.jr.model.Playlist;
 import com.jr.service.NormalPlaylistService;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

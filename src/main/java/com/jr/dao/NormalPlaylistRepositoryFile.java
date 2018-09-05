@@ -40,7 +40,7 @@ public class NormalPlaylistRepositoryFile implements NormalPlaylistRepository {
     }
 
     private static List<Song> parseSongsFromIds(String songIds) {
-        if (songIds == null) return new ArrayList<>();
+        if (songIds == null) return FXCollections.observableArrayList();
 
         List<Long> ids = new ArrayList<>();
         String[] idsString = songIds.split("[,]");
