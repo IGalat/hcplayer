@@ -132,6 +132,9 @@ public class PlayerController extends AbstractController implements Initializabl
             //слайдер звука
             soundSlider.valueProperty().unbind();
             soundSlider.valueProperty().bindBidirectional(mediaPlayer.volumeProperty());
+            soundSlider.setOnMouseReleased(event -> {
+                MediaPlayerAdapter.setVolume(soundSlider.getValue());
+            });
 
             //слайдер времени в песне
 //            Duration duration = mediaPlayer.getMedia().getDuration();

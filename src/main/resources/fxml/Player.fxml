@@ -60,7 +60,7 @@
                     </font>
                 </Label>
                 <HBox HBox.hgrow="ALWAYS"/>
-                <Slider fx:id="soundSlider" max="100" min="0" showTickLabels="true"/>
+                <Slider fx:id="soundSlider" max="1" min="0" />
                 <ChoiceBox fx:id="playOrder" prefWidth="150.0"/>
             </HBox>
             <Slider fx:id="timeSlider" showTickMarks="true" showTickLabels="true" min="0"/>
