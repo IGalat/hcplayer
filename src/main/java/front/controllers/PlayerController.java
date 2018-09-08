@@ -39,6 +39,8 @@ public class PlayerController extends AbstractController implements Initializabl
     @FXML
     Button buttonPause;
     @FXML
+    Button buttonNext;
+    @FXML
     Label labelMusicInfo;
     @FXML
     ChoiceBox<String> playOrder;
@@ -94,6 +96,9 @@ public class PlayerController extends AbstractController implements Initializabl
         });
         buttonPause.setOnAction(event -> {
             HCPlayer.pause();
+        });
+        buttonNext.setOnAction(event -> {
+            HCPlayer.playNextSong();
         });
     }
 

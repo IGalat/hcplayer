@@ -43,6 +43,17 @@
                         </ImageView>
                     </graphic>
                 </Button>
+                <Button fx:id="buttonNext" mnemonicParsing="false">
+                    <graphic>
+                        <ImageView fx:id="imNext" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true"
+                                   preserveRatio="true"
+                                   visible="true">
+                            <image>
+                                <Image url="/images/next_green.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
                 <Label fx:id="labelMusicInfo" text="music info">
                     <font>
                         <Font size="14.0"/>
