@@ -5,6 +5,8 @@ import com.jr.execution.MediaPlayerAdapter;
 import com.jr.execution.ObservableForPlayer;
 import com.jr.logic.PlayOrder;
 import com.jr.util.Settings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -49,6 +51,8 @@ public class PlayerController extends AbstractController implements Initializabl
     Slider timeSlider;
     @FXML
     Slider soundSlider;
+    @FXML
+    Label soundLabel;
 
     @FXML
     ImageView imPlay;
@@ -78,7 +82,16 @@ public class PlayerController extends AbstractController implements Initializabl
             HCPlayer.setPlayOrder(PlayOrder.parse(playOrder.getValue()));
         });
 
-        soundSlider.setValue(Settings.getPlayerVolume() * 100);
+        soundSlider.valueProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                soundLabel.textProperty().setValue(String.valueOf(Math.round(soundSlider.getValue() * 100)) + '%');
+            }
+        });
+        soundSlider.setOnMouseReleased(event -> {
+            MediaPlayerAdapter.setVolume(soundSlider.getValue());
+        });
+        soundSlider.setValue(Settings.getPlayerVolume());
 
         buttonStatus.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -132,9 +145,6 @@ public class PlayerController extends AbstractController implements Initializabl
             //слайдер звука
             soundSlider.valueProperty().unbind();
             soundSlider.valueProperty().bindBidirectional(mediaPlayer.volumeProperty());
-            soundSlider.setOnMouseReleased(event -> {
-                MediaPlayerAdapter.setVolume(soundSlider.getValue());
-            });
 
             //слайдер времени в песне
 //            Duration duration = mediaPlayer.getMedia().getDuration();
