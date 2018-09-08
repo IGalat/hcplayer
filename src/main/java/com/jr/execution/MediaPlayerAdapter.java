@@ -76,7 +76,7 @@ public class MediaPlayerAdapter {
         }
     }
 
-    static void setVolume(double volume) {
+    public static void setVolume(double volume) {
         if (volume > 1)
             volume = 1;
         MediaPlayerAdapter.volume = volume;

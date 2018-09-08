@@ -2,48 +2,57 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<ToolBar fx:id="toolBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<ToolBar fx:id="toolBar" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
          fx:controller="front.controllers.PlayerController">
     <items>
-        <Button fx:id="buttonStatus" minWidth="120" mnemonicParsing="false" text="Status"/>
-        <Button fx:id="buttonPlay" mnemonicParsing="false">
-            <graphic>
-                <ImageView fx:id="imPlay" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true"
-                           visible="true">
-                    <image>
-                        <Image url="/images/play_green.png"/>
-                    </image>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button fx:id="buttonPause" mnemonicParsing="false">
-            <graphic>
-                <ImageView fx:id="imPause" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true"
-                           visible="true">
-                    <image>
-                        <Image url="/images/pause_green.png"/>
-                    </image>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Button fx:id="buttonStop" mnemonicParsing="false">
-            <graphic>
-                <ImageView fx:id="imStop" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true"
-                           visible="true">
-                    <image>
-                        <Image url="/images/stop_green.png"/>
-                    </image>
-                </ImageView>
-            </graphic>
-        </Button>
-        <Label fx:id="labelMusicInfo" text="music info">
-            <font>
-                <Font size="14.0"/>
-            </font>
-        </Label>
-        <HBox HBox.hgrow="ALWAYS"/>
-        <ChoiceBox prefWidth="150.0" fx:id="playOrder"/>
+        <VBox HBox.hgrow="ALWAYS">
+            <HBox spacing="5">
+                <Button fx:id="buttonStatus" minWidth="120" mnemonicParsing="false" text="Status"/>
+                <Button fx:id="buttonPlay" mnemonicParsing="false">
+                    <graphic>
+                        <ImageView fx:id="imPlay" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true"
+                                   preserveRatio="true"
+                                   visible="true">
+                            <image>
+                                <Image url="/images/play_green.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="buttonPause" mnemonicParsing="false">
+                    <graphic>
+                        <ImageView fx:id="imPause" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true"
+                                   preserveRatio="true"
+                                   visible="true">
+                            <image>
+                                <Image url="/images/pause_green.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="buttonStop" mnemonicParsing="false">
+                    <graphic>
+                        <ImageView fx:id="imStop" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true"
+                                   preserveRatio="true"
+                                   visible="true">
+                            <image>
+                                <Image url="/images/stop_green.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Label fx:id="labelMusicInfo" text="music info">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </Label>
+                <HBox HBox.hgrow="ALWAYS"/>
+                <Slider fx:id="soundSlider" max="100" min="0" showTickLabels="true"/>
+                <ChoiceBox fx:id="playOrder" prefWidth="150.0"/>
+            </HBox>
+            <Slider fx:id="timeSlider" showTickMarks="true" showTickLabels="true" min="0"/>
+        </VBox>
     </items>
 </ToolBar>

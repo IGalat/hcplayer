@@ -1,7 +1,7 @@
 package front;
 
 import com.jr.util.Util;
-import front.controllers.GlobalBorderPaneController;
+import front.controllers.GlobalVBoxController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -29,8 +29,8 @@ public class Main extends Application {
         });
 
         FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("/fxml/GlobalBorderPane.fxml"));
-        GlobalBorderPaneController globalBorderPaneController = loader.getController();
+        Parent root = loader.load(getClass().getResource("/fxml/GlobalVBox.fxml"));
+        GlobalVBoxController globalVBoxController = loader.getController();
         primaryStage.setScene(new Scene(root, 1024, 768));
 
         primaryStage.setTitle("hcplayer");

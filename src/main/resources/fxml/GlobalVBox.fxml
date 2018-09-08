@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="front.controllers.GlobalBorderPaneController">
+      fx:controller="front.controllers.GlobalVBoxController" fx:id="globalVBox">
     <children>
         <fx:include source="Menu.fxml"/>
         <fx:include source="Player.fxml"/>

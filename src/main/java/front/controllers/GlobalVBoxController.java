@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.VBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,7 +13,7 @@ import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GlobalBorderPaneController extends AbstractController implements Initializable {
+public class GlobalVBoxController extends AbstractController implements Initializable {
 
     private static final Logger log = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -22,9 +23,12 @@ public class GlobalBorderPaneController extends AbstractController implements In
     @FXML
     TabPane centerTable;
 
+    @FXML
+    VBox globalVBox;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        GController.globalBorderPaneController = this;
+        GController.globalVBoxController = this;
 
         //autosize tab headers
         centerTable.tabMinWidthProperty().bind(centerTable.widthProperty().divide(centerTable.getTabs().size()).subtract(20));

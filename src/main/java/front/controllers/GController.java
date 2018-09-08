@@ -1,7 +1,7 @@
 package front.controllers;
 
 public class GController {
-    public static GlobalBorderPaneController globalBorderPaneController;
+    public static GlobalVBoxController globalVBoxController;
     public static PlayerController playerController;
     public static MusicLibraryController musicLibraryController;
     public static PlayListController playListController;

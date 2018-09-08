@@ -10,13 +10,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -45,6 +44,11 @@ public class PlayerController extends AbstractController implements Initializabl
     ChoiceBox<String> playOrder;
 
     @FXML
+    Slider timeSlider;
+    @FXML
+    Slider soundSlider;
+
+    @FXML
     ImageView imPlay;
     Image gPlay = new Image("images/play_green.png");
     Image rPlay = new Image("images/play_red.png");
@@ -71,6 +75,8 @@ public class PlayerController extends AbstractController implements Initializabl
         playOrder.setOnAction(event -> {
             HCPlayer.setPlayOrder(PlayOrder.parse(playOrder.getValue()));
         });
+
+        soundSlider.setValue(Settings.getPlayerVolume() * 100);
 
         buttonStatus.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -112,9 +118,42 @@ public class PlayerController extends AbstractController implements Initializabl
             imPlay.setImage(rPlay);
             imStop.setImage(gStop);
             imPause.setImage(gPause);
+
+            timeSlider.setMax(mediaPlayer.getTotalDuration().toSeconds());
         });
         mediaPlayer.setOnReady(() -> {
             GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString());
+
+            //слайдер звука
+            soundSlider.valueProperty().unbind();
+            soundSlider.valueProperty().bindBidirectional(mediaPlayer.volumeProperty());
+
+            //слайдер времени в песне
+//            Duration duration = mediaPlayer.getMedia().getDuration();
+            mediaPlayer.currentTimeProperty().addListener((o, old, currentDuration) -> {
+//                playTime.setText(formatTime(currentDuration, duration));
+                if (!timeSlider.isValueChanging()) {
+                    timeSlider.setValue(currentDuration.toSeconds());
+                }
+            });
+
+            timeSlider.setMinorTickCount(0);
+            timeSlider.setMajorTickUnit(Math.round(mediaPlayer.getTotalDuration().toSeconds() / 10));
+
+            timeSlider.valueProperty().addListener(o -> {
+                if (timeSlider.isValueChanging()) {
+                    mediaPlayer.seek(Duration.seconds(timeSlider.getValue()));
+                }
+            });
+            timeSlider.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    timeSlider.setValueChanging(true);
+                    double value = (event.getX() / timeSlider.getWidth()) * timeSlider.getMax();
+                    timeSlider.setValue(value);
+                    timeSlider.setValueChanging(false);
+                }
+            });
         });
         mediaPlayer.setOnStopped(() -> {
             GController.playerController.buttonStatus.setText(mediaPlayer.getStatus().toString());
@@ -130,7 +169,7 @@ public class PlayerController extends AbstractController implements Initializabl
     @Override
     public void update(Observable o, Object arg) {
         log.debug("observer update started");
-        if (mediaPlayer == null || mediaPlayer != MediaPlayerAdapter.getMediaPlayer() && MediaPlayerAdapter.getMediaPlayer() != null) {
+        if (mediaPlayer == null || MediaPlayerAdapter.getMediaPlayer() != null && mediaPlayer != MediaPlayerAdapter.getMediaPlayer()) {
             mediaPlayer = MediaPlayerAdapter.getMediaPlayer();
             attachMediaPlayer(mediaPlayer);
 
