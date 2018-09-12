@@ -1,0 +1,3 @@
+flavor=;filter=[rating Equals null] | [genre Equals null] | [mood Equals null] | [novelty MoreThan 800];is default flavor=true;name=New songs;id=54;
+flavor=;filter=[calm MoreThan 4] | [wordless NotEquals null] | [classic MoreThan 7];is default flavor=true;name=Somewhat calm;id=55;
+flavor=;filter=[metal MoreOrEquals 5];is default flavor=true;name=Metal;id=56;

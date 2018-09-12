@@ -77,4 +77,14 @@ public class Filter {
         }
         return stack.empty();
     }
+
+    @Override
+    public String toString() {
+        String result = logicExpression;
+        for (int i = 0; i < comparisons.length; i++) {
+            String compString = comparisons[i].toString();
+            result = result.replace("f" + i, compString);
+        }
+        return result;
+    }
 }

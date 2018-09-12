@@ -23,7 +23,7 @@ public class FilterLogic {
         List<Long> blacklistIds = blacklist == null ? new ArrayList<>()
                 : blacklist.stream().map(Song::getId).collect(Collectors.toList());
 
-        if (filter.getLogicExpression().equals(""))
+        if (filter == null || filter.getLogicExpression().equals(""))
             return SongService.getAll().parallelStream()
                     .filter(song -> !blacklistIds.contains(song.getId())).collect(Collectors.toList());
         List<Long>[] hierarchies = getHierarchies(filter.getComparisons());

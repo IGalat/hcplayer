@@ -1,6 +1,7 @@
 package com.jr.model;
 
 import com.jr.logic.FilterLogic;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
  */
 
 @Data
+@AllArgsConstructor
 public class FilteredPlaylist implements Playlist {
     private long id;
     private String name;

@@ -43,12 +43,9 @@ public class NormalPlaylistService {
     public static NormalPlaylist save(String name) {
         NormalPlaylist existingPlaylist = getByName(name);
         if (existingPlaylist != null) {
-            return save(name,
-                    existingPlaylist.getFlavor(),
-                    existingPlaylist.isDefaultFlavorUsed(),
-                    existingPlaylist.getSongs().toArray(new Song[existingPlaylist.getSongs().size()]));
+            return existingPlaylist;
         } else
-            return save(name, null, (Song[]) null);
+            return save(name, null, true, (Song[]) null);
     }
 
     public static NormalPlaylist save(String name, Flavor flavor, Song... songs) {
@@ -73,7 +70,7 @@ public class NormalPlaylistService {
         List<Song> songList = FXCollections.observableArrayList();
         if (songs != null)
             songList = FXCollections.observableArrayList((Arrays.asList(songs)));
-        if (songs == null && existingPlaylist != null && existingPlaylist.getSongs().size() > 0)
+        else if (existingPlaylist != null && existingPlaylist.getSongs().size() > 0)
             songList = existingPlaylist.getSongs();
 
         NormalPlaylist playlist = new NormalPlaylist(id, name, flavor, isDefaultFlavorUsed, songList);
@@ -106,6 +103,8 @@ public class NormalPlaylistService {
     }
 
     public static NormalPlaylist anonPlaylist(List<Song> songs) {
+        if (songs == null)
+            songs = FXCollections.observableArrayList();
         return new NormalPlaylist(-1, "", new Flavor(), true, FXCollections.observableArrayList(songs));
     }
 }

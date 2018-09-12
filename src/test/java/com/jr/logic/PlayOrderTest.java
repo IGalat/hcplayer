@@ -183,7 +183,7 @@ public class PlayOrderTest {
         int totalRolls = 0;
         for (int i = 3; i < songs.size(); i++) {
             Song iSong = songs.get(i);
-            int expectedPlays = weightMap.get(iSong); // /100;
+            int expectedPlays = weightMap.get(iSong) / 1000;
             expectedSongPlays.put(iSong, expectedPlays);
             totalRolls += expectedPlays;
         }

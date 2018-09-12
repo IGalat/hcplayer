@@ -2,10 +2,7 @@ package com.jr;
 
 import com.jr.logic.CritHardcode;
 import com.jr.logic.FlavorLogic;
-import com.jr.model.Crit;
-import com.jr.model.Flavor;
-import com.jr.model.NormalPlaylist;
-import com.jr.model.Song;
+import com.jr.model.*;
 import com.jr.service.*;
 import javafx.util.Pair;
 import org.junit.Ignore;
@@ -75,6 +72,7 @@ public class TestHelper {
         setStandardCrits();
         setStandardSongs();
         setStandardNormalPlaylists();
+        setStandardFilteredPlaylists();
     }
 
     private static void setStandardCrits() {
@@ -195,5 +193,13 @@ public class TestHelper {
                 , soil_BreakingMeDown
                 , pain_SameOldSong
                 , powerwolf_DieDieCrucified);
+    }
+
+    private static void setStandardFilteredPlaylists() {
+        new FilteredPlaylistServiceTest().deleteAll();
+
+        FilteredPlaylistService.save("New songs", new Filter("[rating == null] | [genre == null] | [mood == null] | [novelty > 800]"));
+        FilteredPlaylistService.save("Somewhat calm", new Filter("[calm > 4] | [wordless != null] | [classic > 7]"));
+        FilteredPlaylistService.save("Metal", new Filter("[metal >= 5]"));
     }
 }
