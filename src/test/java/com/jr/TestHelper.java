@@ -119,7 +119,7 @@ public class TestHelper {
         dragonforce_StrikeOfTheNinja = SongService.save(prefix + "Dragonforce - Strike Of The Ninja.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 5), new Pair<>(powerMetal, 10), new Pair<>(energetic, 10));
         eluveitie_Lvgvs = SongService.save(prefix + "Eluveitie - Lvgvs.mp3"
-                , new Pair<>(CritHardcode.ratingCrit, 7), new Pair<>(folkMetal, 7), new Pair<>(energetic, 6), new Pair<>(singsong, 7));
+                , new Pair<>(CritHardcode.ratingCrit, 7), new Pair<>(metal, 4), new Pair<>(folkMetal, 8), new Pair<>(energetic, 6), new Pair<>(singsong, 7));
         nightwish_FeelForYou = SongService.save(prefix + "Nightwish - Feel For You.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 6), new Pair<>(symphonicPowerMetal, 7), new Pair<>(calm, 5), new Pair<>(energetic, 5));
         nightwish_Stargazers = SongService.save(prefix + "Nightwish - Stargazers.mp3"

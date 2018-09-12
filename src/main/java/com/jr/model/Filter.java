@@ -16,7 +16,6 @@ import java.util.Stack;
 public class Filter {
     private final String logicExpression;
     private final Comparison[] comparisons;
-    private List<Song> cachedSongList;
 
     public Filter(String logicExpression, List<Comparison> comparisons) {
         this.logicExpression = checkLogicExpression(logicExpression);
@@ -29,13 +28,18 @@ public class Filter {
     }
 
     public Filter(String filterString) {
+        if (filterString == null || filterString.isEmpty()) {
+            this.logicExpression = "";
+            this.comparisons = new Comparison[0];
+            return;
+        }
         List<Comparison> comparisons = new ArrayList<>();
 
         while (filterString.contains("]")) {
             int nextComparisonIndex = comparisons.size();
             int openBracePosition = filterString.indexOf('[');
             int closeBracePosition = filterString.indexOf(']');
-            String comparisonString = filterString.substring(openBracePosition, closeBracePosition);
+            String comparisonString = filterString.substring(openBracePosition, closeBracePosition + 1);
 
             Comparison comparison = Comparison.parse(comparisonString);
             filterString = filterString.replace(comparisonString, "f" + nextComparisonIndex);
@@ -55,7 +59,7 @@ public class Filter {
     private boolean isLogicExpressionOk(String logicExpression) {
         if (!logicExpression.matches("[^]}\\[{]*")) return false;
 
-        Stack<Character> stack = new Stack<Character>();
+        Stack<Character> stack = new Stack<>();
 
         char c;
         for (int i = 0; i < logicExpression.length(); i++) {

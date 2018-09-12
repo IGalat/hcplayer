@@ -54,6 +54,11 @@
                 <version>2.11.1</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.bpodgursky</groupId>
+                <artifactId>jbool_expressions</artifactId>
+                <version>1.18</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -86,6 +91,11 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bpodgursky</groupId>
+            <artifactId>jbool_expressions</artifactId>
         </dependency>
     </dependencies>
 

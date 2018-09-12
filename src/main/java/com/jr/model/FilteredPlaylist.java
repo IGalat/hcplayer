@@ -1,6 +1,6 @@
 package com.jr.model;
 
-import com.jr.logic.FiltersLogic;
+import com.jr.logic.FilterLogic;
 import lombok.Data;
 
 import java.util.List;
@@ -16,11 +16,11 @@ public class FilteredPlaylist implements Playlist {
     private Flavor flavor;
     private boolean defaultFlavorUsed;
     private Filter filter;
-
+    private List<Song> blacklist;
 
     @Override
     public List<Song> getSongs() {
-        return FiltersLogic.getSongList(filter);
+        return FilterLogic.getSongList(filter, blacklist);
     }
 
     @Override
