@@ -22,24 +22,19 @@ public class FilterLogic {
     public static List<Song> getSongList(Filter filter, List<Song> blacklist) {
         List<Long> blacklistIds = blacklist == null ? new ArrayList<>()
                 : blacklist.stream().map(Song::getId).collect(Collectors.toList());
+
         if (filter.getLogicExpression().equals(""))
-            return SongService.getAll().stream().filter(song -> !blacklistIds.contains(song.getId())).collect(Collectors.toList());
-        List<Song> chosenSongs = new ArrayList<>();
+            return SongService.getAll().parallelStream()
+                    .filter(song -> !blacklistIds.contains(song.getId())).collect(Collectors.toList());
         List<Long>[] hierarchies = getHierarchies(filter.getComparisons());
         Expression<String> logicExpression = RuleSet.simplify(ExprParser.parse(filter.getLogicExpression()));
         List<String> byWeight = ExprUtil.getConstraintsByWeight(logicExpression);
         int[] expressionIndices = getComparisonIndices(byWeight);
 
-        for (Song song : SongService.getAll()) {
-            if (blacklistIds.contains(song.getId()))
-                continue;
-
-            if (isSongChosen(song, hierarchies, filter.getComparisons(), logicExpression, expressionIndices, byWeight)) {
-                chosenSongs.add(song);
-            }
-        }
-
-        return chosenSongs;
+        return SongService.getAll().parallelStream()
+                .filter(song -> !blacklistIds.contains(song.getId()))
+                .filter(song -> isSongChosen(song, hierarchies, filter.getComparisons(), logicExpression, expressionIndices, byWeight))
+                .collect(Collectors.toList());
     }
 
     private static List<Long>[] getHierarchies(Comparison[] comparisons) {

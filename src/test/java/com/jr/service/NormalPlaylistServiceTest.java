@@ -52,9 +52,10 @@ public class NormalPlaylistServiceTest {
 
         NormalPlaylistService.save("Epic", null
                 , TestHelper.wow_AntechmberOfUlduar
-                , TestHelper.nightwish_Stargazers
                 , TestHelper.therion_SummernightCity
-                , TestHelper.powerwolf_DieDieCrucified);
+                , TestHelper.powerwolf_DieDieCrucified
+                , TestHelper.scorpions_hurricane2000
+                , TestHelper.halo_theGlitteringBand);
 
         NormalPlaylist epic = NormalPlaylistService.getByName("Epic");
 

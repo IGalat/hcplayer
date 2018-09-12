@@ -123,7 +123,7 @@ public class TestHelper {
         nightwish_FeelForYou = SongService.save(prefix + "Nightwish - Feel For You.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 6), new Pair<>(symphonicPowerMetal, 7), new Pair<>(calm, 5), new Pair<>(energetic, 5));
         nightwish_Stargazers = SongService.save(prefix + "Nightwish - Stargazers.mp3"
-                , new Pair<>(CritHardcode.ratingCrit, 5), new Pair<>(symphonicPowerMetal, 9), new Pair<>(epic, 6));
+                , new Pair<>(CritHardcode.ratingCrit, 5), new Pair<>(symphonicPowerMetal, 9));
         rhapsodyOfFire_ReignOfTerror = SongService.save(prefix + "Rhapsody of Fire - Reign Of Terror.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(powerMetal, 9), new Pair<>(energetic, 10));
         scooter_AiiiShotTheDj = SongService.save(prefix + "Scooter - Aiii Shot The Dj.mp3"

@@ -12,10 +12,7 @@ import com.jr.util.FileOps;
 import com.jr.util.FileOpsTest;
 import org.junit.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -126,4 +123,27 @@ public class FilterLogicTest {
         Assert.assertEquals(expected, FilterLogic.getSongList(filter, null));
     }
 
+    @Ignore
+    @Test
+    public void complicated() {
+        Filter filter = new Filter("([rating == null] | [mood == null] | [genre == null]) | [cheerful >= 8]");
+        List<Song> blacklist = Collections.singletonList(TestHelper.avicii_WakeMeUp);
+        List<Song> expected = Arrays.asList(
+                TestHelper.mozart_RondoAllaTurka
+                , TestHelper.wow_AntechmberOfUlduar
+                , TestHelper.nightwish_Stargazers
+                , TestHelper.scooter_AiiiShotTheDj
+                , TestHelper.therion_SummernightCity
+                , TestHelper.omnia_FeeRaHuri_Live
+                , TestHelper.brunuhVille_SpiritOfTheWind
+                , TestHelper.misc_LeprechaunsDance
+                , TestHelper.pakito_LivingOnVideo
+                , TestHelper.pyramid_Wolf
+                , TestHelper.shadManning_CrusadeOfCannyr
+                , TestHelper.scorpions_hurricane2000
+                , TestHelper.halo_theGlitteringBand);
+
+        List<Song> result = FilterLogic.getSongList(filter, blacklist);
+        Assert.assertEquals(expected, result);
+    }
 }
