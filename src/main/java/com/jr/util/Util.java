@@ -10,6 +10,7 @@ import com.jr.model.Playlist;
 import com.jr.model.Song;
 import com.jr.service.NormalPlaylistService;
 import com.jr.service.SongService;
+import javafx.collections.FXCollections;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -76,7 +77,7 @@ public class Util {
 
     public static List<Song> parseSongsFromIds(String songIds) {
         if (songIds == null)
-            return SongService.getByIds(new ArrayList<>());
+            return SongService.getByIds(FXCollections.observableArrayList());
 
         List<Long> ids = new ArrayList<>();
         String[] idsString = songIds.split("[,]");

@@ -44,7 +44,7 @@ public class SongsController extends AbstractController implements Initializable
         songsTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         playlist = Util.getInitialPlaylist();
-        songs = (ObservableList) Util.getInitialPlaylist().getSongs();
+        songs = playlist.getSongs();
 
 //        artistCol.setCellValueFactory(new PropertyValueFactory<Song, String>("id"));
 
@@ -72,7 +72,7 @@ public class SongsController extends AbstractController implements Initializable
         });
         songsTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        songsTableView.setItems(FXCollections.observableArrayList(songs));
+        songsTableView.setItems((ObservableList)songs);
 
         songsTableView.setRowFactory(tv -> {
             TableRow<Song> row = new TableRow<>();
@@ -90,9 +90,12 @@ public class SongsController extends AbstractController implements Initializable
         songsTableView.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.DELETE && songsTableView.getSelectionModel().getSelectedIndex() >= 0) {
                 ObservableList<Song> selectedItems = songsTableView.getSelectionModel().getSelectedItems();
-                String s = (selectedItems.size() > 1) ? String.valueOf(selectedItems.size()) + " " + selectedItems.get(0).getClass().getSimpleName() : selectedItems.get(0).getPath().getFileName().toString();
+                String s = (selectedItems.size() > 1) ? String.valueOf(selectedItems.size())
+                        + " " + selectedItems.get(0).getClass().getSimpleName() : selectedItems.get(0).getPath().getFileName().toString();
 
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + s + " ?", ButtonType.YES, ButtonType.CANCEL);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete\n"
+                        + (s.lastIndexOf('.') != -1 ? s.substring(0, s.lastIndexOf('.')) : s)
+                        + "\nfrom\n" + playlist.getName() + "\nplaylist?", ButtonType.YES, ButtonType.CANCEL);
                 alert.setHeaderText(null);
                 alert.showAndWait();
 
