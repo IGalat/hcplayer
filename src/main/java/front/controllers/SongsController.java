@@ -3,6 +3,7 @@ package front.controllers;
 import com.jr.execution.HCPlayer;
 import com.jr.model.Playlist;
 import com.jr.model.Song;
+import com.jr.service.SongService;
 import com.jr.util.Util;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -10,8 +11,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.TransferMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -77,7 +80,7 @@ public class SongsController extends AbstractController implements Initializable
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY
                         && event.getClickCount() == 2) {
 //                    HCPlayer.playPlaylist(NormalPlaylistService.anonPlaylist(songsTableView.getSelectionModel().getSelectedItems()));
-                    HCPlayer.playPlaylist(GController.songsController.playlist, songsTableView.getSelectionModel().getSelectedItem());
+                    HCPlayer.playPlaylist(playlist, songsTableView.getSelectionModel().getSelectedItem());
                 }
             });
             return row;
@@ -102,6 +105,27 @@ public class SongsController extends AbstractController implements Initializable
                     }
                 }
             }
+        });
+
+        songsTableView.setOnDragOver(event -> {
+            // data is dragged over the target
+            Dragboard db = event.getDragboard();
+            if (event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.COPY);
+            }
+            event.consume();
+        });
+
+        songsTableView.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (event.getDragboard().hasString()) {
+                log.info("Trying to drag and drop song id(" + db.getString() + ") from musicLib into playList: " + playlist.getName());
+                playlist.getSongs().add(SongService.getOne(Integer.valueOf(db.getString())));
+                success = true;
+            }
+            event.setDropCompleted(success);
+            event.consume();
         });
 
     }

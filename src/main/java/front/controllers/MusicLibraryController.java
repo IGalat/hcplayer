@@ -13,7 +13,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.input.MouseButton;
+import javafx.scene.input.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -81,6 +81,17 @@ public class MusicLibraryController extends AbstractController implements Initia
                 }
             });
             return row;
+        });
+
+        musicLibTableView.setOnDragDetected(event -> {
+            Song selectedItem = musicLibTableView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                Dragboard db = musicLibTableView.startDragAndDrop(TransferMode.COPY);
+                ClipboardContent content = new ClipboardContent();
+                content.putString(String.valueOf(selectedItem.getId()));
+                db.setContent(content);
+                event.consume();
+            }
         });
     }
 }
