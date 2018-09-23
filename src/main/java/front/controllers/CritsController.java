@@ -3,11 +3,12 @@ package front.controllers;
 import com.jr.model.Crit;
 import com.jr.service.CritService;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.input.KeyCode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,35 +25,38 @@ public class CritsController extends AbstractController implements Initializable
     private static final Logger log = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     @FXML
-    TableView<Crit> CritsTable;
+    TreeTableView<Crit> CritsTable;
 
     @FXML
-    TableColumn<Crit, Integer> idCol;
+    TreeTableColumn<Crit, String> nameCol;
     @FXML
-    TableColumn<Crit, String> nameCol;
+    TreeTableColumn<Crit, String> minMaxCol;
     @FXML
-    TableColumn<Crit, String> minMaxCol;
-    @FXML
-    TableColumn<Crit, String> parentsChildsCol;
+    TreeTableColumn<Crit, String> childsCol;
+
+    private static TreeItem<Crit> root = new TreeItem<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         GController.critsController = this;
 
-        CritsTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-//        nameCol.setCellValueFactory(cellData -> cellData.getValue().getName());
-        nameCol.setCellValueFactory(i -> new SimpleStringProperty(i.getValue().getName()));
+        CritsTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
+        nameCol.setCellValueFactory(i -> new SimpleStringProperty(i.getValue().getValue().getName()));
 //        minCol.setCellValueFactory(new PropertyValueFactory<Crit, Integer>("min"));
-        minMaxCol.setCellValueFactory(i -> new SimpleStringProperty(i.getValue().getMin() + " .. " + i.getValue().getMax()));
-        parentsChildsCol.setCellValueFactory(i -> new SimpleStringProperty(CritService.getParents(i.getValue()).size() + " / " + String.valueOf(i.getValue().getChildren().size())));
+        minMaxCol.setCellValueFactory(i -> new SimpleStringProperty(i.getValue().getValue().getMin() + " .. " + i.getValue().getValue().getMax()));
+        childsCol.setCellValueFactory(i -> new SimpleStringProperty(String.valueOf(i.getValue().getChildren().size())));
 
-        CritsTable.setItems((ObservableList) CritService.getAll());
+        root.setExpanded(true);
+        CritsTable.setShowRoot(false);
+        CritsTable.setRoot(root);
 
-        nameCol.setCellFactory(TextFieldTableCell.<Crit>forTableColumn());
+        refreshCritTable();
+
+        nameCol.setCellFactory(TextFieldTreeTableCell.<Crit>forTreeTableColumn());
         nameCol.setOnEditCommit(
-                (TableColumn.CellEditEvent<Crit, String> t) -> {
-                    Crit crit = t.getTableView().getItems().get(t.getTablePosition().getRow());
+                (TreeTableColumn.CellEditEvent<Crit, String> t) -> {
+                    Crit crit = t.getRowValue().getValue();
                     if (!crit.getName().equals(t.getNewValue())) {
                         log.info(CritService.rename(crit, t.getNewValue()));
                     }
@@ -60,22 +64,45 @@ public class CritsController extends AbstractController implements Initializable
 
         CritsTable.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.DELETE && CritsTable.getSelectionModel().getSelectedIndex() >= 0) {
-                ObservableList<Crit> selectedItems = CritsTable.getSelectionModel().getSelectedItems();
-                String s = (selectedItems.size() > 1) ? String.valueOf(selectedItems.size()) + " " + selectedItems.get(0).getClass().getSimpleName() : selectedItems.get(0).getName();
+                List<Crit> selectedItems = new ArrayList<>();
+                CritsTable.getSelectionModel().getSelectedItems().forEach(critTreeItem -> {
+                    selectedItems.add(critTreeItem.getValue());
+                });
 
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + s + " ?", ButtonType.YES, ButtonType.CANCEL);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete "
+                        + selectedItems.get(0).getName() + " ?\n\n"
+                        + "WARNING: CHILDREN WILL NOT BE DELETED", ButtonType.YES, ButtonType.CANCEL);
                 alert.setHeaderText(null);
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
-                    List<Integer> selectedIndices = new ArrayList<>(CritsTable.getSelectionModel().getSelectedIndices());
-                    for (int i = selectedIndices.size() - 1; i >= 0; i--) {
-                        Crit crit = CritsTable.getItems().get(selectedIndices.get(i));
-                        log.info(this.getClass().getSimpleName() + " trying to remove " + crit);
-                        CritService.remove(crit);
-                    }
+                    TreeItem<Crit> selectedItem = CritsTable.getSelectionModel().getSelectedItem();
+                    Crit crit = selectedItem.getValue();
+                    log.info(this.getClass().getSimpleName() + " trying to remove " + crit);
+                    if (CritService.remove(crit))
+//                        selectedItem.getParent().getChildren().remove(selectedItem);
+                        refreshCritTable();
                 }
             }
+        });
+    }
+
+    public void refreshCritTable() {
+        root = new TreeItem<>();
+        CritsTable.setRoot(root);
+        updateCritTable(root, (ObservableList) CritService.getAll(), new ArrayList<>(CritService.getAll()));
+    }
+
+    private void updateCritTable(TreeItem<Crit> temp, ObservableList<Crit> crits, List<Crit> all) {
+        crits.forEach(crit -> {
+            if (all.contains(crit))
+                all.remove(crit);
+            else
+                return;
+
+            TreeItem<Crit> critTreeItem = new TreeItem<>(crit);
+            updateCritTable(critTreeItem, FXCollections.observableArrayList(crit.getChildren()), all);
+            temp.getChildren().add(critTreeItem);
         });
     }
 

@@ -35,8 +35,9 @@ public class CritService {
         return critRepo.getOne(id);
     }
 
-    public static synchronized void remove(Crit crit) {
-        if (CritHardcode.isProtectedCrit(crit.getName())) return;
+    public static synchronized boolean remove(Crit crit) {
+        if (CritHardcode.isProtectedCrit(crit.getName()))
+            return false;
 
         List<Crit> allCrits = getAll();
         for (int i = allCrits.size(); i > 0; i--) {
@@ -45,6 +46,8 @@ public class CritService {
         }
 
         critRepo.delete(crit);
+
+        return true;
     }
 
     public static Crit save(String name) {
