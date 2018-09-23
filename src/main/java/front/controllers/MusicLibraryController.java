@@ -13,7 +13,10 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.TransferMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -84,11 +87,17 @@ public class MusicLibraryController extends AbstractController implements Initia
         });
 
         musicLibTableView.setOnDragDetected(event -> {
-            Song selectedItem = musicLibTableView.getSelectionModel().getSelectedItem();
-            if (selectedItem != null) {
+            ObservableList<Song> selectedItems = musicLibTableView.getSelectionModel().getSelectedItems();
+            if (selectedItems != null && selectedItems.size() > 0) {
                 Dragboard db = musicLibTableView.startDragAndDrop(TransferMode.COPY);
                 ClipboardContent content = new ClipboardContent();
-                content.putString(String.valueOf(selectedItem.getId()));
+
+                StringBuilder sb = new StringBuilder(selectedItems.size() * 5);
+                sb.append(selectedItems.get(0).getClass().getSimpleName() + "_" + selectedItems.get(0).getId());
+                for (int i = 1; i < selectedItems.size(); i++)
+                    sb.append("," + selectedItems.get(i).getId());
+
+                content.putString(sb.toString());
                 db.setContent(content);
                 event.consume();
             }

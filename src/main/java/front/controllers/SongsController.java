@@ -6,7 +6,6 @@ import com.jr.model.Song;
 import com.jr.service.SongService;
 import com.jr.util.Util;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -72,7 +71,7 @@ public class SongsController extends AbstractController implements Initializable
         });
         songsTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        songsTableView.setItems((ObservableList)songs);
+        songsTableView.setItems((ObservableList) songs);
 
         songsTableView.setRowFactory(tv -> {
             TableRow<Song> row = new TableRow<>();
@@ -113,7 +112,7 @@ public class SongsController extends AbstractController implements Initializable
         songsTableView.setOnDragOver(event -> {
             // data is dragged over the target
             Dragboard db = event.getDragboard();
-            if (event.getDragboard().hasString()) {
+            if (event.getDragboard().hasString() && db.getString().startsWith("Song_")) {
                 event.acceptTransferModes(TransferMode.COPY);
             }
             event.consume();
@@ -122,9 +121,13 @@ public class SongsController extends AbstractController implements Initializable
         songsTableView.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
-            if (event.getDragboard().hasString()) {
-                log.info("Trying to drag and drop song id(" + db.getString() + ") from musicLib into playList: " + playlist.getName());
-                playlist.getSongs().add(SongService.getOne(Integer.valueOf(db.getString())));
+            if (event.getDragboard().hasString() && db.getString().startsWith("Song_")) {
+                log.info("Trying to drag and drop (" + db.getString() + ") into playList: " + playlist.getName());
+                String[] s = db.getString().substring(db.getString().indexOf('_') + 1).split(",");
+                ArrayList<Long> longs = new ArrayList<>(s.length);
+                for (String ss : s)
+                    longs.add(Long.valueOf(ss));
+                playlist.getSongs().addAll(SongService.getByIds(longs));
                 success = true;
             }
             event.setDropCompleted(success);
