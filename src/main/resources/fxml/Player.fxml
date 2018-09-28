@@ -43,6 +43,15 @@
                         </ImageView>
                     </graphic>
                 </Button>
+                <Button fx:id="buttonPrev" mnemonicParsing="false">
+                    <graphic>
+                        <ImageView fx:id="imPrev" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" visible="true">
+                            <image>
+                                <Image url="/images/prev_green.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
                 <Button fx:id="buttonNext" mnemonicParsing="false">
                     <graphic>
                         <ImageView fx:id="imNext" fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" visible="true">
