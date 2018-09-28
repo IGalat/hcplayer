@@ -1,7 +1,9 @@
 package front.controllers;
 
 import com.jr.model.Crit;
+import com.jr.model.Song;
 import com.jr.service.CritService;
+import com.jr.service.SongService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,7 +11,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.util.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -85,6 +92,62 @@ public class CritsController extends AbstractController implements Initializable
                 }
             }
         });
+
+        CritsTable.setRowFactory(tv -> {
+            TreeTableRow<Crit> row = new TreeTableRow<>();
+
+            row.setOnDragOver(event -> {
+                // data is dragged over
+                Dragboard db = event.getDragboard();
+                if (event.getDragboard().hasString() && db.getString().startsWith("Song_")) {
+                    event.acceptTransferModes(TransferMode.COPY);
+                    CritsTable.getSelectionModel().select(row.getIndex());
+                }
+                event.consume();
+            });
+
+            row.setOnDragExited(event -> {
+                CritsTable.getSelectionModel().clearSelection();
+                event.consume();
+            });
+
+            row.setOnDragDropped(event -> {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (!row.isEmpty() && event.getDragboard().hasString()
+                        && db.getString().startsWith("Song_")) {
+                    log.info("Trying to drag and drop (" + db.getString() + ") into Crit: " + CritsTable.getSelectionModel().getSelectedItem().getValue().getName());
+                    String[] s = db.getString().substring(db.getString().indexOf('_') + 1).split(",");
+                    ArrayList<Long> longs = new ArrayList<>(s.length);
+                    for (String ss : s)
+                        longs.add(Long.valueOf(ss));
+                    List<Song> songs = SongService.getByIds(longs);
+                    ObservableList<TreeItem<Crit>> selectedItems = CritsTable.getSelectionModel().getSelectedItems();
+                    selectedItems.forEach(critTreeItem -> {
+                        songs.forEach(song -> {
+                            TextInputDialog dialog = new TextInputDialog("10");
+                            GridPane.setHgrow(dialog.getEditor(), Priority.NEVER);
+                            dialog.getDialogPane().setPrefSize(600, 100);
+//                            dialog.getDialogPane().getChildren().get(0)
+                            dialog.setContentText("Enter Crits<" + critTreeItem.getValue().getName() + "> rating(as number) to Song<" + song.getTags().getTitle() + ">:");
+                            Optional<String> result = dialog.showAndWait();
+
+                            result.ifPresent(res -> {
+                                log.info("Trying to add " + critTreeItem.getValue() + " with value(" + res + ") to " + song);
+                                Integer rate = Integer.valueOf(res);
+                                SongService.addCrits(song, new Pair<>(critTreeItem.getValue(), rate));
+
+                            });
+                        });
+                    });
+
+                    success = true;
+                }
+                event.setDropCompleted(success);
+                event.consume();
+            });
+            return row;
+        });
     }
 
     public void refreshCritTable() {
@@ -101,6 +164,7 @@ public class CritsController extends AbstractController implements Initializable
                 return;
 
             TreeItem<Crit> critTreeItem = new TreeItem<>(crit);
+            critTreeItem.setExpanded(true);
             updateCritTable(critTreeItem, FXCollections.observableArrayList(crit.getChildren()), all);
             temp.getChildren().add(critTreeItem);
         });
@@ -120,6 +184,7 @@ public class CritsController extends AbstractController implements Initializable
             try {
                 split = s.split(",");
                 log.info("Trying to save " + CritService.save(split[0], Integer.valueOf(split[1]), Integer.valueOf(split[2])));
+                refreshCritTable();
             } catch (Exception e) {
             }
         });

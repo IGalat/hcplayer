@@ -112,10 +112,15 @@ public class SongsController extends AbstractController implements Initializable
         songsTableView.setOnDragOver(event -> {
             // data is dragged over the target
             Dragboard db = event.getDragboard();
+            songsTableView.getSelectionModel().selectAll();
             if (event.getDragboard().hasString() && db.getString().startsWith("Song_")) {
                 event.acceptTransferModes(TransferMode.COPY);
             }
             event.consume();
+        });
+
+        songsTableView.setOnDragExited(event -> {
+            songsTableView.getSelectionModel().clearSelection();
         });
 
         songsTableView.setOnDragDropped(event -> {
