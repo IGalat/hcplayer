@@ -96,7 +96,8 @@ public class PlayListController extends AbstractController implements Initializa
             row.setOnDragOver(event -> {
                 // data is dragged over the targetSong_42
                 Dragboard db = event.getDragboard();
-                if (event.getDragboard().hasString() && db.getString().startsWith("Song_")) {
+                if (event.getDragboard().hasString()
+                        && (db.getString().startsWith("Song_") || db.getString().startsWith("musicSong_"))) {
                     event.acceptTransferModes(TransferMode.COPY);
 //                    playlistTableView.requestFocus();
                     playlistTableView.getSelectionModel().select(row.getIndex());
@@ -114,7 +115,7 @@ public class PlayListController extends AbstractController implements Initializa
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 if (!row.isEmpty() && event.getDragboard().hasString()
-                        && db.getString().startsWith("Song_")) {
+                        && (db.getString().startsWith("Song_") || db.getString().startsWith("musicSong_"))) {
                     log.info("Trying to drag and drop (" + db.getString() + ") into playList: " + playlistTableView.getSelectionModel().getSelectedItem().getName());
                     String[] s = db.getString().substring(db.getString().indexOf('_') + 1).split(",");
                     ArrayList<Long> longs = new ArrayList<>(s.length);

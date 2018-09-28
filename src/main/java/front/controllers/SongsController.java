@@ -10,10 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -112,8 +109,8 @@ public class SongsController extends AbstractController implements Initializable
         songsTableView.setOnDragOver(event -> {
             // data is dragged over the target
             Dragboard db = event.getDragboard();
-            songsTableView.getSelectionModel().selectAll();
-            if (event.getDragboard().hasString() && db.getString().startsWith("Song_")) {
+            if (event.getDragboard().hasString() && db.getString().startsWith("musicSong_")) {
+                songsTableView.getSelectionModel().selectAll();
                 event.acceptTransferModes(TransferMode.COPY);
             }
             event.consume();
@@ -126,7 +123,7 @@ public class SongsController extends AbstractController implements Initializable
         songsTableView.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
-            if (event.getDragboard().hasString() && db.getString().startsWith("Song_")) {
+            if (event.getDragboard().hasString() && db.getString().startsWith("musicSong_")) {
                 log.info("Trying to drag and drop (" + db.getString() + ") into playList: " + playlist.getName());
                 String[] s = db.getString().substring(db.getString().indexOf('_') + 1).split(",");
                 ArrayList<Long> longs = new ArrayList<>(s.length);
@@ -137,6 +134,23 @@ public class SongsController extends AbstractController implements Initializable
             }
             event.setDropCompleted(success);
             event.consume();
+        });
+
+        songsTableView.setOnDragDetected(event -> {
+            ObservableList<Song> selectedItems = songsTableView.getSelectionModel().getSelectedItems();
+            if (selectedItems != null && selectedItems.size() > 0) {
+                Dragboard db = songsTableView.startDragAndDrop(TransferMode.COPY);
+                ClipboardContent content = new ClipboardContent();
+
+                StringBuilder sb = new StringBuilder(selectedItems.size() * 5);
+                sb.append(selectedItems.get(0).getClass().getSimpleName() + "_" + selectedItems.get(0).getId());
+                for (int i = 1; i < selectedItems.size(); i++)
+                    sb.append("," + selectedItems.get(i).getId());
+
+                content.putString(sb.toString());
+                db.setContent(content);
+                event.consume();
+            }
         });
 
     }

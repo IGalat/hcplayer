@@ -99,7 +99,8 @@ public class CritsController extends AbstractController implements Initializable
             row.setOnDragOver(event -> {
                 // data is dragged over
                 Dragboard db = event.getDragboard();
-                if (event.getDragboard().hasString() && db.getString().startsWith("Song_")) {
+                if (event.getDragboard().hasString()
+                        && (db.getString().startsWith("Song_") || db.getString().startsWith("musicSong_"))) {
                     event.acceptTransferModes(TransferMode.COPY);
                     CritsTable.getSelectionModel().select(row.getIndex());
                 }
@@ -115,7 +116,7 @@ public class CritsController extends AbstractController implements Initializable
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 if (!row.isEmpty() && event.getDragboard().hasString()
-                        && db.getString().startsWith("Song_")) {
+                        && (db.getString().startsWith("Song_") || db.getString().startsWith("musicSong_"))) {
                     log.info("Trying to drag and drop (" + db.getString() + ") into Crit: " + CritsTable.getSelectionModel().getSelectedItem().getValue().getName());
                     String[] s = db.getString().substring(db.getString().indexOf('_') + 1).split(",");
                     ArrayList<Long> longs = new ArrayList<>(s.length);

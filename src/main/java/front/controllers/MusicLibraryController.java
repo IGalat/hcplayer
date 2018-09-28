@@ -93,7 +93,7 @@ public class MusicLibraryController extends AbstractController implements Initia
                 ClipboardContent content = new ClipboardContent();
 
                 StringBuilder sb = new StringBuilder(selectedItems.size() * 5);
-                sb.append(selectedItems.get(0).getClass().getSimpleName() + "_" + selectedItems.get(0).getId());
+                sb.append("musicSong_" + selectedItems.get(0).getId());
                 for (int i = 1; i < selectedItems.size(); i++)
                     sb.append("," + selectedItems.get(i).getId());
 
