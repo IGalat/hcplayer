@@ -120,6 +120,10 @@
                                 <mainClass>front.Main</mainClass>
                             </manifest>
                         </archive>
+                        <excludes>
+                            <exclude>**/songs/*</exclude>
+                            <exclude>**/user/*</exclude>
+                        </excludes>
                     </configuration>
                 </plugin>
             </plugins>

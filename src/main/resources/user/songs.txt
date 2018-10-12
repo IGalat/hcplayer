@@ -20,3 +20,17 @@ energetic=6;path=src\main\resources\songs\Pyramid - Wolf.mp3;novelty=1000;wordle
 energetic=4;path=src\main\resources\songs\Shad Manning - Crusade of Crannhyr.mp3;novelty=1000;wordless=1;rating=8;weight=100;epic=6;id=49;
 energetic=6;path=C:\_my\Музыка\Scorpions\Scorpions und die Berliner Phi - Hurricane 2000.mp3;novelty=1000;rating=8;weight=100;epic=9;id=50;
 path=C:\Users\admin\Desktop\Halo 2 - This Glittering Band.mp3;novelty=1000;wordless=1;rating=8;weight=100;epic=6;id=51;
+path=C:\_my\Музыка\Enya\Enya - Anywhere Is.mp3;novelty=1000;rating=null;weight=100;id=57;
+path=C:\_my\Музыка\Enya\Enya - Only If You Want To.mp3;novelty=1000;rating=null;weight=100;id=58;
+path=C:\_my\Музыка\Enya\Enya - Only Time.mp3;novelty=1000;rating=null;weight=100;id=63;
+path=C:\_my\Музыка\Enya\Enya - Orinoco Flow (Sail Away).mp3;novelty=1000;rating=null;weight=100;id=64;
+path=C:\_my\Музыка\Enya\Enya - The Celts.mp3;novelty=1000;rating=null;weight=100;id=65;
+path=C:\_my\Музыка\Enya\Enya - The Humming.....mp3;novelty=1000;rating=null;weight=100;id=66;
+path=C:\_my\Музыка\Faun\Faun  - Mit dem Wind.mp3;novelty=1000;rating=null;weight=100;id=67;
+path=C:\_my\Музыка\Faun\Faun - Egil Saga.mp3;novelty=1000;rating=null;weight=100;id=68;
+path=C:\_my\Музыка\Faun\Faun - Minne 2013 (Duett mit Subway to Sally).mp3;novelty=1000;rating=null;weight=100;id=69;
+path=C:\_my\Музыка\Faun\Faun - Oyneng Yar.mp3;novelty=1000;rating=null;weight=100;id=70;
+path=C:\_my\Музыка\Faun\Faun - Rhiannon.mp3;novelty=1000;rating=null;weight=100;id=71;
+path=C:\_my\Музыка\Faun\Faun - Tanz mit mir (Duett mit Santiano).mp3;novelty=1000;rating=null;weight=100;id=72;
+path=C:\_my\Музыка\Faun\Faun - Unda.mp3;novelty=1000;rating=null;weight=100;id=73;
+path=C:\_my\Музыка\Faun\Faun - Von Den Elben (2013) - 05.Schrei es in die Winde.mp3;novelty=1000;rating=null;weight=100;id=74;

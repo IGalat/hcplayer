@@ -1,9 +1,6 @@
 package com.jr.util;
 
-import com.jr.dao.CritRepositoryFile;
-import com.jr.dao.FilteredPlaylistRepositoryFile;
-import com.jr.dao.NormalPlaylistRepositoryFile;
-import com.jr.dao.SongRepositoryFile;
+import com.jr.dao.*;
 import com.jr.execution.MediaPlayerAdapter;
 import com.jr.logic.CritHardcode;
 import com.jr.model.Playlist;
@@ -60,6 +57,7 @@ public class Util {
         SongRepositoryFile.rewriteFile();
         NormalPlaylistRepositoryFile.rewriteFile();
         FilteredPlaylistRepositoryFile.rewriteFile();
+        MusicFolderRepositoryFile.rewriteFile();
         Settings.saveSettings();
     }
 

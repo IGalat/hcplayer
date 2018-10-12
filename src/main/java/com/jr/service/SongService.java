@@ -66,6 +66,7 @@ public class SongService {
         Song existingSong = getByPath(path);
         Long id = existingSong == null ? Settings.getNextId() : existingSong.getId();
 
+        if (crits == null) crits = new HashMap<>();
         if (existingSong != null)
             crits.putAll(existingSong.getCrits());
 

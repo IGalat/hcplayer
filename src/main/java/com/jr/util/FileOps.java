@@ -16,6 +16,7 @@ public class FileOps {
     private static String normalPlaylistsName = "normal_playlists.txt";
     private static String filteredPlaylistsName = "filtered_playlists.txt";
     private static String settingsName = "settings.txt";
+    private static String musicFoldersName = "music_folders.txt";
 
     public static synchronized String getConfigFolder() {
         return configFolder;
@@ -43,6 +44,10 @@ public class FileOps {
 
     public static String getSettingsName() {
         return configFolder + settingsName;
+    }
+
+    public static String getMusicFoldersName() {
+        return configFolder + musicFoldersName;
     }
 
     public static synchronized void put(String filename, Map<String, String> content, boolean append) {

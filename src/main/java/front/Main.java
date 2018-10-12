@@ -1,5 +1,6 @@
 package front;
 
+import com.jr.service.MusicFolderService;
 import com.jr.util.Util;
 import front.controllers.GlobalVBoxController;
 import javafx.application.Application;
@@ -37,6 +38,10 @@ public class Main extends Application {
         primaryStage.setTitle("hcplayer");
         primaryStage.getIcons().add(new Image("/images/player_icon.png"));
         primaryStage.show();
+
+        Util.init();
+        // test for jar launch:
+        MusicFolderService.add("C:\\_my\\Музыка\\Faun");
     }
 
     @Override
