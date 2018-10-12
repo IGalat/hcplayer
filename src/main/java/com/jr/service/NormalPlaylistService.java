@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Galatyuk Ilya
@@ -91,7 +92,8 @@ public class NormalPlaylistService {
     }
 
     public static NormalPlaylist addSongs(NormalPlaylist normalPlaylist, Song... songs) {
-        normalPlaylist.getSongs().addAll(Arrays.asList(songs));
+        normalPlaylist.getSongs().addAll(Arrays.stream(songs)
+                .filter(song -> !normalPlaylist.getSongs().contains(song)).collect(Collectors.toList()));
         return playlistRepo.save(normalPlaylist);
     }
 

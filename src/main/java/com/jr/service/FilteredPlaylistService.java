@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Galatyuk Ilya
@@ -89,7 +90,8 @@ public class FilteredPlaylistService {
     }
 
     public static FilteredPlaylist addBlacklistSongs(FilteredPlaylist filteredPlaylist, Song... songs) {
-        filteredPlaylist.getBlacklist().addAll(Arrays.asList(songs));
+        filteredPlaylist.getBlacklist().addAll(Arrays.stream(songs)
+                .filter(song -> !filteredPlaylist.getBlacklist().contains(song)).collect(Collectors.toList()));
         return playlistRepo.save(filteredPlaylist);
     }
 
