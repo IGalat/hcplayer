@@ -32,6 +32,7 @@ public class Main extends Application {
         Parent root = loader.load(getClass().getResource("/fxml/GlobalVBox.fxml"));
         GlobalVBoxController globalVBoxController = loader.getController();
         primaryStage.setScene(new Scene(root, 1024, 768));
+        primaryStage.getScene().getStylesheets().add(getClass().getResource("/css/main.css").toURI().toString());
 
         primaryStage.setTitle("hcplayer");
         primaryStage.getIcons().add(new Image("/images/player_icon.png"));

@@ -6,15 +6,11 @@ import com.jr.model.Song;
 import com.jr.service.SongService;
 import com.jr.util.Util;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -72,7 +68,7 @@ public class SongsController extends AbstractController implements Initializable
         });
         songsTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        songsTableView.setItems((ObservableList)songs);
+        songsTableView.setItems((ObservableList) songs);
 
         songsTableView.setRowFactory(tv -> {
             TableRow<Song> row = new TableRow<>();
@@ -113,22 +109,48 @@ public class SongsController extends AbstractController implements Initializable
         songsTableView.setOnDragOver(event -> {
             // data is dragged over the target
             Dragboard db = event.getDragboard();
-            if (event.getDragboard().hasString()) {
+            if (event.getDragboard().hasString() && db.getString().startsWith("musicSong_")) {
+                songsTableView.getSelectionModel().selectAll();
                 event.acceptTransferModes(TransferMode.COPY);
             }
             event.consume();
         });
 
+        songsTableView.setOnDragExited(event -> {
+            songsTableView.getSelectionModel().clearSelection();
+        });
+
         songsTableView.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
-            if (event.getDragboard().hasString()) {
-                log.info("Trying to drag and drop song id(" + db.getString() + ") from musicLib into playList: " + playlist.getName());
-                playlist.getSongs().add(SongService.getOne(Integer.valueOf(db.getString())));
+            if (event.getDragboard().hasString() && db.getString().startsWith("musicSong_")) {
+                log.info("Trying to drag and drop (" + db.getString() + ") into playList: " + playlist.getName());
+                String[] s = db.getString().substring(db.getString().indexOf('_') + 1).split(",");
+                ArrayList<Long> longs = new ArrayList<>(s.length);
+                for (String ss : s)
+                    longs.add(Long.valueOf(ss));
+                playlist.getSongs().addAll(SongService.getByIds(longs));
                 success = true;
             }
             event.setDropCompleted(success);
             event.consume();
+        });
+
+        songsTableView.setOnDragDetected(event -> {
+            ObservableList<Song> selectedItems = songsTableView.getSelectionModel().getSelectedItems();
+            if (selectedItems != null && selectedItems.size() > 0) {
+                Dragboard db = songsTableView.startDragAndDrop(TransferMode.COPY);
+                ClipboardContent content = new ClipboardContent();
+
+                StringBuilder sb = new StringBuilder(selectedItems.size() * 5);
+                sb.append(selectedItems.get(0).getClass().getSimpleName() + "_" + selectedItems.get(0).getId());
+                for (int i = 1; i < selectedItems.size(); i++)
+                    sb.append("," + selectedItems.get(i).getId());
+
+                content.putString(sb.toString());
+                db.setContent(content);
+                event.consume();
+            }
         });
 
     }
