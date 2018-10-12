@@ -78,7 +78,7 @@ public final class HCPlayer {
             playNewSong(nextSong);
         else {
             addException(new Exception("Song couldn't be selected from playlist '" + playlist.getName() + "' with play order " + playOrder.toString()));
-            playNextSong(); //todo clean infinite loop if songs all absent or loops on absent song
+            playNextSong();
         }
     }
 
@@ -106,6 +106,8 @@ public final class HCPlayer {
     }
 
     private static void addException(Exception e) {
+        if (exceptionList.size() > 100)
+            exceptionList.remove(0);
         exceptionList.add(e);
         log.error(e);
         ObservableForPlayer.getInstance().update();

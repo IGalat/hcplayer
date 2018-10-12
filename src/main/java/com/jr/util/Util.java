@@ -8,6 +8,7 @@ import com.jr.execution.MediaPlayerAdapter;
 import com.jr.logic.CritHardcode;
 import com.jr.model.Playlist;
 import com.jr.model.Song;
+import com.jr.service.FilteredPlaylistService;
 import com.jr.service.NormalPlaylistService;
 import com.jr.service.SongService;
 import javafx.collections.FXCollections;
@@ -67,7 +68,8 @@ public class Util {
         Long id = Settings.getPlaylistId();
         if (id != null) {
             playlist = NormalPlaylistService.getOne(id);
-            if (playlist == null) { //todo ask filtered playlist service
+            if (playlist == null) {
+                playlist = FilteredPlaylistService.getOne(id);
             }
         }
         if (playlist != null) return playlist;

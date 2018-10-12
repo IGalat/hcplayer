@@ -141,7 +141,7 @@ public class PlayOrderTest {
         for (Map.Entry<Song, Integer> timesPlayed : timesSongsPlayed.entrySet()) {
             int actualPlays = timesPlayed.getValue();
             int expectedPlays = expectedSongPlays.get(timesPlayed.getKey());
-            double delta = 0.05 * expectedPlays + (totalRolls * 0.01);
+            double delta = 0.1 * expectedPlays + (totalRolls * 0.03);
 
             Assert.assertEquals("Song: " + timesPlayed.getKey() + ", diff " + delta, expectedPlays, actualPlays, delta);
         }

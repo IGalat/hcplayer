@@ -41,19 +41,19 @@ public class MediaPlayerAdapterTest {
     public void basics() throws InterruptedException {
         MediaPlayerAdapter.setVolume(0);
         MediaPlayerAdapter.play(SongService.getAll().get(4).getPath());
-        Thread.sleep(50);
+        Thread.sleep(100);
         Assert.assertEquals(MediaPlayer.Status.PLAYING, MediaPlayerAdapter.getMediaPlayer().getStatus());
 
         MediaPlayerAdapter.pause();
-        Thread.sleep(10);
+        Thread.sleep(30);
         Assert.assertEquals(MediaPlayer.Status.PAUSED, MediaPlayerAdapter.getMediaPlayer().getStatus());
 
         MediaPlayerAdapter.play();
-        Thread.sleep(10);
+        Thread.sleep(30);
         Assert.assertEquals(MediaPlayer.Status.PLAYING, MediaPlayerAdapter.getMediaPlayer().getStatus());
 
         MediaPlayerAdapter.destruct();
-        Thread.sleep(10);
+        Thread.sleep(30);
         Assert.assertEquals(null, MediaPlayerAdapter.getMediaPlayer());
     }
 }
